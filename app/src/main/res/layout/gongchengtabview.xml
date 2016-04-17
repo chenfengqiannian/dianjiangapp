@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <com.dianjiang.hyjipotou2.dianjiangapp.pullrefreshlistview.XListView
+        android:id="@+id/gongcheng_list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/relativeLayout"
+        android:layout_below="@+id/divider_"
+        android:divider="@color/divider"
+        android:dividerHeight="2px"
+        android:background="#ffffff"></com.dianjiang.hyjipotou2.dianjiangapp.pullrefreshlistview.XListView>
+</LinearLayout>

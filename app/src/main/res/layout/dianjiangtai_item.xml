@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:fresco="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent" android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:background="#ffffff"
+        android:layout_width="match_parent"
+        android:layout_height="105dp"
+        >
+        <com.facebook.drawee.view.SimpleDraweeView
+            android:layout_marginLeft="15dp"
+            android:layout_centerVertical="true"
+            android:id="@+id/dianjiangitem_touxiang"
+            android:layout_width="72dp"
+            android:layout_height="72dp"
+            />
+
+        <TextView
+            android:layout_toRightOf="@+id/dianjiangitem_touxiang"
+            android:layout_marginLeft="13dp"
+            android:layout_alignTop="@+id/dianjiangitem_touxiang"
+            android:id="@+id/dianjiangitem_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black_color"
+            android:textSize="15sp"
+
+            android:text="XXXXXXX"
+            />
+        <TextView
+            android:id="@+id/dianjiangitem_gongzhong"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/dianjiangitem_touxiang"
+            android:layout_marginLeft="13dp"
+            android:layout_centerVertical="true"
+            android:textColor="@color/texthui_color"
+            android:textSize="13sp"
+
+            android:text="XXXXXX"/>
+
+        <TextView
+            android:id="@+id/dianjiangitem_danwei"
+            android:layout_alignBottom="@id/dianjiangitem_touxiang"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/main_color"
+            android:layout_toRightOf="@id/dianjiangitem_touxiang"
+            android:layout_marginLeft="13dp"
+            android:textSize="13sp"
+            android:text="￥"/>
+
+        <TextView
+            android:id="@+id/dianjiangitem_price"
+            android:layout_alignBottom="@id/dianjiangitem_touxiang"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/main_color"
+            android:layout_toRightOf="@+id/dianjiangitem_danwei"
+            android:textSize="18sp"
+
+            android:text="1000"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@id/dianjiangitem_touxiang"
+            android:textColor="@color/main_color"
+            android:textSize="13sp"
+            android:layout_toRightOf="@+id/dianjiangitem_price"
+            android:text="/日均"/>
+
+        <TextView
+            android:id="@+id/dianjiangitem_level"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/dianjiangitem_touxiang"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="14dp"
+            android:textColor="@color/orange_color"
+            android:textSize="13sp"
+
+            android:text="工匠一级"/>
+        
+    </RelativeLayout>
+
+</RelativeLayout>

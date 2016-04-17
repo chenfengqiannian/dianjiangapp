@@ -1,0 +1,247 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:id="@+id/zhanghao_topbar"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:background="@color/main_color">
+        <TextView
+            android:id="@+id/zhanghao_top_text"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_centerInParent="true"
+            android:gravity="center"
+            android:text="注册"
+            android:textColor="#ffffff"
+            android:textSize="18sp" />
+
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="2px"
+            android:layout_alignParentBottom="true"
+            android:background="@color/divider" />
+    </RelativeLayout>
+
+
+    <LinearLayout
+        android:layout_below="@+id/zhanghao_topbar"
+        android:orientation="vertical" android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/hui_color">
+
+        <View
+            android:layout_marginTop="21dp"
+            android:layout_width="match_parent"
+            android:layout_height="2px"
+            android:background="@color/divider"></View>
+        <RelativeLayout
+            android:background="#ffffff"
+            android:layout_width="match_parent"
+            android:layout_height="42dp">
+            <ImageView
+                android:id="@+id/zhuce2_zhenshixinming_"
+                android:layout_marginLeft="36dp"
+                android:layout_centerVertical="true"
+                android:layout_width="15dp"
+                android:layout_height="20dp"
+                android:src="@drawable/zhuce2_xinming"/>
+            <EditText
+                android:id="@+id/zhuce2_zhenshixinming"
+                android:layout_toRightOf="@+id/zhuce2_zhenshixinming_"
+                android:layout_marginLeft="24dp"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:textSize="15sp"
+                android:textColor="@color/black_color"
+                android:hint="请输入真实姓名"
+                android:background="#ffffff"
+                android:layout_centerVertical="true"/>
+        </RelativeLayout>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="2px"
+            android:background="@color/divider"></View>
+        <RelativeLayout
+            android:background="#ffffff"
+            android:layout_width="match_parent"
+            android:layout_height="42dp">
+            <ImageView
+                android:id="@+id/zhuce2_idcard_"
+                android:layout_marginLeft="36dp"
+                android:layout_centerVertical="true"
+                android:layout_width="15dp"
+                android:layout_height="20dp"
+                android:src="@drawable/zhuce2_idcard"/>
+            <EditText
+                android:id="@+id/zhuce2_idcard"
+                android:layout_toRightOf="@+id/zhuce2_idcard_"
+                android:layout_marginLeft="24dp"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:textSize="15sp"
+                android:textColor="@color/black_color"
+                android:hint="请输入身份证号"
+                android:background="#ffffff"
+                android:layout_centerVertical="true"/>
+        </RelativeLayout>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="2px"
+            android:background="@color/divider"></View>
+        <View
+            android:layout_marginTop="21dp"
+            android:layout_width="match_parent"
+            android:layout_height="2px"
+            android:background="@color/divider"></View>
+        <RelativeLayout
+            android:background="#ffffff"
+            android:layout_width="match_parent"
+            android:layout_height="94dp">
+
+            <ImageView
+                android:id="@+id/touxiang"
+                android:layout_width="73dp"
+                android:layout_height="73dp"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="12dp" />
+
+            <TextView
+                android:id="@+id/zhuce2_touxiangtext"
+                android:layout_marginLeft="12dp"
+                android:layout_marginTop="12dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="15sp"
+                android:textColor="@color/texthui_color"
+                android:text="请上传头像"/>
+            <ImageView
+                android:id="@+id/zhuce2_touxiang"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="37dp"
+                android:layout_width="73dp"
+                android:layout_height="73dp"
+                android:src="@drawable/tianjiatupian"/>
+        </RelativeLayout>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="2px"
+            android:background="@color/divider"></View>
+        <View
+            android:layout_marginTop="21dp"
+            android:layout_width="match_parent"
+            android:layout_height="2px"
+            android:background="@color/divider"></View>
+        <RelativeLayout
+            android:background="#ffffff"
+            android:layout_width="match_parent"
+            android:layout_height="94dp">
+
+            <ImageView
+                android:id="@+id/zigezheng1"
+                android:layout_width="73dp"
+                android:layout_height="73dp"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="12dp" />
+
+            <ImageView
+                android:id="@+id/zigezheng2"
+                android:layout_width="73dp"
+                android:layout_height="73dp"
+                android:layout_centerVertical="true"
+                android:layout_toRightOf="@id/zigezheng1"
+                android:layout_marginLeft="12dp" />
+
+            <TextView
+                android:id="@+id/zhuce2_zhengshutext"
+                android:layout_marginLeft="12dp"
+                android:layout_marginTop="12dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="15sp"
+                android:textColor="@color/texthui_color"
+                android:text="请上传资格证书"/>
+            <ImageView
+                android:id="@+id/zhuce2_zhengshu"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="37dp"
+                android:layout_width="73dp"
+                android:layout_height="73dp"
+                android:src="@drawable/tianjiatupian"/>
+        </RelativeLayout>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="2px"
+            android:background="@color/divider"></View>
+
+        <View
+            android:layout_marginTop="21dp"
+            android:layout_width="match_parent"
+            android:layout_height="2px"
+            android:background="@color/divider"></View>
+        <RelativeLayout
+            android:background="#ffffff"
+            android:layout_width="match_parent"
+            android:layout_height="94dp">
+
+            <ImageView
+                android:id="@+id/shenfenzheng1"
+                android:layout_width="73dp"
+                android:layout_height="73dp"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="12dp" />
+
+            <ImageView
+                android:id="@+id/shenfenzheng2"
+                android:layout_width="73dp"
+                android:layout_height="73dp"
+                android:layout_centerVertical="true"
+                android:layout_toRightOf="@id/shenfenzheng1"
+                android:layout_marginLeft="12dp" />
+
+            <TextView
+                android:id="@+id/zhuce2_shenfenzheng"
+                android:layout_marginLeft="12dp"
+                android:layout_marginTop="12dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="15sp"
+                android:textColor="@color/texthui_color"
+                android:text="请上传身份证正反面"/>
+            <ImageView
+                android:id="@+id/zhuce2_shenfenzhengimg"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="37dp"
+                android:layout_width="73dp"
+                android:layout_height="73dp"
+                android:src="@drawable/tianjiatupian"/>
+        </RelativeLayout>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="2px"
+            android:background="@color/divider"></View>
+
+    </LinearLayout>
+
+
+    <RelativeLayout
+        android:layout_alignParentBottom="true"
+        android:id="@+id/zhanghao_button"
+        android:background="@color/main_color"
+        android:layout_width="match_parent"
+        android:layout_height="41dp">
+        <TextView
+            android:textColor="#ffffff"
+            android:textSize="16sp"
+            android:layout_centerInParent="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="注   册"/>
+    </RelativeLayout>
+
+</RelativeLayout>

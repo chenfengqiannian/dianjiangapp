@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:fresco="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <com.dianjiang.hyjipotou2.dianjiangapp.CarouselViewPager
+        android:id="@+id/jiaodianpager"
+        android:layout_width="match_parent"
+        android:layout_height="186dp"></com.dianjiang.hyjipotou2.dianjiangapp.CarouselViewPager>
+    
+    <RelativeLayout
+        android:id="@+id/qinglixiaoxi"
+        android:background="#ffffff"
+        android:layout_below="@+id/jiaodianpager"
+        android:layout_width="match_parent"
+        android:layout_height="36dp">
+
+        <View
+            android:layout_alignParentTop="true"
+            android:layout_width="match_parent"
+            android:layout_height="2px"
+            android:background="@color/divider"></View>
+        <TextView
+            android:layout_centerInParent="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="最新消息"
+            android:textSize="13sp"
+            />
+        <RelativeLayout
+            android:id="@+id/qingkong"
+            android:layout_alignParentRight="true"
+            android:layout_width="33dp"
+            android:layout_height="36dp">
+            <ImageView
+                android:layout_centerInParent="true"
+                android:layout_width="13dp"
+                android:layout_height="14dp"
+                android:src="@drawable/qingkong"
+                android:layout_centerVertical="true"/>
+        </RelativeLayout>
+    </RelativeLayout>
+    <View
+        android:id="@+id/divider_1"
+        android:layout_below="@+id/qinglixiaoxi"
+        android:layout_width="match_parent"
+        android:layout_height="2px"
+        android:background="@color/divider"></View>
+
+    <com.dianjiang.hyjipotou2.dianjiangapp.pullrefreshlistview.XListView
+        android:id="@+id/xiaoxi"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/divider_1"
+        android:divider="@color/divider"
+        android:dividerHeight="2px"
+        android:background="#ffffff"></com.dianjiang.hyjipotou2.dianjiangapp.pullrefreshlistview.XListView>
+
+
+</RelativeLayout>

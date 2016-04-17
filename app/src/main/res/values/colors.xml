@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">#FF4081</color>
+    <color name="divider">#bebebe</color>
+    <color name="main_color">#dc1403</color>
+    <color name="non_color">#707070</color>
+    <color name="black_color">#000000</color>
+    <color name="hui_color">#e6e6e6</color>
+    <color name="texthui_color">#8a8a8a</color>
+    <color name="blue_color">#0364dc</color>
+    <color name="orange_color">#dc7803</color>
+</resources>

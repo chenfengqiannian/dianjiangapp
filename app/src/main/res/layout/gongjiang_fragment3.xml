@@ -1,0 +1,342 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    xmlns:fresco="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:background="@color/hui_color">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="125dp"
+        android:background="@color/main_color">
+
+        <ImageView
+            android:id="@+id/gongjiang_shezhi"
+            android:layout_alignParentRight="true"
+            android:layout_marginTop="13dp"
+            android:layout_marginRight="12dp"
+            android:layout_width="22dp"
+            android:layout_height="20dp"
+            android:src="@drawable/shezhi"/>
+
+        <com.facebook.drawee.view.SimpleDraweeView
+            android:layout_marginLeft="68dp"
+            android:layout_centerVertical="true"
+            android:id="@+id/gongjiang_touxiang"
+            android:layout_width="88dp"
+            android:layout_height="88dp"
+            android:background="#ffffff"
+            fresco:roundAsCircle="true" />
+
+        <TextView
+            android:id="@+id/gongjiang_huanying"
+            android:layout_toRightOf="@+id/gongjiang_touxiang"
+            android:layout_marginLeft="37dp"
+            android:layout_marginTop="47dp"
+            android:text="欢迎您,"
+            android:textColor="#ffffff"
+            android:textSize="13sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/gongjiang_nicheng"
+            android:layout_alignBottom="@+id/gongjiang_huanying"
+            android:layout_toRightOf="@+id/gongjiang_huanying"
+            android:layout_marginLeft="6dp"
+            android:textColor="#ffffff"
+            android:text="XXXXXX"
+            android:textSize="13sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/gongjiang_shoujihao"
+            android:layout_marginTop="72dp"
+            android:layout_alignLeft="@+id/gongjiang_huanying"
+            android:text="18842683303"
+            android:textColor="#ffffff"
+            android:textSize="13sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+    </RelativeLayout>
+
+    <TableLayout
+        android:id="@+id/gongjiang_table1"
+        android:layout_width="match_parent"
+        android:layout_height="64dp"
+        android:background="#ffffff">
+        <TableRow>
+            <RelativeLayout
+                android:id="@+id/gongjiang_xinxi"
+                android:layout_height="64dp"
+                android:layout_weight="1"
+                android:layout_width="0dp">
+                <ImageView
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="20dp"
+                    android:id="@+id/gongjiang_xinxi_"
+                    android:layout_width="20dp"
+                    android:layout_height="17dp"
+                    android:src="@drawable/gongjiangxinxi"/>
+                <TextView
+                    android:layout_centerHorizontal="true"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="40dp"
+                    android:text="个人信息"
+                    android:textColor="#000000"
+                    android:textSize="9sp"
+                    />
+                <View
+                    android:layout_width="2px"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentRight="true"
+                    android:background="@color/divider"></View>
+            </RelativeLayout>
+            <RelativeLayout
+                android:id="@+id/gongjiang_zhanghu"
+                android:layout_height="64dp"
+                android:layout_weight="1"
+                android:layout_width="0dp">
+                <ImageView
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="20dp"
+                    android:id="@+id/gongjiang_zhanghu_"
+                    android:layout_width="20dp"
+                    android:layout_height="17dp"
+                    android:src="@drawable/gongjiangzhanghu"/>
+                <TextView
+                    android:layout_centerHorizontal="true"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="40dp"
+                    android:text="我的账户"
+                    android:textColor="#000000"
+                    android:textSize="9sp"
+                    />
+                <View
+                    android:layout_width="2px"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentRight="true"
+                    android:background="@color/divider"></View>
+            </RelativeLayout>
+            <RelativeLayout
+                android:id="@+id/gongjiang_yeji"
+                android:layout_height="64dp"
+                android:layout_weight="1"
+                android:layout_width="0dp">
+                <ImageView
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="20dp"
+                    android:id="@+id/gongjiang_fapiao_"
+                    android:layout_width="20dp"
+                    android:layout_height="17dp"
+                    android:src="@drawable/wodeyeji"/>
+                <TextView
+                    android:layout_centerHorizontal="true"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="40dp"
+                    android:text="索要发票"
+                    android:textColor="#000000"
+                    android:textSize="9sp"
+                    />
+                <View
+                    android:layout_width="2px"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentRight="true"
+                    android:background="@color/divider"></View>
+            </RelativeLayout>
+            <RelativeLayout
+                android:id="@+id/gongjiang_banzu"
+                android:layout_height="64dp"
+                android:layout_weight="1"
+                android:layout_width="0dp">
+                <ImageView
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="20dp"
+                    android:id="@+id/gongjiang_chongzhi_"
+                    android:layout_width="20dp"
+                    android:layout_height="17dp"
+                    android:src="@drawable/banzu"/>
+                <TextView
+                    android:layout_centerHorizontal="true"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="40dp"
+                    android:text="我的班组"
+                    android:textColor="#000000"
+                    android:textSize="9sp"
+                    />
+            </RelativeLayout>
+        </TableRow>
+    </TableLayout>
+
+    <View
+        android:id="@+id/gongjiang_string1"
+        android:layout_width="match_parent"
+        android:layout_height="2px"
+        android:background="@color/divider"></View>
+
+    <View
+        android:id="@+id/gongjiang_string2"
+        android:layout_width="match_parent"
+        android:layout_height="2px"
+        android:background="@color/divider"
+        android:layout_marginTop="26dp"></View>
+
+    <RelativeLayout
+        android:id="@+id/gongjiang_bangzhuce"
+        android:layout_width="match_parent"
+        android:layout_height="37dp"
+        android:background="#ffffff">
+        <ImageView
+            android:id="@+id/bangzhuceimg"
+            android:layout_width="17dp"
+            android:layout_height="16dp"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="19dp"
+            android:src="@drawable/bangzhuce" />
+
+        <TextView
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="42dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="帮工友注册"
+            android:textColor="@color/black_color"/>
+
+        <ImageView
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="15dp"
+            android:layout_width="6dp"
+            android:layout_height="12dp"
+            android:src="@drawable/jianjin"/>
+
+    </RelativeLayout>
+
+    <View
+        android:id="@+id/gongjiang_string3"
+        android:layout_width="match_parent"
+        android:layout_height="2px"
+        android:background="@color/divider"></View>
+
+    <RelativeLayout
+        android:id="@+id/gongjiang_ketang"
+        android:layout_width="match_parent"
+        android:layout_height="37dp"
+        android:background="#ffffff">
+        <ImageView
+            android:id="@+id/gongjiang_ketangimg"
+            android:layout_width="17dp"
+            android:layout_height="16dp"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="19dp"
+            android:src="@drawable/dianjiangketang" />
+
+        <TextView
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="42dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="点匠课堂"
+            android:textColor="@color/black_color"/>
+
+        <ImageView
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="15dp"
+            android:layout_width="6dp"
+            android:layout_height="12dp"
+            android:src="@drawable/jianjin"/>
+    </RelativeLayout>
+
+    <View
+        android:id="@+id/gongjiang_string4"
+        android:layout_width="match_parent"
+        android:layout_height="2px"
+        android:background="@color/divider"></View>
+
+    <View
+        android:id="@+id/gongjiang_string5"
+        android:layout_width="match_parent"
+        android:layout_height="2px"
+        android:background="@color/divider"
+        android:layout_marginTop="19dp"></View>
+
+    <RelativeLayout
+        android:id="@+id/gongjiang_kefu"
+        android:layout_width="match_parent"
+        android:layout_height="37dp"
+        android:background="#ffffff">
+        <ImageView
+            android:id="@+id/gongjiang_kefuimg"
+            android:layout_width="17dp"
+            android:layout_height="16dp"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="19dp"
+            android:src="@drawable/lianxikefu" />
+
+        <TextView
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="42dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="联系客服"
+            android:textColor="@color/black_color"/>
+
+        <ImageView
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="15dp"
+            android:layout_width="6dp"
+            android:layout_height="12dp"
+            android:src="@drawable/jianjin"/>
+
+    </RelativeLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="2px"
+        android:background="@color/divider"></View>
+
+    <RelativeLayout
+        android:id="@+id/gongjiang_yijian"
+        android:layout_width="match_parent"
+        android:layout_height="37dp"
+        android:background="#ffffff">
+        <ImageView
+            android:id="@+id/gongjiang_yijianimg"
+            android:layout_width="17dp"
+            android:layout_height="16dp"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="19dp"
+            android:src="@drawable/yijianfankui" />
+
+        <TextView
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="42dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="意见反馈"
+            android:textColor="@color/black_color"/>
+
+        <ImageView
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="15dp"
+            android:layout_width="6dp"
+            android:layout_height="12dp"
+            android:src="@drawable/jianjin"/>
+    </RelativeLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="2px"
+        android:background="@color/divider"></View>
+
+
+</LinearLayout>

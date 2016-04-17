@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:id="@+id/zhanghao_topbar"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:background="@color/main_color">
+        <TextView
+            android:id="@+id/zhanghao_top_text"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_centerInParent="true"
+            android:gravity="center"
+            android:text="登录"
+            android:textColor="#ffffff"
+            android:textSize="18sp" />
+
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="2px"
+            android:layout_alignParentBottom="true"
+            android:background="@color/divider" />
+    </RelativeLayout>
+
+    <fragment
+        android:id="@+id/zhanghao_fragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/zhanghao_topbar"
+        android:layout_above="@+id/zhanghao_button"></fragment>
+
+    <RelativeLayout
+        android:layout_alignParentBottom="true"
+        android:id="@+id/zhanghao_button"
+        android:background="@color/main_color"
+        android:layout_width="match_parent"
+        android:layout_height="41dp">
+        <TextView
+            android:textColor="#ffffff"
+            android:textSize="16sp"
+            android:layout_centerInParent="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="登   录"/>
+    </RelativeLayout>
+
+</RelativeLayout>

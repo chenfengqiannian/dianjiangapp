@@ -1,0 +1,36 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context="com.dianjiang.hyjipotou2.dianjiangapp.MyFragment3">
+
+    <!-- TODO: Update blank fragment layout -->
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+        <android.support.design.widget.TabLayout
+            android:background="#ffffff"
+            android:id="@+id/wodegongcheng_tabs"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            app:tabIndicatorColor="@color/main_color"
+            app:tabTextColor="@color/black_color"
+            app:tabSelectedTextColor="@color/main_color"
+            app:tabIndicatorHeight="3dp">
+        </android.support.design.widget.TabLayout>
+        
+        <android.support.v4.view.ViewPager
+            android:layout_below="@+id/wodegongcheng_tabs"
+            android:id="@+id/wodegongcheng_pager"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+        </android.support.v4.view.ViewPager>
+        <View
+            android:layout_alignParentBottom="true"
+            android:background="@color/divider"
+            android:layout_width="match_parent"
+            android:layout_height="2px"></View>
+    </RelativeLayout>
+</FrameLayout>
