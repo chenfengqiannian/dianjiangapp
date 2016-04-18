@@ -130,7 +130,7 @@ public class GongjiangzhuceActivity extends Activity {
             public void onClick(View v) {
                 getdata();
                 if (touxiang_file==null || zige_files.isEmpty() || shenfen_files.isEmpty() || idcard==null || name==null){
-                    Toast.makeText(GongjiangzhuceActivity.this,"ni zhe ge huai ren",Toast.LENGTH_LONG).show();
+                    Toast.makeText(GongjiangzhuceActivity.this,"账户信息不能为空",Toast.LENGTH_LONG).show();
                     return;}
 
                 PostFormBuilder buider =OkHttpUtils.post();

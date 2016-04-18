@@ -92,6 +92,11 @@ public class dengluActivity extends Activity implements View.OnClickListener{
 
         setdata();
 
+        if (phone==null||password==null){
+            Toast.makeText(this,"账号密码不能为空",Toast.LENGTH_LONG);
+            return;
+        }
+
         DataFragment fragment=DataFragment.getInstance();
         state= (boolean) fragment.user_datamap.get("job");
 
