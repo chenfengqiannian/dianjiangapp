@@ -48,10 +48,11 @@ public class dengluActivity extends Activity implements View.OnClickListener{
     private TextView zhuce;
     private TextView zhaohui;
 
+    public static String phone;
+    private boolean state;
 
-    private String phone;
+
     private String password;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,7 +85,6 @@ public class dengluActivity extends Activity implements View.OnClickListener{
         denglu=(RelativeLayout)findViewById(R.id.zhanghao_button);
         zhuce=(TextView)findViewById(R.id.denglu_zhuce);
         zhaohui=(TextView)findViewById(R.id.denglu_wangji);
-
     }
 
     @Override
@@ -92,13 +92,16 @@ public class dengluActivity extends Activity implements View.OnClickListener{
 
         setdata();
 
-        ProgressDialog.show(this,"登录中","登录中,请稍后",false,true);
+        DataFragment fragment=DataFragment.getInstance();
+        state= (boolean) fragment.user_datamap.get("job");
 
-        /*Gson gson=new Gson();
+        ProgressDialog.show(this, "登录中", "登录中,请稍后", false, true);
+
+        Gson gson=new Gson();
         HashMap<String,String> data =new HashMap<>();
         data.put("phone", phone);
-        data.put("userpw",password);
-        data.put("leixing","0");
+        data.put("userpw", password);
+        data.put("leixing", "0");
         OkHttpUtils
                 .postString()
                 .url(URL + USERAPI)
@@ -108,28 +111,33 @@ public class dengluActivity extends Activity implements View.OnClickListener{
                     @Override
                     public void onError(Request request, Exception e) {
                         Log.d("LOL", "Dwq");
-                        Toast.makeText(dengluActivity.this,"密码错误",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(dengluActivity.this, "密码错误", Toast.LENGTH_SHORT).show();
                     }
 
                     @Override
                     public void onResponse(String response) {
+                        Toast.makeText(dengluActivity.this, "登录成功", Toast.LENGTH_LONG).show();
+                        if (state==true){
+                            Intent intent = new Intent(dengluActivity.this, MainActivity.class);
+                            startActivity(intent);
+                        }
                         Log.d("LOL", response);
                     }
-                });*/
+                });
 
-        OkHttpUtils
+       /* OkHttpUtils
                 .get()
-                .url(URL+USERAPI)
-                .addParams("phone","1")
+                .url(URL + USERAPI)
+                .addParams("phone", phone)
                 .build()
                 .execute(new Callback() {
                     @Override
                     public Object parseNetworkResponse(Response response) throws IOException {
 
-                        Log.i("LOL","response");
-                        String string=response.body().string();
+                        Log.i("LOL", "response");
+                        String string = response.body().string();
 
-                        Object ps =new Gson().fromJson(string, new TypeToken<Object>() {
+                        Object ps = new Gson().fromJson(string, new TypeToken<Object>() {
                         }.getType());
                         return ps;
                     }
@@ -141,15 +149,15 @@ public class dengluActivity extends Activity implements View.OnClickListener{
 
                     @Override
                     public void onResponse(Object response) {
-                        LinkedTreeMap<String,Object> arr1= (LinkedTreeMap<String, Object>) response;
-                        Log.i("LOL","nidaye");
+                        LinkedTreeMap<String, Object> arr1 = (LinkedTreeMap<String, Object>) response;
                     }
-                });
+                });*/
+
 
     }
 
     public void setdata(){
         phone=shoujihao.getText().toString();
-        password=mima.getText().toString();
+        password=mytool.getMD5Str(mima.getText().toString());
     }
 }

@@ -34,12 +34,12 @@
             android:background="@color/divider" />
     </RelativeLayout>
 
-    <fragment
+    <FrameLayout
         android:id="@+id/fabu_fragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/fabu_topbar"
-        android:layout_above="@+id/fabu_xiayibu"></fragment>
+        android:layout_above="@+id/fabu_xiayibu"></FrameLayout>
 
     <RelativeLayout
         android:layout_alignParentBottom="true"
@@ -48,6 +48,7 @@
         android:layout_width="match_parent"
         android:layout_height="41dp">
         <TextView
+            android:id="@+id/button_text"
             android:textColor="#ffffff"
             android:textSize="16sp"
             android:layout_centerInParent="true"

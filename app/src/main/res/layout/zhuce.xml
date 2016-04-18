@@ -48,6 +48,7 @@
                 android:layout_height="20dp"
                 android:src="@drawable/denglu_shouji"/>
             <EditText
+                android:numeric="integer"
                 android:id="@+id/zhuce_shoujihao"
                 android:layout_toRightOf="@+id/zhuce_shoujihaoimg"
                 android:layout_marginLeft="24dp"
@@ -57,7 +58,7 @@
                 android:textColor="@color/black_color"
                 android:hint="请输入手机号"
                 android:background="#ffffff"
-                android:layout_centerVertical="true"/>
+                android:layout_centerVertical="true" />
         </RelativeLayout>
         <View
             android:layout_width="match_parent"
@@ -84,7 +85,8 @@
                 android:textColor="@color/black_color"
                 android:hint="请输入密码"
                 android:background="#ffffff"
-                android:layout_centerVertical="true"/>
+                android:layout_centerVertical="true"
+                android:password="true" />
         </RelativeLayout>
         <View
             android:layout_width="match_parent"
@@ -111,7 +113,8 @@
                 android:textColor="@color/black_color"
                 android:hint="请确认密码"
                 android:background="#ffffff"
-                android:layout_centerVertical="true"/>
+                android:layout_centerVertical="true"
+                android:password="true" />
         </RelativeLayout>
         <View
             android:layout_width="match_parent"

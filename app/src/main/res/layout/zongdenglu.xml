@@ -33,6 +33,7 @@
             android:layout_height="36dp">
             <EditText
                 android:id="@+id/denglu_shoujihao"
+                android:numeric="integer"
                 android:layout_toRightOf="@+id/denglu_shoujiimg"
                 android:layout_marginLeft="11dp"
                 android:layout_centerVertical="true"
@@ -72,7 +73,8 @@
                 android:textSize="13sp"
                 android:textColor="@color/black_color"
                 android:hint="请输入密码"
-                android:background="#ffffff"/>
+                android:background="#ffffff"
+                android:password="true"/>
             <ImageView
                 android:id="@+id/denglu_mimaimg"
                 android:src="@drawable/denglu_mima"

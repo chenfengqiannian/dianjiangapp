@@ -103,7 +103,6 @@
             android:paddingLeft="12dp"
             android:paddingTop="8dp"
             android:gravity="top"
-            android:background="#ffffff"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
         <ImageView

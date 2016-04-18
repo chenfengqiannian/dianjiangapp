@@ -84,25 +84,25 @@ public class myfactoryFragment extends Fragment implements XListView.IXListViewL
     private void initViews(){
         xListView=(XListView)view.findViewById(R.id.gongcheng_list);
 
-        if (mParam1=="已发布工程"){
+        if (mParam1.equalsIgnoreCase("已发布工程")){
             String[] arr1={"Fate","Stay","Night"};
             ArrayAdapter<String> adapter=new ArrayAdapter<String>(this.getActivity(),R.layout.testitem,R.id.testText,arr1);
             xListView.setAdapter(adapter);
         }
 
-        if (mParam1=="未发布工程"){
+        if (mParam1.equalsIgnoreCase("未发布工程")){
             String[] arr1={"Fate","Zero"};
             ArrayAdapter<String> adapter=new ArrayAdapter<String>(this.getActivity(),R.layout.testitem,R.id.testText,arr1);
             xListView.setAdapter(adapter);
         }
 
-        if (mParam1=="招标中工程"){
+        if (mParam1.equalsIgnoreCase("招标中工程")){
             String[] arr1={"ffff","ccccc"};
             ArrayAdapter<String> adapter=new ArrayAdapter<String>(this.getActivity(),R.layout.testitem,R.id.testText,arr1);
             xListView.setAdapter(adapter);
         }
 
-        if (mParam1=="已完工工程"){
+        if (mParam1.equalsIgnoreCase("已完工工程")){
             String[] arr1={"rrrrr","nnnnnnnqw"};
             ArrayAdapter<String> adapter=new ArrayAdapter<String>(this.getActivity(),R.layout.testitem,R.id.testText,arr1);
             xListView.setAdapter(adapter);

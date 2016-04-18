@@ -33,12 +33,13 @@
         android:layout_width="match_parent"
         android:layout_height="29dp">
         <TextView
+            android:id="@+id/fabu2_gongzhongtext"
             android:layout_marginLeft="14dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:textColor="#5b5b5b"
-            android:text="请选择接包工种"
+            android:hint="请选择接包工种"
             android:textSize="12sp"/>
         <ImageView
             android:layout_centerVertical="true"
@@ -204,6 +205,7 @@
             android:layout_marginRight="8dp"
             android:textSize="17sp"
             android:layout_centerVertical="true"
+            android:background="#ffffff"
 
             android:text="5600"/>
         <TextView
@@ -232,11 +234,12 @@
         android:layout_width="match_parent"
         android:layout_height="28dp">
         <TextView
+            android:id="@+id/fabu2_fukuantext"
             android:layout_marginLeft="22dp"
             android:layout_centerVertical="true"
             android:textColor="#5b5b5b"
             android:textSize="12sp"
-            android:text="请选择付款方式"
+            android:hint="请选择付款方式"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
         <ImageView
@@ -271,7 +274,7 @@
         android:layout_width="match_parent"
         android:layout_height="80dp">
         <EditText
-            android:id="@+id/fabu1_miaoshu"
+            android:id="@+id/fabu2_shurubeizhu"
             android:hint="请输入备注...(对施工方的特殊要求,例如5年以上的工作经验)"
             android:textColor="@color/black_color"
             android:textSize="12sp"

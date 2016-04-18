@@ -1,10 +1,17 @@
 package com.dianjiang.hyjipotou2.dianjiangapp;
 
+import android.app.AlertDialog;
 import android.content.Context;
-import android.media.Image;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.MediaStore;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +19,19 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.ListIterator;
+import java.util.Map;
 
 
 /**
@@ -27,9 +47,36 @@ public class fabuFragment extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
 
+    public static final int TOUXIANG_CAMERA=1000;
+    public static final int TOUXIANG_PHOTO=1001;
+    public static final int TOU_PHOTO_REQUEST_CUT=233;
+
+    public static final int ZIGE_CAMERA=900;
+    public static final int ZIGE_PHOTO=901;
+    public static final int ZIGE_PHOTO_REQUEST_CUT=133;
+
+    public static final int SHENFEN_CAMERA=800;
+    public static final int SHENFEN_PHOTO=801;
+    public static final int SHENFEN_PHOTO_REQUEST_CUT=311;
+
+    public static final int FIRSTIMG=1;
+    public static final int SECONDIMG=2;
+
+    public static final int NO=0;
+    public static final int OK=1;
+
     // TODO: Rename and change types of parameters
     private String mParam1;
     private View view;
+
+    //身份各种标记
+    private int shenfen_state=1;
+    private int shenfen_xiugai_state1=NO;
+    private int shenfen_xiugai_state2=NO;
+    private int shenfen_hold=1;
+    private int shenfen_count1=0;
+    private int shenfen_count2=0;
+    private File tempFile;
 
     //工程信息
     private EditText xinxi_biaoti;
@@ -48,9 +95,30 @@ public class fabuFragment extends Fragment {
     private RelativeLayout jiebao_wangongtime;
     private TextView jiebao_price;
     private TextView jiebao_choulao;
-    private RelativeLayout fabu2_fukuanfangshi;
+    private RelativeLayout jiebao_fukuanfangshi;
+    private EditText jiebao_beizhu;
+    private TextView jiebao_gongzhongtext;
+    private TextView jiebao_fukuantext;
+
+    //预览发布
+    private TextView yulan_gongchenghao;
+    private TextView yulan_gongchengname;
+    private TextView yulan_gongchengmiaoshu;
+    private TextView yulan_dizhi;
+    private TextView yulan_gongzhong;
+    private TextView yulan_yaoqiu;
+    private TextView yulan_shichang;
+    private TextView yulan_price;
+    private TextView yulan_beizhu;
+
+
+    private List<File> files=new ArrayList<>();
+    private String[] str1=new String[]{"照相上传","选择图片上传"};
 
     private OnFragmentInteractionListener mListener;
+
+    private Map<String,Object> datamap;
+    private List<Map<String,Object>> datalist;
 
 
     public fabuFragment() {
@@ -66,7 +134,7 @@ public class fabuFragment extends Fragment {
      * @return A new instance of fragment fabuFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static fabuFragment newInstance(String param1, String param2,String param3) {
+    public static fabuFragment newInstance(String param1) {
         fabuFragment fragment = new fabuFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
@@ -85,18 +153,28 @@ public class fabuFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        if (mParam1=="工程信息"){
+
+        //工程信息
+        if (mParam1.equalsIgnoreCase("工程信息")){
             view=inflater.inflate(R.layout.fabu_fragment1,null);
             xinxiInit();
 
             return view;
         }
-        if (mParam1=="接包要求"){
+          //接包要求
+        else if (mParam1.equalsIgnoreCase("接包要求")){
             view=inflater.inflate(R.layout.fabu_fragment2,null);
+            jiebaoInit();
+
             return view;
         }
+         //预览发布
+        else {
             view=inflater.inflate(R.layout.fabu_fragment3,null);
+            yulanInit();
+
             return view;
+        }
     }
 
     //工程信息初始化
@@ -109,12 +187,139 @@ public class fabuFragment extends Fragment {
         xinxi_tupiantext=(TextView)view.findViewById(R.id.fabu1_tupian);
         xinxi_shigongdiqu=(RelativeLayout)view.findViewById(R.id.fabu1_diqu);
         xinxi_xiangxidizhi=(EditText)view.findViewById(R.id.fabu1_dizhi);
+
+        //监听器
+        xinxi_tupianOption.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                simpleListOption(str1, SHENFEN_CAMERA, SHENFEN_PHOTO);
+            }
+        });
+        xinxi_tupian1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (shenfen_xiugai_state1==OK) {
+                    shenfen_hold = shenfen_state;
+                    shenfen_state = FIRSTIMG;
+                    simpleListOption(str1, SHENFEN_CAMERA, SHENFEN_PHOTO);
+                }
+            }
+        });
+
+        xinxi_tupian2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (shenfen_xiugai_state2==OK) {
+                    shenfen_hold = shenfen_state;
+                    shenfen_state = SECONDIMG;
+                    simpleListOption(str1, SHENFEN_CAMERA, SHENFEN_PHOTO);
+                }
+            }
+        });
+    }
+
+    //接包要求初始化
+    public void jiebaoInit(){
+        jiebao_gongzhong= (RelativeLayout) view.findViewById(R.id.fabu2_gongzhong);
+        jiebao_gongzhongtext=(TextView)view.findViewById(R.id.fabu2_gongzhongtext);
+        jiebao_yaoqiu= (EditText) view.findViewById(R.id.fabu2_miaoshu);
+        jiebao_shigongtime= (RelativeLayout) view.findViewById(R.id.fabu2_shigongshijian);
+        jiebao_wangongtime=(RelativeLayout)view.findViewById(R.id.fabu2_wangong);
+        jiebao_price=(EditText)view.findViewById(R.id.fabu2_price);
+        jiebao_fukuanfangshi=(RelativeLayout)view.findViewById(R.id.fabu2_fukuanfangshi);
+        jiebao_beizhu=(EditText)view.findViewById(R.id.fabu2_shurubeizhu);
+        jiebao_fukuantext=(TextView)view.findViewById(R.id.fabu2_fukuantext);
+    }
+    //预览发布初始化
+    public void yulanInit(){
+        yulan_gongchenghao=(TextView)view.findViewById(R.id.fabu3_gongchenghao);
+        yulan_gongchengname= (TextView) view.findViewById(R.id.fabu3_gongchengming);
+        yulan_gongchengmiaoshu=(TextView)view.findViewById(R.id.fabu3_miaoshu);
+        yulan_dizhi=(TextView)view.findViewById(R.id.fabu3_dizhi);
+        yulan_gongzhong=(TextView)view.findViewById(R.id.fabu3_gongzhong);
+        yulan_yaoqiu=(TextView)view.findViewById(R.id.fabu3_yaoqiu);
+        yulan_shichang=(TextView)view.findViewById(R.id.fabu3_shichang);
+        yulan_price=(TextView)view.findViewById(R.id.fabu3_choulao);
+        yulan_beizhu=(TextView)view.findViewById(R.id.fabu3_beizhu);
+    }
+
+    public void simpleListOption(String[] str1, final int camera, final int photo){
+        AlertDialog.Builder builder=new AlertDialog.Builder(getActivity())
+                .setTitle("请选择上传方式")
+                .setItems(str1, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        if (which == 0) {
+                            camera(camera);
+                        }
+                        if (which == 1) {
+                            gallery(photo);
+                        }
+                    }
+                });
+        builder.setOnCancelListener(new DialogInterface.OnCancelListener() {
+            @Override
+            public void onCancel(DialogInterface dialog) {
+                shenfen_state=shenfen_hold;
+            }
+        });
+        builder.create().show();
+    }
+
+    //跳转至照相机
+    public void camera(int f) {
+        // 激活相机
+        Intent intent = new Intent("android.media.action.IMAGE_CAPTURE");
+        // 判断存储卡是否可以用，可用进行存储
+        if (hasSdcard()) {
+            tempFile = new File(Environment.getExternalStorageDirectory(),"camera_photo");
+            // 从文件中创建uri
+            Uri uri = Uri.fromFile(tempFile);
+            intent.putExtra(MediaStore.EXTRA_OUTPUT, uri);
+        }
+        // 开启一个带有返回值的Activity，请求码为PHOTO_REQUEST_CAREMA
+        startActivityForResult(intent, f);
+    }
+
+    //跳转至xiangce
+    public void gallery(int f) {
+        // 激活系统图库，选择一张图片
+        Intent intent = new Intent(Intent.ACTION_PICK);
+        intent.setType("image/*");
+        // 开启一个带有返回值的Activity，请求码为PHOTO_REQUEST_GALLERY
+        startActivityForResult(intent,f);
+    }
+
+    //判断存储卡是否存在
+    public boolean hasSdcard() {
+        return Environment.MEDIA_MOUNTED.equals(Environment
+                .getExternalStorageState());
+    }
+
+    //剪切图片
+    private void crop(Uri uri,int f) {
+        // 裁剪图片意图
+        Intent intent = new Intent("com.android.camera.action.CROP");
+        intent.setDataAndType(uri, "image/*");
+        intent.putExtra("crop", "true");
+        // 裁剪框的比例，1：1
+        intent.putExtra("aspectX", 1);
+        intent.putExtra("aspectY", 1);
+        // 裁剪后输出图片的尺寸大小
+        intent.putExtra("outputX", 250);
+        intent.putExtra("outputY", 250);
+
+        intent.putExtra("outputFormat", "JPEG");// 图片格式
+        intent.putExtra("noFaceDetection", true);// 取消人脸识别
+        intent.putExtra("return-data", true);
+        // 开启一个带有返回值的Activity，请求码为PHOTO_REQUEST_CUT
+        startActivityForResult(intent,f);
     }
 
     // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
+    public void onButtonPressed(Map<String,Object> map) {
         if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
+            mListener.onFragmentInteraction(map);
         }
     }
 
@@ -135,6 +340,100 @@ public class fabuFragment extends Fragment {
         mListener = null;
     }
 
+    @Override
+    public void onStop() {
+        super.onStop();
+        Log.i("LOL","fragmentStop");
+        if (mParam1.equalsIgnoreCase("工程信息")){
+            //此处提取回传给Activity的工程信息
+            datamap=new HashMap<>();
+            datamap.put("biaoti",xinxi_biaoti.getText().toString());
+            datamap.put("miaoshu",xinxi_miaoshu.getText().toString());
+            datamap.put("xiangxidizhi",xinxi_xiangxidizhi.getText().toString());
+            datamap.put("tupian",files);
+
+            mListener.onFragmentInteraction(datamap);
+        }
+        else if (mParam1.equalsIgnoreCase("接包要求")){
+            //此处提取回传给Activity的接包信息
+            datamap.put("gongzhong",jiebao_gongzhongtext.getText().toString());
+            datamap.put("yaoqiu",jiebao_yaoqiu.getText().toString());
+            datamap.put("choulao",jiebao_price.getText().toString());
+            datamap.put("fukuan",jiebao_fukuantext.getText().toString());
+            datamap.put("beizhu",jiebao_beizhu.getText().toString());
+
+        }
+        else if (mParam1.equalsIgnoreCase("预览发布")){
+            //此处获取前两个信息
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        int a=getActivity().RESULT_OK;
+        if (resultCode != getActivity().RESULT_OK) {
+            return;
+        }
+        switch (requestCode) {
+
+            ////////////////////////////////////////////
+            case SHENFEN_PHOTO:
+                if (data != null) {
+                    // 得到图片的全路径
+                    Uri uri = data.getData();
+                    crop(uri,SHENFEN_PHOTO_REQUEST_CUT);
+                    xinxi_tupiantext.setText("");
+                }
+                break;
+            case SHENFEN_CAMERA:
+                if (hasSdcard()) {
+                    crop(Uri.fromFile(tempFile),SHENFEN_PHOTO_REQUEST_CUT);
+                    xinxi_tupiantext.setText("");
+                } else {
+                    Toast.makeText(getActivity(), "未找到存储卡，无法存储照片！", Toast.LENGTH_SHORT).show();
+                }
+                break;
+            case SHENFEN_PHOTO_REQUEST_CUT:
+                if (data != null) {
+                    switch (shenfen_state){
+                        case FIRSTIMG:
+                            Bitmap bitmap = data.getParcelableExtra("data");
+                            xinxi_tupian1.setImageBitmap(bitmap);
+                            shenfen_xiugai_state1=OK;
+                            shenfen_count1++;
+                            shenfen_state=SECONDIMG;
+                            if (shenfen_count1>=2){
+                                shenfen_state=shenfen_hold;
+                                files.set(0,tempFile);
+                            }else {
+                            files.add(tempFile);}
+                            break;
+                        case SECONDIMG:
+                            Bitmap bitmap0=data.getParcelableExtra("data");
+                            xinxi_tupian2.setImageBitmap(bitmap0);
+                            shenfen_xiugai_state2=OK;
+                            xinxi_tupianOption.setVisibility(View.INVISIBLE);
+                            shenfen_count2++;
+                            if (shenfen_count2>=2){
+                                shenfen_state=shenfen_hold;
+                                files.set(1,tempFile);
+                            }else {
+                            files.add(tempFile);}
+                            break;
+                    }
+                }
+                try {
+                    // 将临时文件删除
+                    tempFile.delete();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                break;
+
+        }
+    }
+
     /**
      * This interface must be implemented by activities that contain this
      * fragment to allow an interaction in this fragment to be communicated
@@ -147,6 +446,6 @@ public class fabuFragment extends Fragment {
      */
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
-        void onFragmentInteraction(Uri uri);
+        void onFragmentInteraction(Map<String,Object> map);
     }
 }

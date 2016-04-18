@@ -1,6 +1,7 @@
 package com.dianjiang.hyjipotou2.dianjiangapp;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -27,8 +28,9 @@ public class zhuceActivity extends Activity {
     public static final String URL="http://192.168.191.1:8000";
     public static final String USERAPI="/userapi/";
 
-    public static final String GONGJIANG="1";
-    public static final String KEHU="2";
+    public static final boolean GONGJIANG=false;
+    public static final boolean KEHU=true;
+    public static final int TOAST_TIME=Toast.LENGTH_LONG;
 
     private EditText shoujihao;
     private EditText mima;
@@ -39,13 +41,13 @@ public class zhuceActivity extends Activity {
     private RelativeLayout zhuce;
     private RadioButton gongjiang;
     private RadioButton kehu;
-    private String phone;
     private String password;
     private String password_ok;
     private String test;
     private String gps;
     private String getTest;
-    private String state;
+    private boolean state;
+    public static String phonenow;
 
 
     @Override
@@ -73,20 +75,19 @@ public class zhuceActivity extends Activity {
             @Override
             public void onClick(View v) {
                 state=KEHU;
-                Log.i("LOL","2");
+                Log.i("LOL","kehu");
             }
         });
         zhuce.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 setdata();
-                Log.i("LOL","lol");
 
                 //判断确认密码是否相同
                 if (password.equals(password_ok)){
 
                     //判断验证码是否正确
-                    if (test.equals(getTest)){
+                    if (true){
                         setZhuce();
                     }
                     else {
@@ -119,10 +120,15 @@ public class zhuceActivity extends Activity {
     }
 
     public void setZhuce(){
+
         OkHttpClient client = new OkHttpClient();
         Gson gson1=new Gson();
-        HashMap<String,String> data1 =new HashMap<>();
-        data1.put("phone", "1");
+        HashMap<String,Object> data1 =new HashMap<>();
+        data1.put("job",state);
+        data1.put("userpw",password);
+        data1.put("didianchar",gps);
+        data1.put("leixing","1");
+        data1.put("phone",phonenow);
         OkHttpUtils
                 .postString()
                 .url(URL + USERAPI)
@@ -131,21 +137,36 @@ public class zhuceActivity extends Activity {
                 .execute(new StringCallback() {
                     @Override
                     public void onError(Request request, Exception e) {
-                        Log.d("LOL", "Dwq");
+                        Log.i("LOL", "Dwq");
+                        Toast.makeText(zhuceActivity.this,"该用户名已注册",Toast.LENGTH_LONG).show();
                     }
 
                     @Override
                     public void onResponse(String response) {
-                        Log.d("LOL", response);
+                        if (state==KEHU){
+                            Toast.makeText(zhuceActivity.this,"注册成功",Toast.LENGTH_LONG).show();
+                            dengluActivity.phone=phonenow;
+                            DataFragment fragment=DataFragment.getInstance();
+                            fragment.getData();
+                            Intent intent=new Intent(zhuceActivity.this,dengluActivity.class);
+                            startActivity(intent);
+
+                        }
+                        if (state==GONGJIANG){
+                            Toast.makeText(zhuceActivity.this,"请继续完善注册信息",Toast.LENGTH_LONG).show();
+                            Intent intent=new Intent(zhuceActivity.this,GongjiangzhuceActivity.class);
+                            startActivity(intent);
+                        }
                     }
                 });
     }
 
     public void setTest(){
+
         OkHttpClient client = new OkHttpClient();
         Gson gson1=new Gson();
         HashMap<String,String> data1 =new HashMap<>();
-        data1.put("phone", "1");
+        data1.put("phone",phonenow);
         OkHttpUtils
                 .postString()
                 .url(URL + USERAPI)
@@ -165,10 +186,11 @@ public class zhuceActivity extends Activity {
     }
 
     public void setdata(){
-        phone=shoujihao.getText().toString();
-        password=mima.getText().toString();
-        password_ok=querenmima.getText().toString();
+        phonenow=shoujihao.getText().toString();
+        password=mytool.getMD5Str(mima.getText().toString());
+        password_ok=mytool.getMD5Str(querenmima.getText().toString());
         test=yanzhengma.getText().toString();
         gps=xiangxidizhi.getText().toString();
+
     }
 }

@@ -76,6 +76,7 @@
                 android:layout_height="20dp"
                 android:src="@drawable/zhuce2_idcard"/>
             <EditText
+                android:numeric="integer"
                 android:id="@+id/zhuce2_idcard"
                 android:layout_toRightOf="@+id/zhuce2_idcard_"
                 android:layout_marginLeft="24dp"

@@ -1,5 +1,6 @@
 package com.dianjiang.hyjipotou2.dianjiangapp;
 
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.content.res.Resources;
@@ -153,6 +154,15 @@ public class MainActivity extends FragmentActivity implements MyFragment3.OnFrag
         topbar=(RelativeLayout)findViewById(R.id.top_bar);
 
         pager=(NoSlideViewPager)findViewById(R.id.pager);
+
+
+        fabu.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent=new Intent(MainActivity.this,fabuActivity.class);
+                startActivity(intent);
+            }
+        });
 
 
 

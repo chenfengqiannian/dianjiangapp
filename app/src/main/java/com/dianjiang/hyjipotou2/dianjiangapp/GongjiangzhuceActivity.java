@@ -17,11 +17,17 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
 import com.squareup.okhttp.Request;
 import com.zhy.http.okhttp.OkHttpUtils;
+import com.zhy.http.okhttp.builder.PostFormBuilder;
 import com.zhy.http.okhttp.callback.StringCallback;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Created by hyjipotou2 on 16/4/14.
@@ -58,11 +64,14 @@ public class GongjiangzhuceActivity extends Activity {
     private TextView zhengshu_text;
     private TextView shenfenzheng_text;
     private String[] str1=new String[]{"照相上传","选择图片上传"};
-    private Bitmap bitMap;
     private File tempFile;
     private RelativeLayout zhuce;
     private EditText xingming;
     private EditText shenfen;
+    private File touxiang_file;
+    private ArrayList<File> zige_files=new ArrayList<>();
+    private ArrayList<File> shenfen_files=new ArrayList<>();
+    private String phonenow;
 
     private int touxiang_state=0;
 
@@ -82,8 +91,14 @@ public class GongjiangzhuceActivity extends Activity {
     private int zige_count1=0;
     private int zige_count2=0;
 
+
     private String name;
     private String idcard;
+
+    private int crop_state;
+    public static final int TOUXIANG_CROP=6;
+    public static final int ZIGE_CROP=7;
+    public static final int SHENFEN_CROP=8;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -114,30 +129,90 @@ public class GongjiangzhuceActivity extends Activity {
             @Override
             public void onClick(View v) {
                 getdata();
+                if (touxiang_file==null || zige_files.isEmpty() || shenfen_files.isEmpty() || idcard==null || name==null){
+                    Toast.makeText(GongjiangzhuceActivity.this,"ni zhe ge huai ren",Toast.LENGTH_LONG).show();
+                    return;}
 
-
-                File file1=new File("/storage/sdcard1/Download/d1fafd2bb2aff103394fcef4ef54c313.jpg");
-                File file2=new File("/storage/sdcard1/tieba/miaoniang.jpg");
-                if (file1.isFile()){
-                    Log.d("LOL", "6666");
+                PostFormBuilder buider =OkHttpUtils.post();
+                for(int i=0;i<zige_files.size();i++){
+                    buider.addFile(i+"ffff",zige_files.get(i).getName(),zige_files.get(i));
                 }
-                OkHttpUtils
-                        .post()
-                        .addFile("formimage", "d1fafd2.jpg", file1)
-                        .addFile("forweqf","fwefqwf.jpg",file2)
+                        buider
                         .url(MainActivity.URL + MainActivity.IMAGEAPI)
-                        .addParams("id","1")
-                        .addParams("shangchuan","user,touxiang")
+                        .addParams("id",zhuceActivity.phonenow)
+                        .addParams("shangchuan","user,zhengshu")
                         .build()
                         .execute(new StringCallback() {
                             @Override
                             public void onError(Request request, Exception e) {
-                                Log.d("LOL", "wori");
+                                Log.d("LOL", "wori_zige");
                             }
 
                             @Override
                             public void onResponse(String response) {
 
+                            }
+                        });
+
+                PostFormBuilder buider2 =OkHttpUtils.post();
+                for(int i=0;i<shenfen_files.size();i++){
+                    buider2.addFile(i+"aaaa",shenfen_files.get(i).getName(),shenfen_files.get(i));
+                }
+                buider2
+                        .url(MainActivity.URL + MainActivity.IMAGEAPI)
+                        .addParams("id",zhuceActivity.phonenow)
+                        .addParams("shangchuan","user,shenfengzheng")
+                        .build()
+                        .execute(new StringCallback() {
+                            @Override
+                            public void onError(Request request, Exception e) {
+                                Log.d("LOL", "wori_shenfen");
+                            }
+
+                            @Override
+                            public void onResponse(String response) {
+
+                            }
+                        });
+
+                PostFormBuilder buider3 =OkHttpUtils.post();
+                    buider3.addFile("ffff", touxiang_file.getName(), touxiang_file)
+                        .url(MainActivity.URL + MainActivity.IMAGEAPI)
+                        .addParams("id",zhuceActivity.phonenow)
+                        .addParams("shangchuan","user,touxiang")
+                        .build()
+                        .execute(new StringCallback() {
+                            @Override
+                            public void onError(Request request, Exception e) {
+                                Log.d("LOL", "wori_touxiang");
+                            }
+
+                            @Override
+                            public void onResponse(String response) {
+                            }
+                        });
+
+                Map<String,Object> map=new HashMap<String, Object>();
+                map.put("shenfengzheng",idcard);
+                map.put("xingming",xingming);
+
+               OkHttpUtils.postString()
+                        .url(MainActivity.URL + MainActivity.USERAPI)
+                        .content(new Gson().toJson(map))
+                        .build()
+                        .execute(new StringCallback() {
+                            @Override
+                            public void onError(Request request, Exception e) {
+                                Log.d("LOL", "wori_touxiang");
+                            }
+
+                            @Override
+                            public void onResponse(String response) {
+                                Toast.makeText(GongjiangzhuceActivity.this, "注册成功!", Toast.LENGTH_LONG);
+                                DataFragment fragment=DataFragment.getInstance();
+                                fragment.getData();
+                                Intent intent = new Intent(GongjiangzhuceActivity.this, dengluActivity.class);
+                                startActivity(intent);
                             }
                         });
 
@@ -187,7 +262,7 @@ public class GongjiangzhuceActivity extends Activity {
             public void onClick(View v) {
                 if (shenfen_xiugai_state2==OK) {
                     shenfen_hold = shenfen_state;
-                    shenfen_state = FIRSTIMG;
+                    shenfen_state = SECONDIMG;
                     simpleListOption(str1, SHENFEN_CAMERA, SHENFEN_PHOTO);
                 }
             }
@@ -249,12 +324,14 @@ public class GongjiangzhuceActivity extends Activity {
                 if (data != null) {
                     // 得到图片的全路径
                     Uri uri = data.getData();
-                    crop(uri,TOU_PHOTO_REQUEST_CUT);
+                    crop_state=TOUXIANG_CROP;
+                    crop(uri, TOU_PHOTO_REQUEST_CUT);
                     touxiang_text.setText("");
                 }
                 break;
             case TOUXIANG_CAMERA:
                 if (hasSdcard()) {
+                    crop_state=TOUXIANG_CROP;
                     crop(Uri.fromFile(tempFile),TOU_PHOTO_REQUEST_CUT);
                     touxiang_text.setText("");
                 } else {
@@ -263,21 +340,18 @@ public class GongjiangzhuceActivity extends Activity {
                 break;
             case TOU_PHOTO_REQUEST_CUT:
                 if (data != null) {
+                    //touxiang_file=mytool.getFileByUri(data.getData(),this);
                     Bitmap bitmap = data.getParcelableExtra("data");
                     touxiang.setImageBitmap(bitmap);
                     touxiang_state=1;
                     imageOption_touxiang.setVisibility(View.INVISIBLE);
                 }
-                try {
-                    // 将临时文件删除
-                    tempFile.delete();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+
                 break;
             ///////////////////////////////////////////
             case ZIGE_CAMERA:
                 if (hasSdcard()) {
+                    crop_state=ZIGE_CROP;
                     crop(Uri.fromFile(tempFile),ZIGE_PHOTO_REQUEST_CUT);
                     zhengshu_text.setText("");
                 } else {
@@ -288,6 +362,7 @@ public class GongjiangzhuceActivity extends Activity {
                 if (data != null) {
                     // 得到图片的全路径
                     Uri uri = data.getData();
+                    crop_state=ZIGE_CROP;
                     crop(uri,ZIGE_PHOTO_REQUEST_CUT);
                     zhengshu_text.setText("");
                 }
@@ -319,12 +394,7 @@ public class GongjiangzhuceActivity extends Activity {
                             break;
                     }
                 }
-                try {
-                    // 将临时文件删除
-                    tempFile.delete();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+
                 break;
 
             ////////////////////////////////////////////
@@ -332,12 +402,14 @@ public class GongjiangzhuceActivity extends Activity {
                 if (data != null) {
                     // 得到图片的全路径
                     Uri uri = data.getData();
+                    crop_state=SHENFEN_CROP;
                     crop(uri,SHENFEN_PHOTO_REQUEST_CUT);
                     shenfenzheng_text.setText("");
                 }
                 break;
             case SHENFEN_CAMERA:
                 if (hasSdcard()) {
+                    crop_state=SHENFEN_CROP;
                     crop(Uri.fromFile(tempFile),SHENFEN_PHOTO_REQUEST_CUT);
                     shenfenzheng_text.setText("");
                 } else {
@@ -368,12 +440,6 @@ public class GongjiangzhuceActivity extends Activity {
                             }
                             break;
                     }
-                }
-                try {
-                    // 将临时文件删除
-                    tempFile.delete();
-                } catch (Exception e) {
-                    e.printStackTrace();
                 }
                 break;
 
@@ -427,6 +493,13 @@ public class GongjiangzhuceActivity extends Activity {
         intent.putExtra("noFaceDetection", true);// 取消人脸识别
         intent.putExtra("return-data", true);
         // 开启一个带有返回值的Activity，请求码为PHOTO_REQUEST_CUT
+        if (crop_state==TOUXIANG_CROP) {
+            touxiang_file = mytool.getFileByUri(uri, this);
+        }else if (crop_state==ZIGE_CROP){
+            zige_files.add(mytool.getFileByUri(uri,this));
+        }else if(crop_state==SHENFEN_CROP){
+            shenfen_files.add(mytool.getFileByUri(uri,this));
+        }
         startActivityForResult(intent,f);
     }
 
