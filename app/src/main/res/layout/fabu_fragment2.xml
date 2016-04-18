@@ -14,7 +14,7 @@
             android:layout_height="wrap_content"
             android:textColor="@color/black_color"
             android:textSize="15sp"
-            android:text="工程信息"
+            android:text="接包要求"
             android:layout_centerInParent="true"/>
     </RelativeLayout>
 
@@ -112,6 +112,7 @@
             android:layout_height="match_parent"
             android:background="@color/divider"></View>
         <RelativeLayout
+            android:id="@+id/fabu2_shigongshijian"
             android:layout_width="99dp"
             android:layout_height="match_parent">
             <TextView
@@ -194,7 +195,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 
-        <TextView
+        <EditText
             android:id="@+id/fabu2_price"
             android:layout_toLeftOf="@+id/fabu2_danwei"
             android:layout_width="wrap_content"

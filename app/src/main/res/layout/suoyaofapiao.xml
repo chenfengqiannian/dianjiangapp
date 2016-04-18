@@ -43,23 +43,15 @@
             android:layout_centerVertical="true"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/texthui_color"
+            android:textColor="@color/black_color"
             android:textSize="13sp"
-            android:text="发票名称"
-            android:layout_marginLeft="17dp"/>
+            android:hint="发票名称"
+            android:layout_marginLeft="17dp"
+            android:id="@+id/nametext" />
         <ImageView
             android:layout_width="7dp"
             android:layout_height="14dp"
             android:src="@drawable/jianjin"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="9dp"/>
-        <TextView
-            android:id="@+id/name_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="13sp"
-            android:textColor="@color/black_color"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:layout_marginRight="9dp"/>
@@ -70,41 +62,6 @@
             android:background="@color/divider"></View>
     </RelativeLayout>
 
-    <RelativeLayout
-        android:id="@+id/suoyaofapiao_taitou_"
-        android:layout_below="@+id/suoyaofapiao_name"
-        android:layout_width="match_parent"
-        android:layout_height="37dp">
-        <TextView
-            android:layout_centerVertical="true"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@color/texthui_color"
-            android:textSize="13sp"
-            android:text="发票抬头"
-            android:layout_marginLeft="17dp"/>
-        <ImageView
-            android:layout_width="7dp"
-            android:layout_height="14dp"
-            android:src="@drawable/jianjin"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="9dp"/>
-        <TextView
-            android:id="@+id/suoyaofapiao_taitoutext"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="13sp"
-            android:textColor="@color/black_color"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="9dp"/>
-        <View
-            android:layout_alignParentBottom="true"
-            android:layout_width="match_parent"
-            android:layout_height="2px"
-            android:background="@color/divider"></View>
-    </RelativeLayout>
 
     <RelativeLayout
         android:id="@+id/suoyaofapiao_bianma"
@@ -115,23 +72,15 @@
             android:layout_centerVertical="true"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/texthui_color"
+            android:textColor="@color/black_color"
             android:textSize="13sp"
-            android:text="邮政编码"
-            android:layout_marginLeft="17dp"/>
+            android:hint="邮政编码"
+            android:layout_marginLeft="17dp"
+            android:id="@+id/youzhengtext" />
         <ImageView
             android:layout_width="7dp"
             android:layout_height="14dp"
             android:src="@drawable/jianjin"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="9dp"/>
-        <TextView
-            android:id="@+id/bianma_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="13sp"
-            android:textColor="@color/black_color"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:layout_marginRight="9dp"/>
@@ -151,10 +100,11 @@
             android:layout_centerVertical="true"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/texthui_color"
+            android:textColor="@color/black_color"
             android:textSize="13sp"
-            android:text="发票抬头"
-            android:layout_marginLeft="17dp"/>
+            android:hint="发票抬头"
+            android:layout_marginLeft="17dp"
+            android:id="@+id/taitoutext" />
         <ImageView
             android:layout_width="7dp"
             android:layout_height="14dp"
@@ -162,15 +112,7 @@
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:layout_marginRight="9dp"/>
-        <TextView
-            android:id="@+id/taitou_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="13sp"
-            android:textColor="@color/black_color"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="9dp"/>
+
         <View
             android:layout_alignParentBottom="true"
             android:layout_width="match_parent"
@@ -187,23 +129,15 @@
             android:layout_centerVertical="true"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/texthui_color"
+            android:textColor="@color/black_color"
             android:textSize="13sp"
-            android:text="收件人"
-            android:layout_marginLeft="17dp"/>
+            android:hint="收件人"
+            android:layout_marginLeft="17dp"
+            android:id="@+id/shoujiantext" />
         <ImageView
             android:layout_width="7dp"
             android:layout_height="14dp"
             android:src="@drawable/jianjin"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="9dp"/>
-        <TextView
-            android:id="@+id/shoujianren_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="13sp"
-            android:textColor="@color/black_color"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:layout_marginRight="9dp"/>
@@ -226,8 +160,9 @@
             android:layout_height="wrap_content"
             android:textColor="@color/texthui_color"
             android:textSize="13sp"
-            android:text="金额"
-            android:layout_marginLeft="17dp"/>
+            android:hint="金额"
+            android:layout_marginLeft="17dp"
+            android:id="@+id/jinetext" />
         <TextView
             android:id="@+id/jine_text"
             android:layout_width="wrap_content"
@@ -266,23 +201,15 @@
             android:layout_centerVertical="true"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/texthui_color"
+            android:textColor="@color/black_color"
             android:textSize="13sp"
-            android:text="详细地址"
-            android:layout_marginLeft="17dp"/>
+            android:hint="详细地址"
+            android:layout_marginLeft="17dp"
+            android:id="@+id/dizhitext" />
         <ImageView
             android:layout_width="7dp"
             android:layout_height="14dp"
             android:src="@drawable/jianjin"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="9dp"/>
-        <TextView
-            android:id="@+id/dizhi_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="13sp"
-            android:textColor="@color/black_color"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:layout_marginRight="9dp"/>
@@ -302,23 +229,15 @@
             android:layout_centerVertical="true"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/texthui_color"
+            android:textColor="@color/black_color"
             android:textSize="13sp"
-            android:text="发票寄送时间"
-            android:layout_marginLeft="17dp"/>
+            android:hint="发票寄送时间"
+            android:layout_marginLeft="17dp"
+            android:id="@+id/shijiantext" />
         <ImageView
             android:layout_width="7dp"
             android:layout_height="14dp"
             android:src="@drawable/jianjin"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="9dp"/>
-        <TextView
-            android:id="@+id/shijian_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="13sp"
-            android:textColor="@color/black_color"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:layout_marginRight="9dp"/>

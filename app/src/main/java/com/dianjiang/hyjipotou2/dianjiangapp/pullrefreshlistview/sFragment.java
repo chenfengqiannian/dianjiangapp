@@ -17,9 +17,6 @@ import java.util.ArrayList;
  * Created by hyjipotou2 on 16/4/14.
  */
 public class sFragment extends Fragment implements XListView.IXListViewListener{
-    public static final String ARG_PAGE = "ARG_PAGE";
-    private int mPage;
-    private View viewFragment;
 
     private XListView xListView=null;
     private ArrayList<String> items = new ArrayList<String>();
@@ -27,18 +24,19 @@ public class sFragment extends Fragment implements XListView.IXListViewListener{
     private int start = 0;
     private static int refreshCnt = 0;
 
-    public static sFragment newInstance(int page) {
+
+
+    /*public static sFragment newInstance(int page) {
         Bundle args = new Bundle();
         args.putInt(ARG_PAGE, page);
         sFragment pageFragment = new sFragment();
         pageFragment.setArguments(args);
-        return pageFragment;
-    }
+        return pageFragment;*/
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mPage = getArguments().getInt(ARG_PAGE);
     }
 
     @Nullable
@@ -54,7 +52,8 @@ public class sFragment extends Fragment implements XListView.IXListViewListener{
     }
 
     private void initViews(){
-        Log.i("LOL","hehe");
+
+
         String[] arr1={"wori","nidaye"};
         ArrayAdapter<String> adapter=new ArrayAdapter<String>(this.getActivity(),R.layout.testitem,R.id.testText,arr1);
         xListView.setAdapter(adapter);
@@ -76,6 +75,7 @@ public class sFragment extends Fragment implements XListView.IXListViewListener{
 
     @Override
     public void onRefresh() {
+
         mHandler.postDelayed(new Runnable() {
             @Override
             public void run() {

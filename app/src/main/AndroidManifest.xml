@@ -9,7 +9,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme.NoActionBar">
         <activity
-            android:name=".GongjiangzhuceActivity"
+            android:name=".MainActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
@@ -20,13 +20,22 @@
         </activity>
         <activity android:name=".xinxixiugaiActivity"></activity>
         <activity android:name=".wodezhanghuActivity"></activity>
-        <activity android:name=".suoyaofapiaoActivity"></activity>
         <activity android:name=".dengluActivity"></activity>
         <activity android:name=".zhuceActivity"></activity>
         <activity android:name=".zhaohuiActivity"></activity>
         <activity android:name=".SearchActivity"></activity>
+        <activity android:name=".shezhiActivity"></activity>
+        <activity android:name=".xiugaimimaActivity"></activity>
+        <activity android:name=".guanyuActivity"></activity>
+        <activity android:name=".suoyaofapiaoActivity"></activity>
+        <!-- ATTENTION: This was auto-generated to add Google Play services to your project for
+             App Indexing.  See https://g.co/AppIndexing/AndroidStudio for more information. -->
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
 
     </application>
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"></uses-permission>
+    <uses-permission android:name="android.permission.CALL_PHONE"></uses-permission>
 
 </manifest>

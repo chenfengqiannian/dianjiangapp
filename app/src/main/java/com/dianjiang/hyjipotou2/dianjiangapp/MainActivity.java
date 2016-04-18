@@ -3,6 +3,7 @@ package com.dianjiang.hyjipotou2.dianjiangapp;
 import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.content.res.Resources;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
@@ -16,7 +17,7 @@ import android.widget.TextView;
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.squareup.okhttp.MediaType;
 
-public class MainActivity extends FragmentActivity implements MyFragment3.OnFragmentInteractionListener,MyFragment2.OnFragmentInteractionListener1{
+public class MainActivity extends FragmentActivity implements MyFragment3.OnFragmentInteractionListener,MyFragment2.OnFragmentInteractionListener1,myfactoryFragment.OnFragmentInteractionListener{
 
     public static final int PAGE_ONE = 0;
     public static final int PAGE_TWO = 1;
@@ -274,6 +275,7 @@ public class MainActivity extends FragmentActivity implements MyFragment3.OnFrag
         });
     }
 
+    ////////////////////////////////////////////////////////////////////////////////////////
     @Override
     public void onFragmentInteraction1(View tview) {
 
@@ -281,5 +283,11 @@ public class MainActivity extends FragmentActivity implements MyFragment3.OnFrag
 
     @Override
     public void yifabugongcheng(View tview) {
+    }
+
+    //myfactoryFragment
+    @Override
+    public void onFragmentInteraction(Uri uri) {
+
     }
 }

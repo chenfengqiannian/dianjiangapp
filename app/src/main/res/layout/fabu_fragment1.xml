@@ -81,11 +81,24 @@
         android:layout_below="@+id/fabu1_str3"
         android:layout_width="match_parent"
         android:layout_height="87dp">
-        <EditText
+        <ImageView
+            android:id="@+id/xinxi_tupian1"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="12dp"/>
+        <ImageView
+            android:id="@+id/xinxi_tupian2"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@id/xinxi_tupian1"
+            android:layout_marginLeft="12dp"/>
+        <TextView
             android:id="@+id/fabu1_tupian"
             android:editable="false"
-            android:hint="请选择图片上传"
-            android:textColor="@color/black_color"
+            android:text="请选择图片上传"
+            android:textColor="@color/texthui_color"
             android:textSize="12sp"
             android:paddingLeft="12dp"
             android:paddingTop="8dp"
@@ -93,6 +106,14 @@
             android:background="#ffffff"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
+        <ImageView
+            android:id="@+id/img_option"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="12dp"
+            android:layout_centerVertical="true"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:src="@drawable/tianjiatupian"/>
     </RelativeLayout>
 
     <View
