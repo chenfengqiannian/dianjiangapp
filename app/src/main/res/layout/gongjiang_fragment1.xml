@@ -1,6 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent" android:layout_height="match_parent">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <android.support.design.widget.TabLayout
+        android:background="#ffffff"
+        android:id="@+id/xinrenwu_tabs"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        app:tabIndicatorColor="@color/main_color"
+        app:tabTextColor="@color/black_color"
+        app:tabSelectedTextColor="@color/main_color"
+        app:tabIndicatorHeight="3dp">
+    </android.support.design.widget.TabLayout>
+
+    <android.support.v4.view.ViewPager
+        android:layout_below="@+id/xinrenwu_tabs"
+        android:id="@+id/xinrenwu_pager"
+        android:layout_above="@+id/gongjiang_gps"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+    </android.support.v4.view.ViewPager>
 
     <RelativeLayout
         android:id="@+id/gongjiang_gps"
