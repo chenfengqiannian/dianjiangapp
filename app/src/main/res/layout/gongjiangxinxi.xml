@@ -58,13 +58,15 @@
             android:layout_height="74dp"
             android:background="#ffffff" />
 
-        <TextView
+        <EditText
             android:id="@+id/dianjiang_name"
             android:layout_marginLeft="16dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="15sp"
             android:textColor="@color/black_color"
+            android:hint="请输入姓名"
+            android:background="#ffffff"
 
             android:text="XXXXXXXX"
             android:layout_marginStart="16dp"
@@ -119,7 +121,7 @@
             android:text="所属公司    "
             android:layout_marginLeft="20dp"
             android:layout_marginTop="13dp"/>
-        <TextView
+        <EditText
             android:id="@+id/dianjiang_gongsi"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -128,6 +130,8 @@
             android:layout_toRightOf="@id/diangjiang_gongsi_"
             android:layout_marginTop="13dp"
             android:layout_marginLeft="20dp"
+            android:hint="请输入所属公司"
+            android:background="#ffffff"
 
             android:text="XXXXXXXX"/>
 
@@ -141,7 +145,7 @@
             android:layout_marginLeft="20dp"
             android:layout_centerVertical="true"
             />
-        <TextView
+        <EditText
             android:id="@+id/dianjiang_gongzuodi"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -149,6 +153,8 @@
             android:textColor="@color/black_color"
             android:layout_alignBottom="@+id/dianjiang_gongzuodi_"
             android:layout_alignLeft="@+id/dianjiang_gongsi"
+            android:hint="请输入工作地"
+            android:background="#ffffff"
 
             android:text="XXXXXXXXX"/>
 
@@ -162,7 +168,8 @@
             android:layout_marginLeft="20dp"
             android:layout_alignParentBottom="true"
             android:layout_marginBottom="13dp"/>
-        <TextView
+        <EditText
+            android:hint="请输入特征标签"
             android:id="@+id/dianjiang_biaoqian"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -170,6 +177,7 @@
             android:textColor="@color/black_color"
             android:layout_alignBottom="@+id/dianjiang_biaoqian_"
             android:layout_alignLeft="@+id/dianjiang_gongsi"
+            android:background="#ffffff"
 
             android:text="XXXXXXXXX"/>
     </RelativeLayout>
@@ -200,9 +208,16 @@
         <ImageView
             android:layout_centerVertical="true"
             android:id="@+id/dianjiang_zheng"
-            android:layout_width="72dp"
-            android:layout_height="46dp"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
             android:layout_marginLeft="103dp"/>
+        <ImageView
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_centerVertical="true"
+            android:id="@+id/dianjiang_zheng2"
+            android:layout_toRightOf="@+id/dianjiang_zheng"
+            android:layout_marginLeft="12dp"/>
     </RelativeLayout>
 
     <View
@@ -228,7 +243,8 @@
             android:text="自我介绍    "
             android:layout_marginLeft="20dp"
             android:layout_marginTop="13dp"/>
-        <TextView
+        <EditText
+            android:hint="请输入自我介绍"
             android:id="@+id/ziwojieshao"
             android:layout_width="233dp"
             android:layout_height="wrap_content"
@@ -237,6 +253,7 @@
             android:layout_alignTop="@+id/ziwojieshao_"
             android:layout_toRightOf="@+id/ziwojieshao_"
             android:layout_marginLeft="20dp"
+            android:background="#ffffff"
 
             android:text="XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"/>
 
