@@ -205,7 +205,7 @@ public class MyFragment2 extends Fragment implements XListView.IXListViewListene
         }, 2000);*/
         OkHttpUtils
                 .get()
-                .url(URL + GONGCHENGAPI)
+                .url(URL + USERAPI)
                 .build()
                 .execute(new mCallBack<Object>(this) {
                     @Override
@@ -229,8 +229,8 @@ public class MyFragment2 extends Fragment implements XListView.IXListViewListene
 
                         linkedTreeMap= (LinkedTreeMap) response;
 
-                       // dianjiangItemBean bean=new dianjiangItemBean(linkedTreeMap.get("tupian"))
-                       // dataFragment.dianjiangItemBeans.add()
+                       //dianjiangItemBean bean=new dianjiangItemBean(linkedTreeMap.get("tupian"))
+                       //dataFragment.dianjiangItemBeans.add()
 
                         mfragment.mAdapter.notifyDataSetChanged();
                     }
