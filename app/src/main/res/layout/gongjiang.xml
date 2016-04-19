@@ -117,12 +117,12 @@
         android:background="@color/divider"
         ></View>
 
-    <android.support.v4.view.ViewPager
-        android:id="@+id/pager"
+    <com.dianjiang.hyjipotou2.dianjiangapp.NoSlideViewPager
+        android:id="@+id/nopager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@id/gongjiang_tab_div"
         android:layout_below="@+id/gongjiang_top_bar"
-        ></android.support.v4.view.ViewPager>
+        ></com.dianjiang.hyjipotou2.dianjiangapp.NoSlideViewPager>
 
 </RelativeLayout>
