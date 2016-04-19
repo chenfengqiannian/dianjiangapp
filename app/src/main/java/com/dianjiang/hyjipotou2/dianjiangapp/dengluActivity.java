@@ -92,17 +92,73 @@ public class dengluActivity extends Activity implements View.OnClickListener{
 
         setdata();
 
-        if (phone==null||password==null){
+        if (phone.equals("")||password.equals("")){
             Toast.makeText(this,"账号密码不能为空",Toast.LENGTH_LONG);
             return;
         }
 
-        DataFragment fragment=DataFragment.getInstance();
-        state= (boolean) fragment.user_datamap.get("job");
+        final DataFragment fragment=DataFragment.getInstance();
 
         ProgressDialog.show(this, "登录中", "登录中,请稍后", false, true);
 
-        Gson gson=new Gson();
+        OkHttpUtils
+                .get()
+                .url(URL + USERAPI)
+                .addParams("phone", dengluActivity.phone)
+                .build()
+                .execute(new Callback() {
+                    @Override
+                    public Object parseNetworkResponse(Response response) throws IOException {
+
+                        Log.i("LOL", "response");
+                        String string = response.body().string();
+
+                        Object ps = new Gson().fromJson(string, new TypeToken<Object>() {
+                        }.getType());
+                        return ps;
+                    }
+
+                    @Override
+                    public void onError(Request request, Exception e) {
+
+                    }
+
+                    @Override
+                    public void onResponse(Object response) {
+
+                        fragment.user_datamap = (LinkedTreeMap<String, Object>) response;
+                        state= (boolean) fragment.user_datamap.get("job");
+                        Gson gson=new Gson();
+                        HashMap<String,String> data =new HashMap<>();
+                        data.put("phone", phone);
+                        data.put("userpw", password);
+                        data.put("leixing", "0");
+                        OkHttpUtils
+                                .postString()
+                                .url(URL + USERAPI)
+                                .content(gson.toJson(data))
+                                .build()
+                                .execute(new StringCallback() {
+                                    @Override
+                                    public void onError(Request request, Exception e) {
+                                        Log.d("LOL", "Dwq");
+                                        Toast.makeText(dengluActivity.this, "密码错误", Toast.LENGTH_SHORT).show();
+                                    }
+
+                                    @Override
+                                    public void onResponse(String response) {
+                                        Toast.makeText(dengluActivity.this, "登录成功", Toast.LENGTH_LONG).show();
+                                        if (state == true) {
+                                            Intent intent = new Intent(dengluActivity.this, MainActivity.class);
+                                            startActivity(intent);
+                                        }
+                                        Log.d("LOL", response);
+                                    }
+                                });
+                    }
+                });
+
+        /*Gson gson=new Gson();
         HashMap<String,String> data =new HashMap<>();
         data.put("phone", phone);
         data.put("userpw", password);

@@ -7,6 +7,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,8 +18,16 @@ import android.widget.TextView;
 
 import com.dianjiang.hyjipotou2.dianjiangapp.pullrefreshlistview.XListView;
 import com.dianjiang.hyjipotou2.dianjiangapp.pullrefreshlistview.XListView.IXListViewListener;
+import com.google.gson.Gson;
+import com.google.gson.internal.LinkedTreeMap;
+import com.google.gson.reflect.TypeToken;
+import com.squareup.okhttp.Request;
+import com.squareup.okhttp.Response;
+import com.zhy.http.okhttp.OkHttpUtils;
+import com.zhy.http.okhttp.callback.Callback;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,6 +45,10 @@ public class MyFragment2 extends Fragment implements XListView.IXListViewListene
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
+
+    public static final String URL="http://192.168.191.1:8000";
+    public static final String USERAPI="/userapi/";
+    public static final String GONGCHENGAPI="/gongchengapi/";
 
     private static final int LEVEL=1;
     private static final int PRICE=2;
@@ -63,6 +76,8 @@ public class MyFragment2 extends Fragment implements XListView.IXListViewListene
     private ImageView level_img;
     private ImageView price_img;
     private ImageView pingjia_img;
+
+    private LinkedTreeMap linkedTreeMap;
 
 
     private OnFragmentInteractionListener1 mListener;
@@ -170,7 +185,7 @@ public class MyFragment2 extends Fragment implements XListView.IXListViewListene
     //刷新       /////////////////////////////////////////////////
     @Override
     public void onRefresh() {
-        mHandler.postDelayed(new Runnable() {
+       /* mHandler.postDelayed(new Runnable() {
             @Override
             public void run() {
 
@@ -187,7 +202,36 @@ public class MyFragment2 extends Fragment implements XListView.IXListViewListene
 
                 onLoad();
             }
-        }, 2000);
+        }, 2000);*/
+        OkHttpUtils
+                .get()
+                .url(URL + GONGCHENGAPI)
+                .build()
+                .execute(new Callback() {
+                    @Override
+                    public Object parseNetworkResponse(Response response) throws IOException {
+
+                        Log.i("LOL", "response");
+                        String string = response.body().string();
+
+                        Object ps = new Gson().fromJson(string, new TypeToken<Object>() {
+                        }.getType());
+                        return ps;
+                    }
+
+                    @Override
+                    public void onError(Request request, Exception e) {
+
+                    }
+
+                    @Override
+                    public void onResponse(Object response) {
+                        linkedTreeMap= (LinkedTreeMap) response;
+
+
+
+                    }
+                });
 
     }
 
