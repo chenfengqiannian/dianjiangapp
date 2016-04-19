@@ -209,8 +209,8 @@ public class GongjiangzhuceActivity extends Activity {
                             @Override
                             public void onResponse(String response) {
                                 Toast.makeText(GongjiangzhuceActivity.this, "注册成功!", Toast.LENGTH_LONG);
-                                DataFragment fragment=DataFragment.getInstance();
-                                fragment.getData();
+                                //DataFragment fragment=DataFragment.getInstance();
+                               // fragment.getData();
                                 Intent intent = new Intent(GongjiangzhuceActivity.this, dengluActivity.class);
                                 startActivity(intent);
                             }

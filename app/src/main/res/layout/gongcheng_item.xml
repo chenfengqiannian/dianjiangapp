@@ -108,7 +108,8 @@
             android:textColor="@color/black_color"
             android:textSize="13sp"
 
-            android:text="XXXXXXXXXX"/>
+            android:text="XXXXXXXXXX"
+            android:id="@+id/processjindu" />
         <View
             android:layout_width="match_parent"
             android:layout_height="2px"

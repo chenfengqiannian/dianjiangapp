@@ -12,8 +12,17 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 
 import com.dianjiang.hyjipotou2.dianjiangapp.pullrefreshlistview.XListView;
+import com.google.gson.Gson;
+import com.google.gson.internal.LinkedTreeMap;
+import com.google.gson.reflect.TypeToken;
+import com.squareup.okhttp.Request;
+import com.squareup.okhttp.Response;
+import com.zhy.http.okhttp.OkHttpUtils;
+import com.zhy.http.okhttp.callback.Callback;
 
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -28,6 +37,9 @@ public class myfactoryFragment extends Fragment implements XListView.IXListViewL
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
+    public static final String URL="http://192.168.191.1:8000";
+    public static final String USERAPI="/userapi/";
+    public static final String GONGCHENGAPI="/gongchengapi/";
     // TODO: Rename and change types of parameters
     private String mParam1;
 
@@ -38,6 +50,7 @@ public class myfactoryFragment extends Fragment implements XListView.IXListViewL
     private int start = 0;
     private static int refreshCnt = 0;
     private View view;
+    private List<processItemBean> itemBeans;
 
     private OnFragmentInteractionListener mListener;
 
@@ -110,6 +123,8 @@ public class myfactoryFragment extends Fragment implements XListView.IXListViewL
 
         xListView.setXListViewListener(this);
         mHandler = new Handler();
+
+
     }
 
     private void geneItems() {
@@ -123,6 +138,7 @@ public class myfactoryFragment extends Fragment implements XListView.IXListViewL
         xListView.stopLoadMore();
         xListView.setRefreshTime("刚刚");
     }
+
 
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
@@ -150,7 +166,7 @@ public class myfactoryFragment extends Fragment implements XListView.IXListViewL
 
     @Override
     public void onRefresh() {
-        mHandler.postDelayed(new Runnable() {
+       /* mHandler.postDelayed(new Runnable() {
             @Override
             public void run() {
                 start = ++refreshCnt;
@@ -164,7 +180,34 @@ public class myfactoryFragment extends Fragment implements XListView.IXListViewL
 
                 onLoad();
             }
-        }, 2000);
+        }, 2000);*/
+        OkHttpUtils
+                .get()
+                .url(URL + GONGCHENGAPI)
+                .build()
+                .execute(new Callback() {
+                    @Override
+                    public Object parseNetworkResponse(Response response) throws IOException {
+
+                        Log.i("LOL", "response");
+                        String string = response.body().string();
+
+                        Object ps = new Gson().fromJson(string, new TypeToken<Object>() {
+                        }.getType());
+                        return ps;
+                    }
+
+                    @Override
+                    public void onError(Request request, Exception e) {
+
+                    }
+
+                    @Override
+                    public void onResponse(Object response) {
+
+                    }
+                });
+
 
     }
 

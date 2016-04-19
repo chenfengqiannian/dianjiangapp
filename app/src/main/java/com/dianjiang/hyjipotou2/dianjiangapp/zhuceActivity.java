@@ -146,8 +146,8 @@ public class zhuceActivity extends Activity {
                         if (state==KEHU){
                             Toast.makeText(zhuceActivity.this,"注册成功",Toast.LENGTH_LONG).show();
                             dengluActivity.phone=phonenow;
-                            DataFragment fragment=DataFragment.getInstance();
-                            fragment.getData();
+                            //DataFragment fragment=DataFragment.getInstance();
+                            //fragment.getData();
                             Intent intent=new Intent(zhuceActivity.this,dengluActivity.class);
                             startActivity(intent);
 
