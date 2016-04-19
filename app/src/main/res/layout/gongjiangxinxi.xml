@@ -1,0 +1,277 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:fresco="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <RelativeLayout
+        android:id="@+id/dianjiang_topbar"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:background="@color/main_color">
+        <TextView
+            android:id="@+id/dianjiang_top_text"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_centerInParent="true"
+            android:gravity="center"
+            android:text="工匠信息"
+            android:textColor="#ffffff"
+            android:textSize="18sp" />
+
+        <ImageButton
+            android:background="#00000000"
+            android:layout_centerVertical="true"
+            android:layout_width="40dp"
+            android:padding="15dp"
+            android:layout_height="wrap_content"
+            android:src="@drawable/fanhui"
+            android:scaleType="fitXY"/>
+        <Button
+            android:layout_width="60dp"
+            android:layout_height="match_parent"
+            android:text="编辑"
+            android:textSize="18sp"
+            android:textColor="#ffffff"
+            android:background="#00000000"
+            android:layout_alignParentRight="true"/>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="2px"
+            android:layout_alignParentBottom="true"
+            android:background="@color/divider" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/dianjiang2"
+        android:layout_below="@+id/dianjiang_topbar"
+        android:background="#ffffff"
+        android:layout_width="match_parent"
+        android:layout_height="100dp">
+
+        <com.facebook.drawee.view.SimpleDraweeView
+            android:id="@+id/dianjiang_touxiang"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="13dp"
+            android:layout_width="74dp"
+            android:layout_height="74dp"
+            android:background="#ffffff" />
+
+        <EditText
+            android:id="@+id/dianjiang_name"
+            android:layout_marginLeft="16dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="15sp"
+            android:textColor="@color/black_color"
+            android:hint="请输入姓名"
+            android:background="#ffffff"
+
+            android:text="XXXXXXXX"
+            android:layout_marginStart="16dp"
+            android:layout_below="@+id/dianjiang_dengji"
+            android:layout_toEndOf="@+id/dianjiang_touxiang" />
+
+        <TextView
+            android:id="@+id/dianjiang_gongzhong"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="15sp"
+            android:textColor="@color/divider"
+
+            android:text="XXXXXXXX"
+            android:layout_alignBottom="@+id/dianjiang_touxiang"
+            android:layout_alignStart="@+id/dianjiang_name"
+            android:layout_marginBottom="13dp" />
+
+        <TextView
+            android:id="@+id/dianjiang_dengji"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/dianjiang_touxiang"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="15sp"
+            android:textColor="#db7d02"
+            android:textSize="15sp"
+
+            android:text="工匠一级"/>
+    </RelativeLayout>
+
+    <View
+        android:layout_below="@+id/dianjiang2"
+        android:id="@+id/str2"
+        android:layout_width="match_parent"
+        android:layout_height="2px"
+        android:background="@color/divider"
+        ></View>
+
+    <RelativeLayout
+        android:layout_below="@+id/str2"
+        android:id="@+id/dianjiang3"
+        android:layout_width="match_parent"
+        android:layout_height="106dp"
+        android:background="#ffffff">
+        <TextView
+            android:id="@+id/diangjiang_gongsi_"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="13sp"
+            android:textColor="@color/divider"
+            android:text="所属公司    "
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="13dp"/>
+        <EditText
+            android:id="@+id/dianjiang_gongsi"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="13sp"
+            android:textColor="@color/black_color"
+            android:layout_toRightOf="@id/diangjiang_gongsi_"
+            android:layout_marginTop="13dp"
+            android:layout_marginLeft="20dp"
+            android:hint="请输入所属公司"
+            android:background="#ffffff"
+
+            android:text="XXXXXXXX"/>
+
+        <TextView
+            android:id="@+id/dianjiang_gongzuodi_"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="13sp"
+            android:textColor="@color/divider"
+            android:text="期望工作地"
+            android:layout_marginLeft="20dp"
+            android:layout_centerVertical="true"
+            />
+        <EditText
+            android:id="@+id/dianjiang_gongzuodi"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="13sp"
+            android:textColor="@color/black_color"
+            android:layout_alignBottom="@+id/dianjiang_gongzuodi_"
+            android:layout_alignLeft="@+id/dianjiang_gongsi"
+            android:hint="请输入工作地"
+            android:background="#ffffff"
+
+            android:text="XXXXXXXXX"/>
+
+        <TextView
+            android:id="@+id/dianjiang_biaoqian_"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="13sp"
+            android:textColor="@color/divider"
+            android:text="特征标签    "
+            android:layout_marginLeft="20dp"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="13dp"/>
+        <EditText
+            android:hint="请输入特征标签"
+            android:id="@+id/dianjiang_biaoqian"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="13sp"
+            android:textColor="@color/black_color"
+            android:layout_alignBottom="@+id/dianjiang_biaoqian_"
+            android:layout_alignLeft="@+id/dianjiang_gongsi"
+            android:background="#ffffff"
+
+            android:text="XXXXXXXXX"/>
+    </RelativeLayout>
+
+    <View
+        android:layout_below="@+id/dianjiang3"
+        android:id="@+id/str3"
+        android:layout_width="match_parent"
+        android:layout_height="2px"
+        android:background="@color/divider"
+        ></View>
+
+    <RelativeLayout
+        android:layout_below="@+id/str3"
+        android:layout_width="match_parent"
+        android:layout_height="66dp"
+        android:background="#ffffff"
+        android:id="@+id/dianjiang4">
+        <TextView
+            android:id="@+id/diangjiang_zheng_"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="13sp"
+            android:textColor="@color/divider"
+            android:text="技能证书    "
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="13dp"/>
+        <ImageView
+            android:layout_centerVertical="true"
+            android:id="@+id/dianjiang_zheng"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginLeft="103dp"/>
+        <ImageView
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_centerVertical="true"
+            android:id="@+id/dianjiang_zheng2"
+            android:layout_toRightOf="@+id/dianjiang_zheng"
+            android:layout_marginLeft="12dp"/>
+    </RelativeLayout>
+
+    <View
+        android:layout_below="@+id/dianjiang4"
+        android:id="@+id/str4"
+        android:layout_width="match_parent"
+        android:layout_height="2px"
+        android:background="@color/divider"
+        ></View>
+
+    <RelativeLayout
+        android:layout_below="@+id/str4"
+        android:id="@+id/dianjiang5"
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:background="#ffffff">
+        <TextView
+            android:id="@+id/ziwojieshao_"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="13sp"
+            android:textColor="@color/divider"
+            android:text="自我介绍    "
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="13dp"/>
+        <EditText
+            android:hint="请输入自我介绍"
+            android:id="@+id/ziwojieshao"
+            android:layout_width="233dp"
+            android:layout_height="wrap_content"
+            android:textSize="13sp"
+            android:textColor="@color/black_color"
+            android:layout_alignTop="@+id/ziwojieshao_"
+            android:layout_toRightOf="@+id/ziwojieshao_"
+            android:layout_marginLeft="20dp"
+            android:background="#ffffff"
+
+            android:text="XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"/>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_alignParentBottom="true"
+        android:id="@+id/yaoqing"
+        android:background="@color/main_color"
+        android:layout_width="match_parent"
+        android:layout_height="41dp">
+        <TextView
+            android:textColor="#ffffff"
+            android:textSize="16sp"
+            android:layout_centerInParent="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="保存"/>
+    </RelativeLayout>
+
+</RelativeLayout>

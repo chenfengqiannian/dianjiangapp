@@ -151,6 +151,7 @@ public class dengluActivity extends Activity implements View.OnClickListener{
                                         if (state == true) {
                                             Intent intent = new Intent(dengluActivity.this, MainActivity.class);
                                             startActivity(intent);
+                                            finish();
                                         }
                                         Log.d("LOL", response);
                                     }

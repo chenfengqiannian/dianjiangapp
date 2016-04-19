@@ -61,9 +61,8 @@ public class MyFragment2 extends Fragment implements XListView.IXListViewListene
     private View viewFragment;
     private XListView xListView=null;
     private Handler mHandler;
-    private dianjiangItemAdapter mAdapter;
+    public dianjiangItemAdapter mAdapter;
     private Uri uri;
-    private List<dianjiangItemBean> itemBeanList;
 
     ///////////////////
     private RelativeLayout level;
@@ -76,8 +75,10 @@ public class MyFragment2 extends Fragment implements XListView.IXListViewListene
     private ImageView level_img;
     private ImageView price_img;
     private ImageView pingjia_img;
+    public DataFragment dataFragment=DataFragment.getInstance();
 
     private LinkedTreeMap linkedTreeMap;
+
 
 
     private OnFragmentInteractionListener1 mListener;
@@ -140,11 +141,10 @@ public class MyFragment2 extends Fragment implements XListView.IXListViewListene
 
         //初始化LISTVIEW adapter
         uri=Uri.fromFile(new File("/storage/sdcard1/tieba/kinght.jpg"));
-        itemBeanList=new ArrayList<>();
         for (int i=0;i<10;i++){
-            itemBeanList.add(0,new dianjiangItemBean(uri,"装哭的骑士"+i,"歌姬"+i,"MR"+i,"1000"+i));
+            dataFragment.dianjiangItemBeans.add(0, new dianjiangItemBean(uri, "装哭的骑士" + i, "歌姬" + i, "MR" + i, "1000" + i));
         }
-        mAdapter=new dianjiangItemAdapter(this.getActivity(),itemBeanList);
+        mAdapter=new dianjiangItemAdapter(this.getActivity(),dataFragment.dianjiangItemBeans);
         xListView.setAdapter(mAdapter);
 
 
@@ -205,9 +205,9 @@ public class MyFragment2 extends Fragment implements XListView.IXListViewListene
         }, 2000);*/
         OkHttpUtils
                 .get()
-                .url(URL + GONGCHENGAPI)
+                .url(URL + USERAPI)
                 .build()
-                .execute(new Callback() {
+                .execute(new mCallBack<Object>(this) {
                     @Override
                     public Object parseNetworkResponse(Response response) throws IOException {
 
@@ -226,10 +226,13 @@ public class MyFragment2 extends Fragment implements XListView.IXListViewListene
 
                     @Override
                     public void onResponse(Object response) {
+
                         linkedTreeMap= (LinkedTreeMap) response;
 
+                       //dianjiangItemBean bean=new dianjiangItemBean(linkedTreeMap.get("tupian"))
+                       //dataFragment.dianjiangItemBeans.add()
 
-
+                        mfragment.mAdapter.notifyDataSetChanged();
                     }
                 });
 
@@ -325,4 +328,11 @@ public class MyFragment2 extends Fragment implements XListView.IXListViewListene
         // TODO: Update argument type and name
         void onFragmentInteraction1(View tview);
     }
+
+abstract class mCallBack<T> extends Callback<T>{
+    MyFragment2 mfragment;
+    public mCallBack(MyFragment2 mfragment){
+        this.mfragment=mfragment;
+    }
+}
 }

@@ -20,6 +20,7 @@ import com.squareup.okhttp.Response;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.Callback;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -43,6 +44,7 @@ public class myfactoryFragment extends Fragment implements XListView.IXListViewL
     // TODO: Rename and change types of parameters
     private String mParam1;
 
+    public processItemAdapter mAdapter;
 
     private XListView xListView=null;
     private ArrayList<String> items = new ArrayList<String>();
@@ -51,6 +53,8 @@ public class myfactoryFragment extends Fragment implements XListView.IXListViewL
     private static int refreshCnt = 0;
     private View view;
     private List<processItemBean> itemBeans;
+    private processItemBean itemBean;
+    private LinkedTreeMap linkedTreeMap;
 
     private OnFragmentInteractionListener mListener;
 
@@ -97,10 +101,24 @@ public class myfactoryFragment extends Fragment implements XListView.IXListViewL
     private void initViews(){
         xListView=(XListView)view.findViewById(R.id.gongcheng_list);
 
+
         if (mParam1.equalsIgnoreCase("已发布工程")){
-            String[] arr1={"Fate","Stay","Night"};
-            ArrayAdapter<String> adapter=new ArrayAdapter<String>(this.getActivity(),R.layout.testitem,R.id.testText,arr1);
-            xListView.setAdapter(adapter);
+            itemBeans=new ArrayList<processItemBean>();
+            int count;  //获取数据个数
+            count=10;
+
+            Uri uri;
+            uri=Uri.fromFile(new File("/storage/sdcard1/tieba/miaoniang.jpg"));
+            for (int i=0;i<count;i++){
+                itemBeans.add(0,new processItemBean(uri,"我的工程"+i,"1234566"+i,"这是一个工程哟"+i,1,"2014-1-12 23:42:3"+i,"这是一个工程进度哟"+i));
+            }
+            mAdapter=new processItemAdapter(getActivity(),itemBeans);
+            xListView.setAdapter(mAdapter);
+            //itemBeans=new ArrayList<processItemBean>();
+            //itemBean=new processItemBean()
+            //String[] arr1={"Fate","Stay","Night"};
+            //ArrayAdapter<String> adapter=new ArrayAdapter<String>(this.getActivity(),R.layout.testitem,R.id.testText,arr1);
+            //xListView.setAdapter(adapter);
         }
 
         if (mParam1.equalsIgnoreCase("未发布工程")){
@@ -185,7 +203,7 @@ public class myfactoryFragment extends Fragment implements XListView.IXListViewL
                 .get()
                 .url(URL + GONGCHENGAPI)
                 .build()
-                .execute(new Callback() {
+                .execute(new mCallBack<Object>(this){
                     @Override
                     public Object parseNetworkResponse(Response response) throws IOException {
 
@@ -204,7 +222,7 @@ public class myfactoryFragment extends Fragment implements XListView.IXListViewL
 
                     @Override
                     public void onResponse(Object response) {
-
+                        linkedTreeMap= (LinkedTreeMap) response;
                     }
                 });
 
@@ -224,5 +242,11 @@ public class myfactoryFragment extends Fragment implements XListView.IXListViewL
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
+    }
+    abstract class mCallBack<T> extends Callback<T>{
+       myfactoryFragment mfragment;
+        public mCallBack(myfactoryFragment mfragment){
+            this.mfragment=mfragment;
+        }
     }
 }

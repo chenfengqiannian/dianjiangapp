@@ -13,6 +13,8 @@ import com.zhy.http.okhttp.callback.Callback;
 
 import java.io.IOException;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by hyjipotou2 on 16/4/17.
@@ -21,6 +23,7 @@ public class DataFragment extends Fragment{
 
     public LinkedTreeMap<String,Object> user_datamap;
     public LinkedTreeMap<String,Object> process_datamap;
+    public List<dianjiangItemBean> dianjiangItemBeans=new ArrayList<dianjiangItemBean>();
 
     public static final String URL="http://192.168.191.1:8000";
     public static final String USERAPI="/userapi/";
