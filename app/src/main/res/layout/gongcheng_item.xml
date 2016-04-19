@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:fresco="http://schemas.android.com/apk/res-auto">
+    <RelativeLayout
+        android:background="#ffffff"
+        android:layout_width="match_parent"
+        android:layout_height="106dp">
+        <com.facebook.drawee.view.SimpleDraweeView
+            android:id="@+id/tupian"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="14dp"
+            android:layout_width="87dp"
+            android:layout_height="87dp" />
+        <TextView
+            android:singleLine="true"
+            android:layout_toRightOf="@+id/tupian"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="17dp"
+            android:id="@+id/name"
+            android:textSize="13sp"
+            android:textColor="@color/black_color"
+            android:layout_width="115dp"
+            android:layout_height="wrap_content"
+
+            android:text="XXXXXXXXXX"/>
+        <TextView
+            android:singleLine="true"
+            android:id="@+id/number"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="12dp"
+            android:layout_alignTop="@+id/name"
+            android:textSize="10sp"
+            android:textColor="@color/texthui_color"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:text="XXXXXXXXX"/>
+        
+        <TextView
+            android:layout_centerVertical="true"
+            android:layout_alignLeft="@+id/name"
+            android:id="@+id/miaoshu"
+            android:layout_width="236dp"
+            android:layout_height="22dp"
+            android:textSize="8sp"
+            android:textColor="@color/texthui_color"
+            android:text="XXXXXXXXXXXXXXXX"/>
+        
+        <ImageView
+            android:id="@+id/shenhe_img"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="17dp"
+            android:layout_alignLeft="@id/miaoshu"
+            android:layout_width="11dp"
+            android:layout_height="11dp" />
+        <TextView
+            android:layout_alignBottom="@+id/shenhe_img"
+            android:id="@+id/shenhe_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="11sp"
+            android:textColor="@color/blue_color"
+            android:layout_toRightOf="@id/shenhe_img"
+            android:layout_marginLeft="2dp"
+
+            android:text="XXXXXX"/>
+        
+        <TextView
+            android:id="@+id/date"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="12dp"
+            android:layout_alignBottom="@+id/shenhe_img"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/texthui_color"
+            android:textSize="8sp"
+
+            android:text="XXXXXXXX"/>
+    </RelativeLayout>
+    <RelativeLayout
+        android:background="#ffffff"
+        android:layout_width="match_parent"
+        android:layout_height="33dp">
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="2px"
+            android:background="@color/divider"
+            android:layout_alignParentTop="true"></View>
+        <TextView
+            android:id="@+id/jindu_"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="13sp"
+            android:textColor="@color/texthui_color"
+            android:text="工程进度"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="14dp"
+            />
+        <TextView
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@id/jindu_"
+            android:layout_marginLeft="16dp"
+            android:singleLine="true"
+            android:layout_width="295dp"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black_color"
+            android:textSize="13sp"
+
+            android:text="XXXXXXXXXX"/>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="2px"
+            android:background="@color/divider"
+            android:layout_alignParentBottom="true"></View>
+    </RelativeLayout>
+
+</LinearLayout>

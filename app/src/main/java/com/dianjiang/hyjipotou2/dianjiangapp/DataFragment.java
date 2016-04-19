@@ -66,9 +66,5 @@ public class DataFragment extends Fragment{
                         user_datamap = (LinkedTreeMap<String, Object>) response;
                     }
                 });
-
     }
-
-
-
 }
