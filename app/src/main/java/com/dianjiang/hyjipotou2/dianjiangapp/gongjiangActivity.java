@@ -1,6 +1,7 @@
 package com.dianjiang.hyjipotou2.dianjiangapp;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.content.res.Resources;
 import android.net.Uri;
@@ -80,7 +81,13 @@ void init()
 
 
     @Override
-    public void onFragmentInteraction(Uri uri) {
+    public void onFragmentInteraction(String uri) {
+        Intent intent=new Intent();
+        if(uri.equalsIgnoreCase("shezhi"))
+        {
+            intent.setClass(getApplicationContext(),shezhiActivity.class);
+            startActivity(intent);
+        }
 
     }
 
@@ -158,9 +165,9 @@ class  gongchengadapter extends FragmentPagerAdapter
     public gongchengadapter(FragmentManager fragmentManager)
     {
         super(fragmentManager);
-        myFragment1=gongjianglstFragment.newInstance("1","1");
-        myFragment2=gongjianglstFragment.newInstance("1","1");
-        myFragment3=gongjianglstFragment.newInstance("1","1");
+        myFragment1=gongjianglstFragment.newInstance("tab1","tab1");
+        myFragment2=gongjianglstFragment.newInstance("tab2","tab2");
+        myFragment3=gongjianglstFragment.newInstance("tab3","tab3");
 
     }
 

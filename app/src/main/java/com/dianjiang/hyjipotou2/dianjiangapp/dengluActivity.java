@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -49,9 +48,6 @@ public class dengluActivity extends Activity implements View.OnClickListener{
     private TextView zhuce;
     private TextView zhaohui;
 
-    SharedPreferences sharedPreferences;
-    SharedPreferences.Editor editor;
-
     public static String phone;
     private boolean state;
 
@@ -61,10 +57,6 @@ public class dengluActivity extends Activity implements View.OnClickListener{
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        sharedPreferences=getPreferences(MODE_PRIVATE);
-        editor=sharedPreferences.edit();
-
         setContentView(R.layout.zongdenglu);
 
         init();
@@ -93,14 +85,6 @@ public class dengluActivity extends Activity implements View.OnClickListener{
         denglu=(RelativeLayout)findViewById(R.id.zhanghao_button);
         zhuce=(TextView)findViewById(R.id.denglu_zhuce);
         zhaohui=(TextView)findViewById(R.id.denglu_wangji);
-
-        GetDenglu();
-        if ("".equals(phone)||"".equals(password)){
-            return;
-        }
-        else {
-            dengluHttp();
-        }
     }
 
     @Override
@@ -117,29 +101,9 @@ public class dengluActivity extends Activity implements View.OnClickListener{
 
         ProgressDialog.show(this, "登录中", "登录中,请稍后", false, true);
 
-        dengluHttp();
-    }
-
-    public void setdata(){
-        phone=shoujihao.getText().toString();
-        password=mytool.getMD5Str(mima.getText().toString());
-    }
-    public void SaveDenglu(){
-        editor.putString("zhanghao",phone);
-        editor.putString("mima",password);
-        editor.putBoolean("state",state);
-        editor.commit();
-    }
-    public void GetDenglu(){
-        phone=sharedPreferences.getString("zhanghao",null);
-        password=sharedPreferences.getString("mima",null);
-        state=sharedPreferences.getBoolean("state",true);
-    }
-
-    public void dengluHttp(){
         OkHttpUtils
                 .get()
-                .url(MainActivity.URL + MainActivity.USERAPI)
+                .url(URL + USERAPI)
                 .addParams("phone", dengluActivity.phone)
                 .build()
                 .execute(new Callback() {
@@ -161,7 +125,7 @@ public class dengluActivity extends Activity implements View.OnClickListener{
 
                     @Override
                     public void onResponse(Object response) {
-                        DataFragment fragment=DataFragment.getInstance();
+
                         fragment.user_datamap = (LinkedTreeMap<String, Object>) response;
                         state= (boolean) fragment.user_datamap.get("job");
                         Gson gson=new Gson();
@@ -171,7 +135,7 @@ public class dengluActivity extends Activity implements View.OnClickListener{
                         data.put("leixing", "0");
                         OkHttpUtils
                                 .postString()
-                                .url(MainActivity.URL + MainActivity.USERAPI)
+                                .url(URL + USERAPI)
                                 .content(gson.toJson(data))
                                 .build()
                                 .execute(new StringCallback() {
@@ -184,16 +148,85 @@ public class dengluActivity extends Activity implements View.OnClickListener{
                                     @Override
                                     public void onResponse(String response) {
                                         Toast.makeText(dengluActivity.this, "登录成功", Toast.LENGTH_LONG).show();
-                                        SaveDenglu();
                                         if (state == false) {
                                             Intent intent = new Intent(dengluActivity.this, MainActivity.class);
                                             startActivity(intent);
                                             finish();
+                                        }else
+                                        {
+                                            Intent intent = new Intent(dengluActivity.this, gongjiangActivity.class);
+                                            startActivity(intent);
+                                            finish();
+
+
                                         }
                                         Log.d("LOL", response);
                                     }
                                 });
                     }
                 });
+
+        /*Gson gson=new Gson();
+        HashMap<String,String> data =new HashMap<>();
+        data.put("phone", phone);
+        data.put("userpw", password);
+        data.put("leixing", "0");
+        OkHttpUtils
+                .postString()
+                .url(URL + USERAPI)
+                .content(gson.toJson(data))
+                .build()
+                .execute(new StringCallback() {
+                    @Override
+                    public void onError(Request request, Exception e) {
+                        Log.d("LOL", "Dwq");
+                        Toast.makeText(dengluActivity.this, "密码错误", Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void onResponse(String response) {
+                        Toast.makeText(dengluActivity.this, "登录成功", Toast.LENGTH_LONG).show();
+                        if (state==true){
+                            Intent intent = new Intent(dengluActivity.this, MainActivity.class);
+                            startActivity(intent);
+                        }
+                        Log.d("LOL", response);
+                    }
+                });
+
+       /* OkHttpUtils
+                .get()
+                .url(URL + USERAPI)
+                .addParams("phone", phone)
+                .build()
+                .execute(new Callback() {
+                    @Override
+                    public Object parseNetworkResponse(Response response) throws IOException {
+
+                        Log.i("LOL", "response");
+                        String string = response.body().string();
+
+                        Object ps = new Gson().fromJson(string, new TypeToken<Object>() {
+                        }.getType());
+                        return ps;
+                    }
+
+                    @Override
+                    public void onError(Request request, Exception e) {
+
+                    }
+
+                    @Override
+                    public void onResponse(Object response) {
+                        LinkedTreeMap<String, Object> arr1 = (LinkedTreeMap<String, Object>) response;
+                    }
+                });*/
+
+
+    }
+
+    public void setdata(){
+        phone=shoujihao.getText().toString();
+        password=mytool.getMD5Str(mima.getText().toString());
     }
 }

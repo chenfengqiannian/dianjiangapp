@@ -9,7 +9,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme.NoActionBar">
         <activity
-            android:name=".gongjiangActivity"
+            android:name=".StartActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
@@ -31,7 +31,8 @@
         <activity android:name=".suoyaofapiaoActivity"></activity>
         <activity android:name=".fabuActivity"></activity>
         <activity android:name=".GongjiangzhuceActivity"></activity>
-
+        <activity android:name=".dianjiangItemActivity"></activity>
+        <activity android:name=".tixianActivity"></activity>
         <!-- ATTENTION: This was auto-generated to add Google Play services to your project for
              App Indexing.  See https://g.co/AppIndexing/AndroidStudio for more information. -->
         <meta-data

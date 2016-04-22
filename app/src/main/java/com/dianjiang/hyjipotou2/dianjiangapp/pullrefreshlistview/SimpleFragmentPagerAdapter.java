@@ -14,15 +14,16 @@ import java.util.ArrayList;
  */
 public class SimpleFragmentPagerAdapter extends FragmentPagerAdapter{
 
-        final int PAGE_COUNT = 4;
-        private String tabTitles[] = new String[]{"已发布工程","未发布工程","招标中工程","已完工工程"};
-        private Context context;
-        private ArrayList<myfactoryFragment> fragmentlist;
+        protected int PAGE_COUNT ;
+        protected String tabTitles[] = new String[]{"已发布工程","未发布工程","招标中工程","已完工工程"};
+        protected Context context;
+        protected ArrayList<myfactoryFragment> fragmentlist;
 
         public SimpleFragmentPagerAdapter(FragmentManager fm,Context context,ArrayList<myfactoryFragment> fragmentlist) {
             super(fm);
             this.context = context;
             this.fragmentlist=fragmentlist;
+            this.PAGE_COUNT=tabTitles.length;
         }
 
         @Override

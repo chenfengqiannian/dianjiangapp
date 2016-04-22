@@ -101,46 +101,11 @@ public class myfactoryFragment extends Fragment implements XListView.IXListViewL
     private void initViews(){
         xListView=(XListView)view.findViewById(R.id.gongcheng_list);
 
+        setdata();
 
-        if (mParam1.equalsIgnoreCase("已发布工程")){
-            itemBeans=new ArrayList<processItemBean>();
-            int count;  //获取数据个数
-            count=10;
-
-            Uri uri;
-            uri=Uri.fromFile(new File("/storage/sdcard1/tieba/miaoniang.jpg"));
-            for (int i=0;i<count;i++){
-                itemBeans.add(0,new processItemBean(uri,"我的工程"+i,"1234566"+i,"这是一个工程哟"+i,1,"2014-1-12 23:42:3"+i,"这是一个工程进度哟"+i));
-            }
-            mAdapter=new processItemAdapter(getActivity(),itemBeans);
-            xListView.setAdapter(mAdapter);
-            //itemBeans=new ArrayList<processItemBean>();
-            //itemBean=new processItemBean()
-            //String[] arr1={"Fate","Stay","Night"};
-            //ArrayAdapter<String> adapter=new ArrayAdapter<String>(this.getActivity(),R.layout.testitem,R.id.testText,arr1);
-            //xListView.setAdapter(adapter);
-        }
-
-        if (mParam1.equalsIgnoreCase("未发布工程")){
-            String[] arr1={"Fate","Zero"};
-            ArrayAdapter<String> adapter=new ArrayAdapter<String>(this.getActivity(),R.layout.testitem,R.id.testText,arr1);
-            xListView.setAdapter(adapter);
-        }
-
-        if (mParam1.equalsIgnoreCase("招标中工程")){
-            String[] arr1={"ffff","ccccc"};
-            ArrayAdapter<String> adapter=new ArrayAdapter<String>(this.getActivity(),R.layout.testitem,R.id.testText,arr1);
-            xListView.setAdapter(adapter);
-        }
-
-        if (mParam1.equalsIgnoreCase("已完工工程")){
-            String[] arr1={"rrrrr","nnnnnnnqw"};
-            ArrayAdapter<String> adapter=new ArrayAdapter<String>(this.getActivity(),R.layout.testitem,R.id.testText,arr1);
-            xListView.setAdapter(adapter);
-        }
 
         xListView.setXListViewListener(this);
-        mHandler = new Handler();
+
 
 
     }
@@ -168,12 +133,7 @@ public class myfactoryFragment extends Fragment implements XListView.IXListViewL
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof OnFragmentInteractionListener) {
-            mListener = (OnFragmentInteractionListener) context;
-        } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement OnFragmentInteractionListener");
-        }
+
     }
 
     @Override
@@ -201,7 +161,7 @@ public class myfactoryFragment extends Fragment implements XListView.IXListViewL
         }, 2000);*/
         OkHttpUtils
                 .get()
-                .url(URL + GONGCHENGAPI)
+                .url(URL + USERAPI)
                 .build()
                 .execute(new mCallBack<Object>(this){
                     @Override
@@ -249,4 +209,94 @@ public class myfactoryFragment extends Fragment implements XListView.IXListViewL
             this.mfragment=mfragment;
         }
     }
+    public void setdata()
+
+    {   int zhuangtai[]=new int[2];
+        DataFragment data=DataFragment.getInstance();
+        ArrayList<LinkedTreeMap<String,Object>> gongcheng_set=(ArrayList<LinkedTreeMap<String,Object>>)data.user_datamap.get("gongcheng_set");
+        itemBeans=new ArrayList<processItemBean>();
+if(mParam1.equalsIgnoreCase("招标工程") || mParam1.equalsIgnoreCase("指定工程"))
+
+{
+
+
+
+}  else {
+    if (mParam1.equalsIgnoreCase("已发布工程")) {
+        zhuangtai[0] = 0;
+        zhuangtai[1] = 6;
+
+
+        //itemBeans=new ArrayList<processItemBean>();
+        //itemBean=new processItemBean()
+        //String[] arr1={"Fate","Stay","Night"};
+        //ArrayAdapter<String> adapter=new ArrayAdapter<String>(this.getActivity(),R.layout.testitem,R.id.testText,arr1);
+        //xListView.setAdapter(adapter);
+    }
+
+    if (mParam1.equalsIgnoreCase("未发布工程")) {
+
+    }
+
+    if (mParam1.equalsIgnoreCase("招标中工程")) {
+        zhuangtai[0] = 2;
+        zhuangtai[1] = 2;
+    }
+
+    if (mParam1.equalsIgnoreCase("已完工工程")) {
+        zhuangtai[0] = 6;
+        zhuangtai[1] = 6;
+    }
+    if (mParam1.equalsIgnoreCase("招标成功"))
+
+    {
+        zhuangtai[0] = 3;
+        zhuangtai[1] = 3;
+    }
+    if (mParam1.equalsIgnoreCase("进行中"))
+
+    {
+        zhuangtai[0] = 4;
+        zhuangtai[1] = 4;
+    }
+
+    if (mParam1.equalsIgnoreCase("已经结款"))
+
+    {
+        zhuangtai[0] = 6;
+        zhuangtai[1] = 6;
+    }
+
+    if (mParam1.equalsIgnoreCase("未结款"))
+
+    {
+        zhuangtai[0] = 5;
+        zhuangtai[1] = 5;
+    }
+
+    for(LinkedTreeMap<String,Object> object:gongcheng_set)
+    {
+        if((int)(double)object.get("zhuangtai")>=zhuangtai[0]||(int)(double)object.get("zhuangtai")<=zhuangtai[0])
+        {
+
+            //ArrayList<String> touxinglist=(ArrayList<String>)object.get("tupian");
+           // itemBeans.add(0,new processItemBean(mytool.UriFromSenge(touxinglist.get(0)),(String)object.get("biaoti"),(String)object.get("id"),(String)object.get("miaoshu"),(int)(double)object.get("zhuangtai"),(String)object.get("autotime"),"这是一个工程进度哟"));
+
+
+        }
+    }
+
+    //itemBeans.add(0,new processItemBean(uri,"我的工程"+i,"1234566"+i,"这是一个工程哟"+i,1,"2014-1-12 23:42:3"+i,"这是一个工程进度哟"+i));
+
+}
+
+
+
+
+
+        mAdapter=new processItemAdapter(getActivity(),itemBeans);
+        xListView.setAdapter(mAdapter);
+
+    }
+
 }
