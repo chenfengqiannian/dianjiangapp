@@ -26,7 +26,8 @@
             android:padding="15dp"
             android:layout_height="wrap_content"
             android:src="@drawable/fanhui"
-            android:scaleType="fitXY"/>
+            android:scaleType="fitXY"
+            android:id="@+id/shezhi_fanhui" />
 
         <View
             android:layout_width="match_parent"
@@ -181,4 +182,35 @@
             android:layout_alignParentBottom="true"
             android:background="@color/divider" />
     </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/tuichu"
+        android:background="#ffffff"
+        android:layout_width="match_parent"
+        android:layout_height="39dp">
+        <TextView
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="16dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="13sp"
+            android:text="退出当前账号"
+            android:textColor="@color/black_color"/>
+
+        <ImageView
+            android:layout_centerVertical="true"
+            android:layout_width="8dp"
+            android:layout_height="13dp"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="14dp"
+            android:src="@drawable/jianjin"/>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="2px"
+            android:layout_alignParentBottom="true"
+            android:background="@color/divider" />
+    </RelativeLayout>
+
+
 </LinearLayout>

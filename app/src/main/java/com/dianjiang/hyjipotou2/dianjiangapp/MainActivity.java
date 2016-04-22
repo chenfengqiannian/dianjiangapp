@@ -6,12 +6,18 @@ import android.content.res.ColorStateList;
 import android.content.res.Resources;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
+import android.support.v4.widget.DrawerLayout;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -44,6 +50,18 @@ public class MainActivity extends FragmentActivity implements MyFragment3.OnFrag
     private Button fabu;
     private RelativeLayout topbar;
     private RelativeLayout gpsquyu;
+    private DrawerLayout right_menu;
+    private RelativeLayout right_content;
+    private ImageButton option_fanhui;
+    private Button option_queren;
+
+    //Right Menu
+    private RelativeLayout gongzhong;
+    private RelativeLayout diqu;
+    private String shaixuantext;
+    private EditText biaoqian;
+    private TextView gongzhongtext;
+    private TextView diqutext;
 
     public static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
     public static final String URL="http://192.168.191.1:8000";
@@ -59,75 +77,6 @@ public class MainActivity extends FragmentActivity implements MyFragment3.OnFrag
         Fresco.initialize(MainActivity.this);
 
         setContentView(R.layout.shouye_activity);
-
-        Log.d("LOL",getApplicationContext().toString());
-
-        /*OkHttpClient client1 = new OkHttpClient();
-        Gson gson=new Gson();
-        HashMap<String,String> data =new HashMap<>();
-        data.put("phone", "1");
-        data.put("leixing","0");
-        OkHttpUtils
-                .postString()
-                .url(URL + PROCESSAPI)
-                .content(gson.toJson(data))
-                .build()
-                .execute(new StringCallback() {
-                    @Override
-                    public void onError(Request request, Exception e) {
-                        Log.d("LOL", "Dwq");
-                    }
-
-                    @Override
-                    public void onResponse(String response) {
-                        Log.d("LOL", response);
-                    }
-                });
-
-        OkHttpClient client = new OkHttpClient();
-        Gson gson1=new Gson();
-        HashMap<String,String> data1 =new HashMap<>();
-        data1.put("phone", "1");
-        OkHttpUtils
-                .postString()
-                .url(URL + USERAPI)
-                .content(gson1.toJson(data1))
-                .build()
-                .execute(new StringCallback() {
-                    @Override
-                    public void onError(Request request, Exception e) {
-                        Log.d("LOL", "Dwq");
-                    }
-
-                    @Override
-                    public void onResponse(String response) {
-                        Log.d("LOL", response);
-                    }
-                });
-
-        File file=new File("/storage/sdcard1/Download/d1fafd2bb2aff103394fcef4ef54c313.jpg");
-        if (file.isFile()){
-            Log.d("LOL","6666");
-        }
-        OkHttpUtils
-                .post()
-                .addFile("formimage", "d1fafd2.jpg", file)
-                .url(URL+IMAGEAPI)
-                .addParams("id","1")
-                .addParams("shangchuan","user,touxiang")
-                .build()
-                .execute(new StringCallback() {
-                    @Override
-                    public void onError(Request request, Exception e) {
-                        Log.d("LOL","wori");
-                    }
-
-                    @Override
-                    public void onResponse(String response) {
-
-                    }
-                });*/
-
 
 
         //实例化
@@ -148,12 +97,43 @@ public class MainActivity extends FragmentActivity implements MyFragment3.OnFrag
         imageView3=(ImageView)findViewById(R.id.img3);
         imageView4=(ImageView)findViewById(R.id.img4);
 
+        RightMenu_init();
+
         gpsquyu= (RelativeLayout) findViewById(R.id.gpsquyu);
         sousuo=(ImageView)findViewById(R.id.sousuo);
         fabu=(Button)findViewById(R.id.fabu);
         topbar=(RelativeLayout)findViewById(R.id.top_bar);
 
         pager=(NoSlideViewPager)findViewById(R.id.pager);
+        right_menu=(DrawerLayout)findViewById(R.id.shaixuanlayout);
+        right_content=(RelativeLayout)findViewById(R.id.right_content);
+        option_fanhui= (ImageButton) findViewById(R.id.option_fanhui);
+        option_queren= (Button) findViewById(R.id.option_queren);
+
+        DataFragment fragment=DataFragment.getInstance();
+        //接收消息
+        fragment.mhandler=new Handler(){
+            @Override
+            public void handleMessage(Message msg) {
+                if (msg.what==0x2333){
+                    right_menu.openDrawer(right_content);
+                }
+            }
+        };
+        option_fanhui.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                right_menu.closeDrawer(right_content);
+            }
+        });
+
+        //确认筛选
+        option_queren.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
 
 
         fabu.setOnClickListener(new View.OnClickListener() {
@@ -283,6 +263,19 @@ public class MainActivity extends FragmentActivity implements MyFragment3.OnFrag
 
             }
         });
+
+    }
+
+    public void RightMenu_init(){
+        biaoqian=(EditText)findViewById(R.id.biaoqiantext);
+        gongzhong=(RelativeLayout)findViewById(R.id.gongzhong);
+        diqu=(RelativeLayout)findViewById(R.id.diqu);
+        gongzhongtext=(TextView)findViewById(R.id.gongzhong_text);
+        diqutext=(TextView)findViewById(R.id.diqutext);
+    }
+
+    public void setRightMenuListener(){
+
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////

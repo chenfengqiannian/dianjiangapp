@@ -18,12 +18,16 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
+import com.squareup.okhttp.Callback;
+import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
+import com.squareup.okhttp.Response;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.builder.PostFormBuilder;
 import com.zhy.http.okhttp.callback.StringCallback;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -133,7 +137,8 @@ public class GongjiangzhuceActivity extends Activity {
                     Toast.makeText(GongjiangzhuceActivity.this,"账户信息不能为空",Toast.LENGTH_LONG).show();
                     return;}
 
-                PostFormBuilder buider =OkHttpUtils.post();
+
+               PostFormBuilder buider =OkHttpUtils.post();
                 for(int i=0;i<zige_files.size();i++){
                     buider.addFile(i+"ffff",zige_files.get(i).getName(),zige_files.get(i));
                 }
@@ -150,7 +155,7 @@ public class GongjiangzhuceActivity extends Activity {
 
                             @Override
                             public void onResponse(String response) {
-
+                                Log.i("LOL","zige");
                             }
                         });
 
@@ -171,7 +176,7 @@ public class GongjiangzhuceActivity extends Activity {
 
                             @Override
                             public void onResponse(String response) {
-
+                                Log.i("LOL","shenfen");
                             }
                         });
 
@@ -189,30 +194,34 @@ public class GongjiangzhuceActivity extends Activity {
 
                             @Override
                             public void onResponse(String response) {
+                                Log.d("LOL","touxiang");
                             }
                         });
 
-                Map<String,Object> map=new HashMap<String, Object>();
-                map.put("shenfengzheng",idcard);
-                map.put("xingming",xingming);
-
-               OkHttpUtils.postString()
+                OkHttpClient client = new OkHttpClient();
+                Gson gson1=new Gson();
+                HashMap<String,Object> data1 =new HashMap<>();
+                data1.put("shenfengzheng",idcard);
+                data1.put("xingming",name);
+                data1.put("phone",zhuceActivity.phonenow);
+                OkHttpUtils
+                        .postString()
                         .url(MainActivity.URL + MainActivity.USERAPI)
-                        .content(new Gson().toJson(map))
+                        .content(gson1.toJson(data1))
                         .build()
                         .execute(new StringCallback() {
                             @Override
                             public void onError(Request request, Exception e) {
-                                Log.d("LOL", "wori_touxiang");
+                                Log.i("LOL", "Dwq");
+                                Toast.makeText(GongjiangzhuceActivity.this,"发生未知错误",Toast.LENGTH_LONG).show();
                             }
 
                             @Override
                             public void onResponse(String response) {
-                                Toast.makeText(GongjiangzhuceActivity.this, "注册成功!", Toast.LENGTH_LONG);
-                                //DataFragment fragment=DataFragment.getInstance();
-                               // fragment.getData();
+                                Toast.makeText(GongjiangzhuceActivity.this, "注册成功!", Toast.LENGTH_LONG).show();
                                 Intent intent = new Intent(GongjiangzhuceActivity.this, dengluActivity.class);
                                 startActivity(intent);
+                                finish();
                             }
                         });
 

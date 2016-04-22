@@ -47,14 +47,6 @@ public class fabuFragment extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
 
-    public static final int TOUXIANG_CAMERA=1000;
-    public static final int TOUXIANG_PHOTO=1001;
-    public static final int TOU_PHOTO_REQUEST_CUT=233;
-
-    public static final int ZIGE_CAMERA=900;
-    public static final int ZIGE_PHOTO=901;
-    public static final int ZIGE_PHOTO_REQUEST_CUT=133;
-
     public static final int SHENFEN_CAMERA=800;
     public static final int SHENFEN_PHOTO=801;
     public static final int SHENFEN_PHOTO_REQUEST_CUT=311;
@@ -117,7 +109,6 @@ public class fabuFragment extends Fragment {
 
     private OnFragmentInteractionListener mListener;
 
-    private Map<String,Object> datamap;
     private List<Map<String,Object>> datalist;
 
 
@@ -241,6 +232,16 @@ public class fabuFragment extends Fragment {
         yulan_shichang=(TextView)view.findViewById(R.id.fabu3_shichang);
         yulan_price=(TextView)view.findViewById(R.id.fabu3_choulao);
         yulan_beizhu=(TextView)view.findViewById(R.id.fabu3_beizhu);
+
+        DataFragment dataFragment=DataFragment.getInstance();
+        //此处获取前两个FRAGMENT的信息
+        yulan_gongchengname.setText( dataFragment.fabu_datamap.get("biaoti").toString());
+        yulan_gongchengmiaoshu.setText(dataFragment.fabu_datamap.get("miaoshu").toString());
+        yulan_dizhi.setText(dataFragment.fabu_datamap.get("xiangxidizhi").toString());
+        yulan_gongzhong.setText(dataFragment.fabu_datamap.get("gongzhong").toString());
+        yulan_yaoqiu.setText(dataFragment.fabu_datamap.get("yaoqiu").toString());
+        yulan_price.setText(dataFragment.fabu_datamap.get("choulao").toString());
+        yulan_beizhu.setText(dataFragment.fabu_datamap.get("beizhu").toString());
     }
 
     public void simpleListOption(String[] str1, final int camera, final int photo){
@@ -312,6 +313,7 @@ public class fabuFragment extends Fragment {
         intent.putExtra("outputFormat", "JPEG");// 图片格式
         intent.putExtra("noFaceDetection", true);// 取消人脸识别
         intent.putExtra("return-data", true);
+        files.add(mytool.getFileByUri(uri,getActivity()));
         // 开启一个带有返回值的Activity，请求码为PHOTO_REQUEST_CUT
         startActivityForResult(intent,f);
     }
@@ -343,28 +345,27 @@ public class fabuFragment extends Fragment {
     @Override
     public void onStop() {
         super.onStop();
+        DataFragment dataFragment=DataFragment.getInstance();
         Log.i("LOL","fragmentStop");
         if (mParam1.equalsIgnoreCase("工程信息")){
             //此处提取回传给Activity的工程信息
-            datamap=new HashMap<>();
-            datamap.put("biaoti",xinxi_biaoti.getText().toString());
-            datamap.put("miaoshu",xinxi_miaoshu.getText().toString());
-            datamap.put("xiangxidizhi",xinxi_xiangxidizhi.getText().toString());
-            datamap.put("tupian",files);
+            dataFragment.fabu_datamap.put("biaoti", xinxi_biaoti.getText().toString());
+            dataFragment.fabu_datamap.put("miaoshu",xinxi_miaoshu.getText().toString());
+            dataFragment.fabu_datamap.put("xiangxidizhi",xinxi_xiangxidizhi.getText().toString());
+            dataFragment.fabu_datamap.put("tupian", files);
 
-            mListener.onFragmentInteraction(datamap);
         }
         else if (mParam1.equalsIgnoreCase("接包要求")){
             //此处提取回传给Activity的接包信息
-            datamap.put("gongzhong",jiebao_gongzhongtext.getText().toString());
-            datamap.put("yaoqiu",jiebao_yaoqiu.getText().toString());
-            datamap.put("choulao",jiebao_price.getText().toString());
-            datamap.put("fukuan",jiebao_fukuantext.getText().toString());
-            datamap.put("beizhu",jiebao_beizhu.getText().toString());
+            dataFragment.fabu_datamap.put("gongzhong",jiebao_gongzhongtext.getText().toString());
+            dataFragment.fabu_datamap.put("yaoqiu",jiebao_yaoqiu.getText().toString());
+            dataFragment.fabu_datamap.put("choulao",jiebao_price.getText().toString());
+            dataFragment.fabu_datamap.put("fukuan",jiebao_fukuantext.getText().toString());
+            dataFragment.fabu_datamap.put("beizhu",jiebao_beizhu.getText().toString());
 
         }
         else if (mParam1.equalsIgnoreCase("预览发布")){
-            //此处获取前两个信息
+
         }
     }
 
@@ -405,9 +406,7 @@ public class fabuFragment extends Fragment {
                             shenfen_state=SECONDIMG;
                             if (shenfen_count1>=2){
                                 shenfen_state=shenfen_hold;
-                                files.set(0,tempFile);
-                            }else {
-                            files.add(tempFile);}
+                            }
                             break;
                         case SECONDIMG:
                             Bitmap bitmap0=data.getParcelableExtra("data");
@@ -417,9 +416,7 @@ public class fabuFragment extends Fragment {
                             shenfen_count2++;
                             if (shenfen_count2>=2){
                                 shenfen_state=shenfen_hold;
-                                files.set(1,tempFile);
-                            }else {
-                            files.add(tempFile);}
+                            }
                             break;
                     }
                 }

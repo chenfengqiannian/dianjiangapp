@@ -2,6 +2,7 @@ package com.dianjiang.hyjipotou2.dianjiangapp;
 
 import android.content.ContentResolver;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -25,12 +26,17 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
  * Created by user on 2015/12/8.
  */
 public class mytool {
+
+    public static final String URL="http://192.168.191.1:8000";
+    public static final String USERAPI="/userapi/";
+    public static final String GONGCHENGAPI="/gongchengapi/";
 
     //字符串转换为MD5
     public  static String getMD5Str(String str) {
@@ -63,6 +69,10 @@ public class mytool {
         return md5StrBuff.toString();
     }
 
+    public static Uri UriFromSenge(String string){
+        Uri uri=Uri.parse(URL+"/media/"+string);
+        return uri;
+    }
 
     //
     public static File getFileByUri(Uri uri,Context mcontext) {
@@ -109,8 +119,6 @@ public class mytool {
         }
         return null;
     }
-
-
 
 
     public static Bitmap scaleBitmap(Bitmap src,float destSize) {

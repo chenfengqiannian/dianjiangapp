@@ -222,7 +222,7 @@ public class myfactoryFragment extends Fragment implements XListView.IXListViewL
 
                     @Override
                     public void onResponse(Object response) {
-                        linkedTreeMap= (LinkedTreeMap) response;
+
                     }
                 });
 

@@ -12,14 +12,17 @@ public class dianjiangItemBean {
     public Uri imageuri;
     public String name;
     public String gongzhong;
-    public String level;
-    public String price;
+    public Double level;
+    public Double price;
+    public String phone;
 
-    public dianjiangItemBean(Uri imageuri,String name,String gongzhong,String level,String price){
+    public dianjiangItemBean(Uri imageuri,String name,String gongzhong,Double level,Double price,String phone){
+
         this.imageuri=imageuri;
         this.name=name;
         this.gongzhong=gongzhong;
         this.level=level;
         this.price=price;
+        this.phone=phone;
     }
 }

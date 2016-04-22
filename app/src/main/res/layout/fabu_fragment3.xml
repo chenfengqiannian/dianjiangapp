@@ -47,8 +47,7 @@
             android:layout_height="wrap_content"
             android:textSize="12sp"
             android:textColor="@color/black_color"
-
-            android:text="XXXXXXXXXXXXXX"/>
+            />
     </RelativeLayout>
 
     <View
@@ -79,8 +78,7 @@
             android:layout_height="wrap_content"
             android:textSize="12sp"
             android:textColor="@color/black_color"
-
-            android:text="XXXXXXXXXXXXXX"/>
+            />
     </RelativeLayout>
 
     <View
@@ -111,8 +109,7 @@
             android:layout_height="58dp"
             android:textSize="12sp"
             android:textColor="@color/black_color"
-
-            android:text="XXXXXXXXXXXXXX"/>
+            />
     </RelativeLayout>
 
     <View
@@ -143,8 +140,7 @@
             android:layout_height="wrap_content"
             android:textSize="12sp"
             android:textColor="@color/black_color"
-
-            android:text="XXXXXXXXXXXXXX"/>
+            />
     </RelativeLayout>
 
     <View
@@ -203,8 +199,7 @@
             android:layout_height="wrap_content"
             android:textSize="12sp"
             android:textColor="@color/black_color"
-
-            android:text="XXXXXXXXXXXXXX"/>
+            />
     </RelativeLayout>
 
     <View
@@ -235,8 +230,7 @@
             android:layout_height="58dp"
             android:textSize="12sp"
             android:textColor="@color/black_color"
-
-            android:text="XXXXXXXXXXXXXX"/>
+            />
     </RelativeLayout>
 
     <View
@@ -267,8 +261,7 @@
             android:layout_height="wrap_content"
             android:textSize="12sp"
             android:textColor="@color/black_color"
-
-            android:text="XXXXXXXXXXXXXX"/>
+            />
     </RelativeLayout>
 
     <View
@@ -299,8 +292,7 @@
             android:layout_height="wrap_content"
             android:textSize="12sp"
             android:textColor="@color/black_color"
-
-            android:text="XXXXXXXXXXXXXX"/>
+            />
         <TextView
             android:layout_width="wrap_content"
             android:layout_alignBottom="@+id/fabu3_choulao_"
@@ -340,8 +332,7 @@
             android:layout_height="58dp"
             android:textSize="12sp"
             android:textColor="@color/black_color"
-
-            android:text="XXXXXXXXXXXXXX"/>
+            />
     </RelativeLayout>
 
     <View

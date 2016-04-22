@@ -28,8 +28,8 @@ public class zhuceActivity extends Activity {
     public static final String URL="http://192.168.191.1:8000";
     public static final String USERAPI="/userapi/";
 
-    public static final boolean GONGJIANG=false;
-    public static final boolean KEHU=true;
+    public static final boolean GONGJIANG=true;
+    public static final boolean KEHU=false;
     public static final int TOAST_TIME=Toast.LENGTH_LONG;
 
     private EditText shoujihao;
@@ -120,7 +120,6 @@ public class zhuceActivity extends Activity {
     }
 
     public void setZhuce(){
-
         OkHttpClient client = new OkHttpClient();
         Gson gson1=new Gson();
         HashMap<String,Object> data1 =new HashMap<>();
@@ -145,17 +144,19 @@ public class zhuceActivity extends Activity {
                     public void onResponse(String response) {
                         if (state==KEHU){
                             Toast.makeText(zhuceActivity.this,"注册成功",Toast.LENGTH_LONG).show();
-                            dengluActivity.phone=phonenow;
+                            //dengluActivity.phone=phonenow;
                             //DataFragment fragment=DataFragment.getInstance();
                             //fragment.getData();
                             Intent intent=new Intent(zhuceActivity.this,dengluActivity.class);
                             startActivity(intent);
+                            finish();
 
                         }
                         if (state==GONGJIANG){
                             Toast.makeText(zhuceActivity.this,"请继续完善注册信息",Toast.LENGTH_LONG).show();
                             Intent intent=new Intent(zhuceActivity.this,GongjiangzhuceActivity.class);
                             startActivity(intent);
+                            finish();
                         }
                     }
                 });

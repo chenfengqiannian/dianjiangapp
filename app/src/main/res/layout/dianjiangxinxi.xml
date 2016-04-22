@@ -27,7 +27,8 @@
             android:padding="15dp"
             android:layout_height="wrap_content"
             android:src="@drawable/fanhui"
-            android:scaleType="fitXY"/>
+            android:scaleType="fitXY"
+            android:id="@+id/dianjiang_fanhui" />
 
         <View
             android:layout_width="match_parent"
@@ -61,8 +62,7 @@
             android:layout_height="wrap_content"
             android:textSize="15sp"
             android:textColor="@color/black_color"
-
-            android:text="XXXXXXXX"/>
+            />
 
         <TextView
             android:id="@+id/dianjiang_gongzhong"
@@ -72,8 +72,7 @@
             android:textSize="15sp"
             android:textColor="@color/divider"
             android:layout_centerVertical="true"
-
-            android:text="XXXXXXXX"/>
+            />
 
         <TextView
             android:id="@+id/dianjiang_rixin_yuan"
@@ -92,8 +91,6 @@
             android:layout_toRightOf="@+id/dianjiang_rixin_yuan"
             android:textSize="20sp"
             android:textColor="@color/main_color"
-
-            android:text="1000"
             />
         <TextView
             android:layout_width="wrap_content"
@@ -112,9 +109,7 @@
             android:layout_alignParentRight="true"
             android:layout_marginRight="15sp"
             android:textColor="#db7d02"
-            android:textSize="15sp"
-
-            android:text="工匠一级"/>
+            android:textSize="15sp" />
 
         <RatingBar
             android:isIndicator="true"
@@ -126,7 +121,8 @@
             android:layout_alignBottom="@+id/dianjiang_touxiang"
             android:layout_alignRight="@+id/dianjiang_dengji"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            />
     </RelativeLayout>
     
     <View
@@ -161,8 +157,7 @@
             android:layout_toRightOf="@id/diangjiang_gongsi_"
             android:layout_marginTop="13dp"
             android:layout_marginLeft="20dp"
-
-            android:text="XXXXXXXX"/>
+            />
 
         <TextView
             android:id="@+id/dianjiang_gongzuodi_"
@@ -182,8 +177,7 @@
             android:textColor="@color/black_color"
             android:layout_alignBottom="@+id/dianjiang_gongzuodi_"
             android:layout_alignLeft="@+id/dianjiang_gongsi"
-
-            android:text="XXXXXXXXX"/>
+            />
 
         <TextView
             android:id="@+id/dianjiang_biaoqian_"
@@ -203,8 +197,7 @@
             android:textColor="@color/black_color"
             android:layout_alignBottom="@+id/dianjiang_biaoqian_"
             android:layout_alignLeft="@+id/dianjiang_gongsi"
-
-            android:text="XXXXXXXXX"/>
+            />
     </RelativeLayout>
 
     <View
@@ -230,12 +223,21 @@
             android:text="技能证书    "
             android:layout_marginLeft="20dp"
             android:layout_marginTop="13dp"/>
-        <ImageView
+        <com.facebook.drawee.view.SimpleDraweeView
             android:layout_centerVertical="true"
-            android:id="@+id/dianjiang_zheng"
-            android:layout_width="72dp"
-            android:layout_height="46dp"
+            android:id="@+id/dianjiang_zheng1"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
             android:layout_marginLeft="103dp"/>
+
+        <com.facebook.drawee.view.SimpleDraweeView
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_toRightOf="@+id/dianjiang_zheng1"
+            android:id="@+id/dianjiang_zheng2"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"
+            />
     </RelativeLayout>
 
     <View
@@ -270,8 +272,7 @@
             android:layout_alignTop="@+id/ziwojieshao_"
             android:layout_toRightOf="@+id/ziwojieshao_"
             android:layout_marginLeft="20dp"
-            
-            android:text="XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"/>
+            />
 
     </RelativeLayout>
     

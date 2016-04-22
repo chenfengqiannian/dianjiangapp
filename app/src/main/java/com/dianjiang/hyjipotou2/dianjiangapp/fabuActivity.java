@@ -1,5 +1,6 @@
 package com.dianjiang.hyjipotou2.dianjiangapp;
 
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.PersistableBundle;
@@ -7,6 +8,7 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.view.View;
+import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -28,12 +30,16 @@ public class fabuActivity extends FragmentActivity implements fabuFragment.OnFra
     private FragmentManager fragmentManager;
     private int state=1;
 
+    SharedPreferences preferences;
+    SharedPreferences.Editor editor;
+
     //DATA
     private Map<String,Object> datamap=new HashMap<>();
     private List<String> list;
 
     private TextView top_bar;
     private TextView button_text;
+    private ImageButton fanhui;
 
     private final int FIRST=1;
     private final int SECOND=2;
@@ -50,16 +56,28 @@ public class fabuActivity extends FragmentActivity implements fabuFragment.OnFra
         init();
         fragmentinit();
         setNextListener();
+
+        fanhui.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                finish();
+            }
+        });
     }
 
     public void init(){
         xiayibu= (RelativeLayout) findViewById(R.id.fabu_xiayibu);
         top_bar=(TextView)findViewById(R.id.fabu2_top_text);
         button_text=(TextView)findViewById(R.id.button_text);
+        fanhui= (ImageButton) findViewById(R.id.fanhui);
 
         gongchengxinxi=fabuFragment.newInstance(PAGE1);
         jiebaoyaoqiu=fabuFragment.newInstance(PAGE2);
         yulanfabu=fabuFragment.newInstance(PAGE3);
+
+        preferences=this.getSharedPreferences("fabuMessage", MODE_PRIVATE);
+        editor=preferences.edit();
     }
     public void fragmentinit(){
 
@@ -94,26 +112,6 @@ public class fabuActivity extends FragmentActivity implements fabuFragment.OnFra
 
     @Override
     public void onFragmentInteraction(Map<String,Object> map) {
-        if (state==SECOND){
-            list=new ArrayList<>();
-            list.add("biaoti");
-            list.add("miaoshu");
-            list.add("xiangxidizhi");
-            list.add("tupian");
-            for (int count=0;count<list.size();count++){
-                datamap.put(list.get(count),map.get(list.get(count)));
-            }
-        }
-        if (state==THIRD){
-            list=new ArrayList<>();
-            list.add("gongzhong");
-            list.add("yaoqiu");
-            list.add("choulao");
-            list.add("beizhu");
-            list.add("fukuan");
-            for (int count=0;count<list.size();count++){
-                datamap.put(list.get(count),map.get(list.get(count)));
-            }
-        }
+
     }
 }

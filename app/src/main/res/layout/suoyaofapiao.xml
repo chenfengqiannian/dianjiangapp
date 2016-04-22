@@ -25,7 +25,8 @@
             android:padding="15dp"
             android:layout_height="wrap_content"
             android:src="@drawable/fanhui"
-            android:scaleType="fitXY"/>
+            android:scaleType="fitXY"
+            android:id="@+id/suoyaofanhui" />
 
         <View
             android:layout_width="match_parent"

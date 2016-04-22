@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.os.PersistableBundle;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -19,6 +20,8 @@ import org.w3c.dom.ProcessingInstruction;
  * Created by hyjipotou2 on 16/4/8.
  */
 public class suoyaofapiaoActivity extends Activity {
+
+    private ImageButton fanhui;
 
     private RelativeLayout fapiaomingcheng;
     private RelativeLayout fapiaotaitou;
@@ -51,6 +54,8 @@ public class suoyaofapiaoActivity extends Activity {
     }
 
     public void init(){
+        fanhui=(ImageButton)findViewById(R.id.suoyaofanhui);
+
         fapiaomingcheng= (RelativeLayout) findViewById(R.id.suoyaofapiao_name);
         fapiaotaitou=(RelativeLayout)findViewById(R.id.suoyaofapiao_taitou);
         youzhengbianma=(RelativeLayout)findViewById(R.id.suoyaofapiao_bianma);
@@ -123,6 +128,12 @@ public class suoyaofapiaoActivity extends Activity {
             }
         });
 
+        fanhui.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
     }
 
     public void setTextDialog(final TextView textView){
