@@ -197,17 +197,17 @@
             android:layout_height="wrap_content" />
 
         <EditText
+            android:gravity="right"
             android:id="@+id/fabu2_price"
             android:layout_toLeftOf="@+id/fabu2_danwei"
-            android:layout_width="wrap_content"
+            android:layout_width="200dp"
             android:layout_height="wrap_content"
             android:textColor="#116ee1"
             android:layout_marginRight="8dp"
             android:textSize="17sp"
             android:layout_centerVertical="true"
             android:background="#ffffff"
-
-            android:text="5600"/>
+            />
         <TextView
             android:id="@+id/fabu2_danwei"
             android:text="元"

@@ -1,10 +1,12 @@
 package com.dianjiang.hyjipotou2.dianjiangapp;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.PersistableBundle;
 import android.view.View;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.SimpleAdapter;
@@ -33,6 +35,7 @@ public class wodezhanghuActivity extends Activity {
     private RelativeLayout jilu;
     private ListView jilulist;
     private int liststate=0;
+    private ImageButton fanhui;
 
 
     @Override
@@ -46,6 +49,15 @@ public class wodezhanghuActivity extends Activity {
 
     }
     public void setListener(){
+
+        tixian.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent=new Intent(wodezhanghuActivity.this,tixianActivity.class);
+                startActivity(intent);
+            }
+        });
+
         jilu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -57,6 +69,13 @@ public class wodezhanghuActivity extends Activity {
                     jilulist.setVisibility(View.INVISIBLE);
                     liststate=OFF;
                 }
+            }
+        });
+
+        fanhui.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
             }
         });
     }
@@ -79,10 +98,15 @@ public class wodezhanghuActivity extends Activity {
     }
 
     public void init() {
+        fanhui=(ImageButton)findViewById(R.id.zhanghu_fanhui);
         yue = (TextView) findViewById(R.id.wodezhanghu_yue);
         tixian = (RelativeLayout) findViewById(R.id.wodezhanghu_tixian);
         daishoukuan = (RelativeLayout) findViewById(R.id.wodezhanghu_daishoukuan);
         jilu = (RelativeLayout) findViewById(R.id.wodezhanghu_shouzhijilu);
         jilulist = (ListView) findViewById(R.id.jilulist);
+
+        DataFragment dataFragment=DataFragment.getInstance();
+
+        yue.setText(dataFragment.user_datamap.get("zhanghuyue").toString());
     }
 }

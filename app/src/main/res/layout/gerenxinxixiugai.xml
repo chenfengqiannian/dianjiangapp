@@ -15,7 +15,8 @@
             android:padding="10dp"
             android:layout_height="36dp"
             android:src="@drawable/fanhui"
-            android:scaleType="fitXY"/>
+            android:scaleType="fitXY"
+            android:id="@+id/fanhuixiugai" />
         <TextView
             android:layout_marginTop="7dp"
             android:text="个人信息"
@@ -24,14 +25,14 @@
             android:layout_centerHorizontal="true"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
-        <com.facebook.drawee.view.DraweeView
+
+        <com.facebook.drawee.view.SimpleDraweeView
             android:id="@+id/xinxixiugai_touxiang"
             android:layout_width="80dp"
             android:layout_height="80dp"
             android:layout_centerInParent="true"
-            android:background="#ffffff"
-
-            fresco:placeholderImage="@drawable/xinrenwu"/>
+            android:background="@color/main_color"
+            fresco:roundAsCircle="true" />
         <TextView
             android:layout_centerHorizontal="true"
             android:layout_alignParentBottom="true"
@@ -57,7 +58,9 @@
             android:layout_marginLeft="16dp"
             android:textColor="@color/divider"
             android:textSize="12sp"/>
-        <TextView
+        <EditText
+            android:gravity="right"
+            android:background="#ffffff"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
@@ -65,8 +68,8 @@
             android:textColor="@color/black_color"
             android:layout_alignParentRight="true"
             android:layout_marginRight="20dp"
-
-            android:text="XXXXXXX"/>
+            android:hint="点击输入昵称"
+            android:id="@+id/nicheng" />
         <View
             android:layout_alignParentBottom="true"
             android:layout_width="match_parent"
@@ -131,6 +134,18 @@
             android:text="公司名称"
             android:layout_centerVertical="true"
             android:layout_marginLeft="16dp"/>
+        <EditText
+            android:gravity="right"
+            android:layout_centerVertical="true"
+            android:background="#ffffff"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="12sp"
+            android:hint="在此输入公司名称"
+            android:textColor="@color/black_color"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="20dp"
+            android:id="@+id/gongsiming" />
     </RelativeLayout>
 
     <RelativeLayout
@@ -153,6 +168,18 @@
             android:text="公司详细地址"
             android:layout_centerVertical="true"
             android:layout_marginLeft="16dp"/>
+        <EditText
+            android:gravity="right"
+            android:layout_centerVertical="true"
+            android:background="#ffffff"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="12sp"
+            android:hint="在此输入公司地址"
+            android:textColor="@color/black_color"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="20dp"
+            android:id="@+id/gongsidizhi" />
     </RelativeLayout>
 
     <RelativeLayout

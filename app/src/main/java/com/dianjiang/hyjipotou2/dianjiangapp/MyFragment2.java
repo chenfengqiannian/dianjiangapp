@@ -1,16 +1,22 @@
 package com.dianjiang.hyjipotou2.dianjiangapp;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.content.res.Resources;
+import android.graphics.drawable.LevelListDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -28,7 +34,10 @@ import com.zhy.http.okhttp.callback.Callback;
 
 import java.io.File;
 import java.io.IOException;
+import java.sql.Connection;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.InputMismatchException;
 import java.util.List;
 
 
@@ -54,15 +63,16 @@ public class MyFragment2 extends Fragment implements XListView.IXListViewListene
     private static final int PRICE=2;
     private static final int PINGJIA=3;
 
+    private static final int JIANGXU=0;
+    private static final int SHENGXU=1;
+
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
 
     private View viewFragment;
     private XListView xListView=null;
-    private Handler mHandler;
     public dianjiangItemAdapter mAdapter;
-    private Uri uri;
 
     ///////////////////
     private RelativeLayout level;
@@ -75,9 +85,19 @@ public class MyFragment2 extends Fragment implements XListView.IXListViewListene
     private ImageView level_img;
     private ImageView price_img;
     private ImageView pingjia_img;
-    public DataFragment dataFragment=DataFragment.getInstance();
 
-    private LinkedTreeMap linkedTreeMap;
+
+    private int level_state=JIANGXU;
+    private int price_state=SHENGXU;
+    private int pingjia_state=SHENGXU;
+
+    private Handler mhandler=new Handler();
+
+    private int option_state=LEVEL;
+
+
+    public DataFragment dataFragment=DataFragment.getInstance();
+    private ArrayList<LinkedTreeMap> linkedTreeMapArrayList=new ArrayList<>();
 
 
 
@@ -138,18 +158,12 @@ public class MyFragment2 extends Fragment implements XListView.IXListViewListene
         pingjia_img=(ImageView)viewFragment.findViewById(R.id.pingjiaimg);
         option=(RelativeLayout)viewFragment.findViewById(R.id.dianjiang_shaixuan);
 
-
         //初始化LISTVIEW adapter
-        uri=Uri.fromFile(new File("/storage/sdcard1/tieba/kinght.jpg"));
-        for (int i=0;i<10;i++){
-            dataFragment.dianjiangItemBeans.add(0, new dianjiangItemBean(uri, "装哭的骑士" + i, "歌姬" + i, "MR" + i, "1000" + i));
-        }
         mAdapter=new dianjiangItemAdapter(this.getActivity(),dataFragment.dianjiangItemBeans);
         xListView.setAdapter(mAdapter);
-
-
         xListView.setXListViewListener(this);
-        mHandler=new Handler();
+
+        initdata();
     }
 
     private void onLoad() {
@@ -185,27 +199,150 @@ public class MyFragment2 extends Fragment implements XListView.IXListViewListene
     //刷新       /////////////////////////////////////////////////
     @Override
     public void onRefresh() {
-       /* mHandler.postDelayed(new Runnable() {
+
+        GetHttp();
+
+    }
+
+    public void setTopOptionListener(){
+
+        Resources resources=(Resources)getActivity().getBaseContext().getResources();
+        final ColorStateList main_color=(ColorStateList)resources.getColorStateList(R.color.main_color);
+        final ColorStateList non_color=(ColorStateList)resources.getColorStateList(R.color.black_color);
+
+        level.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void run() {
+            public void onClick(View v) {
 
-                int count;  //获取数据个数
-                count=10;
+                option_state=LEVEL;
 
+                if (level_state==JIANGXU){
+                    level_state=SHENGXU;
+                    level_img.setImageResource(R.drawable.shengxu);
+                    myComparator comparator=new myComparator(myComparator.LEVEL_SHENGXU);
+                    Collections.sort(dataFragment.dianjiangItemBeans, comparator);
+                    mAdapter.notifyDataSetChanged();
 
-                //数据
-                uri=Uri.fromFile(new File("/storage/sdcard1/tieba/miaoniang.jpg"));
-                for (int i=0;i<count;i++){
-                    itemBeanList.add(0,new dianjiangItemBean(uri,"罗艾娜"+i,"歌姬"+i,"MR"+i,"1000"+i));
                 }
-                mAdapter.notifyDataSetChanged();
+                else {
+                    level_state=JIANGXU;
+                    level_img.setImageResource(R.drawable.jiangxu);
+                    myComparator comparator=new myComparator(myComparator.LEVEL_JIANGXU);
+                    Collections.sort(dataFragment.dianjiangItemBeans, comparator);
+                    mAdapter.notifyDataSetChanged();
+                }
 
-                onLoad();
+                //改变颜色
+                level_text.setTextColor(main_color);
+                price_text.setTextColor(non_color);
+                pingjia_text.setTextColor(non_color);
+                price_img.setImageResource(R.drawable.paixu);
+                pingjia_img.setImageResource(R.drawable.paixu);
+                pingjia_state=SHENGXU;
+                price_state=SHENGXU;
             }
-        }, 2000);*/
+        });
+
+        price.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                option_state=PRICE;
+
+                if (price_state==JIANGXU){
+                    price_state=SHENGXU;
+                    price_img.setImageResource(R.drawable.shengxu);
+                    myComparator comparator=new myComparator(myComparator.PRICE_SHENGXU);
+                    Collections.sort(dataFragment.dianjiangItemBeans, comparator);
+                    mAdapter.notifyDataSetChanged();
+                }
+                else {
+                    price_state=JIANGXU;
+                    price_img.setImageResource(R.drawable.jiangxu);
+                    myComparator comparator=new myComparator(myComparator.PRICE_JIANGXU);
+                    Collections.sort(dataFragment.dianjiangItemBeans, comparator);
+                    mAdapter.notifyDataSetChanged();
+                }
+
+                //改变颜色
+                level_text.setTextColor(non_color);
+                price_text.setTextColor(main_color);
+                pingjia_text.setTextColor(non_color);
+                level_img.setImageResource(R.drawable.paixu);
+                pingjia_img.setImageResource(R.drawable.paixu);
+                pingjia_state=SHENGXU;
+                level_state=SHENGXU;
+            }
+        });
+
+        pingjia.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                option_state=PINGJIA;
+
+                if (pingjia_state==JIANGXU){
+                    pingjia_state=SHENGXU;
+                    pingjia_img.setImageResource(R.drawable.shengxu);
+                }
+                else {
+                    pingjia_state=JIANGXU;
+                    pingjia_img.setImageResource(R.drawable.jiangxu);
+                }
+
+                //改变颜色
+                level_text.setTextColor(non_color);
+                price_text.setTextColor(non_color);
+                pingjia_text.setTextColor(main_color);
+                level_img.setImageResource(R.drawable.paixu);
+                price_img.setImageResource(R.drawable.paixu);
+                price_state=SHENGXU;
+                level_state=SHENGXU;
+            }
+        });
+
+        xListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                //
+                dataFragment.dianjiangItemBean = dataFragment.dianjiangItemBeans.get(position - 1);
+
+                Intent intent = new Intent(getActivity(), dianjiangItemActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        DataFragment fragment=DataFragment.getInstance();
+
+        option.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dataFragment.mhandler.sendEmptyMessage(0x2333);
+            }
+        });
+    }
+
+    /**
+     * This interface must be implemented by activities that contain this
+     * fragment to allow an interaction in this fragment to be communicated
+     * to the activity and potentially other fragments contained in that
+     * activity.
+     * <p>
+     * See the Android Training lesson <a href=
+     * "http://developer.android.com/training/basics/fragments/communicating.html"
+     * >Communicating with Other Fragments</a> for more information.
+     */
+    public interface OnFragmentInteractionListener1 {
+        // TODO: Update argument type and name
+        void onFragmentInteraction1(View tview);
+    }
+
+    public void GetHttp(){
         OkHttpUtils
                 .get()
                 .url(URL + USERAPI)
+                .addParams("job", "false")
                 .build()
                 .execute(new mCallBack<Object>(this) {
                     @Override
@@ -227,112 +364,149 @@ public class MyFragment2 extends Fragment implements XListView.IXListViewListene
                     @Override
                     public void onResponse(Object response) {
 
-                        linkedTreeMap= (LinkedTreeMap) response;
+                        linkedTreeMapArrayList = (ArrayList<LinkedTreeMap>) response;
+                        dataFragment.dianjiangItemBeans.clear();
+                        dianjiangItemBean bean;
 
-                       //dianjiangItemBean bean=new dianjiangItemBean(linkedTreeMap.get("tupian"))
-                       //dataFragment.dianjiangItemBeans.add()
+                        for (LinkedTreeMap treemap : linkedTreeMapArrayList
+                                ) {
+                            //URI
+                            ArrayList<String> arrayList;
+                            String string;
+                            Uri uri=null;
+                            arrayList = (ArrayList<String>) treemap.get("touxiang");
+                            if (!arrayList.isEmpty()){
+                                string = arrayList.get(arrayList.size() - 1);
+                                uri = mytool.UriFromSenge(string);
+                            }
+                            String phone=(String)treemap.get("phone");
+                            String name = (String) treemap.get("xingming");
+                            String gongzhong = (String) treemap.get("gongzhong");
+                            Double price = (Double) treemap.get("rixin");
+                            Double level = (Double) treemap.get("dengji");
+                            bean = new dianjiangItemBean(uri, name, gongzhong, level, price,phone);
+                            dataFragment.dianjiangItemBeans.add(0, bean);
+                        }
+
+                        //dianjiangItemBean bean=new dianjiangItemBean(linkedTreeMap.get("tupian"))
+                        //dataFragment.dianjiangItemBeans.add()
+                        switch (option_state){
+                            case LEVEL:
+                                if (level_state==JIANGXU){
+                                myComparator comparator=new myComparator(myComparator.LEVEL_JIANGXU);
+                                Collections.sort(dataFragment.dianjiangItemBeans,comparator);
+                            }else {
+                                    myComparator comparator=new myComparator(myComparator.LEVEL_SHENGXU);
+                                    Collections.sort(dataFragment.dianjiangItemBeans,comparator);
+                                }
+                                break;
+
+                            case PRICE:
+                                if (price_state==JIANGXU){
+                                    myComparator comparator=new myComparator(myComparator.PRICE_JIANGXU);
+                                    Collections.sort(dataFragment.dianjiangItemBeans,comparator);
+                                }else {
+                                    myComparator comparator=new myComparator(myComparator.PRICE_SHENGXU);
+                                    Collections.sort(dataFragment.dianjiangItemBeans,comparator);
+                                }
+                                break;
+
+                            case PINGJIA:
+                                break;
+                        }
+
+                        mfragment.mAdapter.notifyDataSetChanged();
+                        onLoad();
+                    }
+                });
+    }
+
+    public void initdata(){
+        OkHttpUtils
+                .get()
+                .url(URL + USERAPI)
+                .addParams("job", "false")
+                .build()
+                .execute(new mCallBack<Object>(this) {
+                    @Override
+                    public Object parseNetworkResponse(Response response) throws IOException {
+
+                        Log.i("LOL", "response");
+                        String string = response.body().string();
+
+                        Object ps = new Gson().fromJson(string, new TypeToken<Object>() {
+                        }.getType());
+                        return ps;
+                    }
+
+                    @Override
+                    public void onError(Request request, Exception e) {
+
+                    }
+
+                    @Override
+                    public void onResponse(Object response) {
+
+                        linkedTreeMapArrayList = (ArrayList<LinkedTreeMap>) response;
+                        dataFragment.dianjiangItemBeans.clear();
+                        dianjiangItemBean bean;
+
+                        for (LinkedTreeMap treemap : linkedTreeMapArrayList
+                                ) {
+                            //URI
+                            ArrayList<String> arrayList;
+                            String string;
+                            Uri uri=null;
+                            arrayList = (ArrayList<String>) treemap.get("touxiang");
+                            if (!arrayList.isEmpty()){
+                                string = arrayList.get(arrayList.size() - 1);
+                                uri = mytool.UriFromSenge(string);
+                            }
+                            String phone=(String)treemap.get("phone");
+                            String name = (String) treemap.get("xingming");
+                            String gongzhong = (String) treemap.get("gongzhong");
+                            Double price = (Double) treemap.get("rixin");
+                            Double level = (Double) treemap.get("dengji");
+                            bean = new dianjiangItemBean(uri, name, gongzhong, level, price,phone);
+                            dataFragment.dianjiangItemBeans.add(0, bean);
+                        }
+
+                        //dianjiangItemBean bean=new dianjiangItemBean(linkedTreeMap.get("tupian"))
+                        //dataFragment.dianjiangItemBeans.add()
+                        switch (option_state){
+                            case LEVEL:
+                                if (level_state==JIANGXU){
+                                    myComparator comparator=new myComparator(myComparator.LEVEL_JIANGXU);
+                                    Collections.sort(dataFragment.dianjiangItemBeans,comparator);
+                                }else {
+                                    myComparator comparator=new myComparator(myComparator.LEVEL_SHENGXU);
+                                    Collections.sort(dataFragment.dianjiangItemBeans,comparator);
+                                }
+                                break;
+
+                            case PRICE:
+                                if (price_state==JIANGXU){
+                                    myComparator comparator=new myComparator(myComparator.PRICE_JIANGXU);
+                                    Collections.sort(dataFragment.dianjiangItemBeans,comparator);
+                                }else {
+                                    myComparator comparator=new myComparator(myComparator.PRICE_SHENGXU);
+                                    Collections.sort(dataFragment.dianjiangItemBeans,comparator);
+                                }
+                                break;
+
+                            case PINGJIA:
+                                break;
+                        }
 
                         mfragment.mAdapter.notifyDataSetChanged();
                     }
                 });
-
     }
 
-    public void setTopOptionListener(){
-
-        Resources resources=(Resources)getActivity().getBaseContext().getResources();
-        final ColorStateList main_color=(ColorStateList)resources.getColorStateList(R.color.main_color);
-        final ColorStateList non_color=(ColorStateList)resources.getColorStateList(R.color.black_color);
-
-        level.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                //改变颜色
-                level_text.setTextColor(main_color);
-                price_text.setTextColor(non_color);
-                pingjia_text.setTextColor(non_color);
-                level_img.setImageResource(R.drawable.jiangxu);
-                price_img.setImageResource(R.drawable.paixu);
-                pingjia_img.setImageResource(R.drawable.paixu);
-            }
-        });
-
-        price.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                //改变颜色
-                level_text.setTextColor(non_color);
-                price_text.setTextColor(main_color);
-                pingjia_text.setTextColor(non_color);
-                level_img.setImageResource(R.drawable.paixu);
-                price_img.setImageResource(R.drawable.jiangxu);
-                pingjia_img.setImageResource(R.drawable.paixu);
-            }
-        });
-
-        pingjia.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                //改变颜色
-                level_text.setTextColor(non_color);
-                price_text.setTextColor(non_color);
-                pingjia_text.setTextColor(main_color);
-                level_img.setImageResource(R.drawable.paixu);
-                price_img.setImageResource(R.drawable.paixu);
-                pingjia_img.setImageResource(R.drawable.jiangxu);
-            }
-        });
-    }
-
-    public List<dianjiangItemBean> descSort(List<dianjiangItemBean> list) {
-
-        list=new ArrayList<>();
-
-        int in, out;
-        int temp = 0;
-
-        int price;
-        int decprice;
-
-        for (out = 0; out < list.size(); out++) {
-
-            for (in = list.size() - 1; in > out; in--) {
-
-                price=Integer.parseInt(list.get(in).price,10);
-                decprice=Integer.parseInt(list.get(in-1).price,10);
-
-                if (price > decprice) {
-                    temp = price;
-                    price = decprice;
-                    decprice = temp;
-                }
-            }
-        }
-        return list;
-    }
-
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
-    public interface OnFragmentInteractionListener1 {
-        // TODO: Update argument type and name
-        void onFragmentInteraction1(View tview);
-    }
-
-abstract class mCallBack<T> extends Callback<T>{
-    MyFragment2 mfragment;
-    public mCallBack(MyFragment2 mfragment){
+    abstract class mCallBack<T> extends Callback<T>{
+        MyFragment2 mfragment;
+        public mCallBack(MyFragment2 mfragment){
         this.mfragment=mfragment;
     }
-}
+    }
 }

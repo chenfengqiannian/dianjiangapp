@@ -1,6 +1,8 @@
 package com.dianjiang.hyjipotou2.dianjiangapp;
 
 import android.app.Fragment;
+import android.os.Handler;
+import android.os.Message;
 import android.util.Log;
 
 import com.google.gson.Gson;
@@ -14,7 +16,9 @@ import com.zhy.http.okhttp.callback.Callback;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by hyjipotou2 on 16/4/17.
@@ -24,6 +28,10 @@ public class DataFragment extends Fragment{
     public LinkedTreeMap<String,Object> user_datamap;
     public LinkedTreeMap<String,Object> process_datamap;
     public List<dianjiangItemBean> dianjiangItemBeans=new ArrayList<dianjiangItemBean>();
+    public Map<String,Object> fabu_datamap=new HashMap<>();
+    public dianjiangItemBean dianjiangItemBean;
+
+    public Handler mhandler=new Handler();
 
     public static final String URL="http://192.168.191.1:8000";
     public static final String USERAPI="/userapi/";
@@ -39,6 +47,7 @@ public class DataFragment extends Fragment{
         }
      return  instance;
     }
+
 
 
     public void getData(){
@@ -67,6 +76,8 @@ public class DataFragment extends Fragment{
                     @Override
                     public void onResponse(Object response) {
                         user_datamap = (LinkedTreeMap<String, Object>) response;
+
+
                     }
                 });
     }

@@ -9,16 +9,26 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.dianjiang.hyjipotou2.dianjiangapp.pullrefreshlistview.XListView;
 import com.facebook.drawee.view.SimpleDraweeView;
+import com.google.gson.Gson;
+import com.google.gson.internal.LinkedTreeMap;
+import com.google.gson.reflect.TypeToken;
+import com.squareup.okhttp.Request;
+import com.squareup.okhttp.Response;
+import com.zhy.http.okhttp.OkHttpUtils;
+import com.zhy.http.okhttp.callback.Callback;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,12 +40,15 @@ public class MyFragment1 extends Fragment implements XListView.IXListViewListene
     private View viewFragment;
     private XListView xListView=null;
     private RelativeLayout qingkong;
-    private dianjiangItemAdapter mAdapter;
-    private Uri uri;
-    private List<dianjiangItemBean> itemBeanList;
     private CarouselViewPager jiaodianpager;
     private Uri[] uris;
+    private ArrayList<String> arrayList;
     private Handler mHandler;
+    private ArrayAdapter mAdapter;
+
+    public DataFragment dataFragment=DataFragment.getInstance();
+    private LinkedTreeMap linkedTreeMap;
+    private ArrayList<LinkedTreeMap> linkedTreeMapArrayList=new ArrayList<>();
 
 
     @Nullable
@@ -58,7 +71,7 @@ public class MyFragment1 extends Fragment implements XListView.IXListViewListene
         qingkong.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                itemBeanList.clear();
+                arrayList.clear();
                 Toast.makeText(getActivity(),"消息已清空",Toast.LENGTH_SHORT).show();
                 mAdapter.notifyDataSetChanged();
             }
@@ -68,12 +81,12 @@ public class MyFragment1 extends Fragment implements XListView.IXListViewListene
         jiaodianpager.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
             }
         });
     }
 
     private void initViews(){
+        arrayList=new ArrayList<>();
         jiaodianpager= (CarouselViewPager) viewFragment.findViewById(R.id.jiaodianpager);
         xListView=(XListView) viewFragment.findViewById(R.id.xiaoxi);
         qingkong=(RelativeLayout)viewFragment.findViewById(R.id.qingkong);
@@ -84,12 +97,9 @@ public class MyFragment1 extends Fragment implements XListView.IXListViewListene
         jiaodianpager.setAdapter(adapter);
 
         //初始化LISTVIEW adapter
-        uri=Uri.fromFile(new File("/storage/sdcard1/tieba/kinght.jpg"));
-        itemBeanList=new ArrayList<>();
-        for (int i=0;i<10;i++){
-            itemBeanList.add(0,new dianjiangItemBean(uri,"装哭的骑士"+i,"歌姬"+i,"MR"+i,"1000"+i));
-        }
-        mAdapter=new dianjiangItemAdapter(this.getActivity(),itemBeanList);
+        arrayList.add("xiaoxi1");
+        arrayList.add("xiaoxi2");
+        mAdapter=new ArrayAdapter(this.getActivity(),R.layout.testitem,R.id.testText,arrayList);
         xListView.setAdapter(mAdapter);
 
         xListView.setXListViewListener(this);
@@ -105,22 +115,8 @@ public class MyFragment1 extends Fragment implements XListView.IXListViewListene
 
     @Override
     public void onRefresh() {
-        mHandler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                int count;  //获取数据个数
-                count = 10;
 
-                //数据
-                for (int i = 0; i < count; i++) {
-                    itemBeanList.add(0, new dianjiangItemBean(uri, "罗艾娜" + i, "歌姬" + i, "MR" + i, "1000" + i));
-                }
-                mAdapter.notifyDataSetChanged();
-
-
-                onLoad();
-            }
-        }, 2000);
+       // 需修改 GetHttp();
     }
 
     @Override
@@ -139,6 +135,74 @@ public class MyFragment1 extends Fragment implements XListView.IXListViewListene
     public void onDestroy() {
         super.onDestroy();
         jiaodianpager.setLifeCycle(CarouselViewPager.DESTROY);
+    }
+
+    public void GetHttp(){
+        OkHttpUtils
+                .get()
+                .url(MainActivity.URL + MainActivity.USERAPI)
+                .addParams("job", "false")
+                .build()
+                .execute(new mCallBack<Object>(this) {
+                    @Override
+                    public Object parseNetworkResponse(Response response) throws IOException {
+
+                        Log.i("LOL", "response");
+                        String string = response.body().string();
+
+                        Object ps = new Gson().fromJson(string, new TypeToken<Object>() {
+                        }.getType());
+                        return ps;
+                    }
+
+                    @Override
+                    public void onError(Request request, Exception e) {
+
+                    }
+
+                    @Override
+                    public void onResponse(Object response) {
+
+                        linkedTreeMapArrayList = (ArrayList<LinkedTreeMap>) response;
+                        dataFragment.dianjiangItemBeans.clear();
+
+                        dianjiangItemBean bean;
+
+                        for (LinkedTreeMap treemap : linkedTreeMapArrayList
+                                ) {
+                            //URI
+                            ArrayList<String> arrayList;
+                            String string;
+                            Uri uri=null;
+                            arrayList = (ArrayList<String>) treemap.get("touxiang");
+                            if (!arrayList.isEmpty()){
+                                string = arrayList.get(arrayList.size() - 1);
+                                uri = mytool.UriFromSenge(string);
+                            }
+
+                            String phone=(String)treemap.get("phone");
+                            String name = (String) treemap.get("xingming");
+                            String gongzhong = (String) treemap.get("gongzhong");
+                            Double price = (Double) treemap.get("rixin");
+                            Double level = (Double) treemap.get("dengji");
+                            bean = new dianjiangItemBean(uri, name, gongzhong, level, price,phone);
+
+                            dataFragment.dianjiangItemBeans.add(0, bean);
+                        }
+
+                        //dianjiangItemBean bean=new dianjiangItemBean(linkedTreeMap.get("tupian"))
+                        //dataFragment.dianjiangItemBeans.add()
+                        mfragment.mAdapter.notifyDataSetChanged();
+                        onLoad();
+                    }
+                });
+    }
+
+    abstract class mCallBack<T> extends Callback<T> {
+        MyFragment1 mfragment;
+        public mCallBack(MyFragment1 mfragment){
+            this.mfragment=mfragment;
+        }
     }
 
     private static class SimpleCarouselAdapter extends CarouselPagerAdapter<CarouselViewPager> {
