@@ -8,6 +8,7 @@ import android.graphics.drawable.LevelListDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Message;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -214,20 +215,19 @@ public class MyFragment2 extends Fragment implements XListView.IXListViewListene
             @Override
             public void onClick(View v) {
 
-                option_state=LEVEL;
+                option_state = LEVEL;
 
-                if (level_state==JIANGXU){
-                    level_state=SHENGXU;
+                if (level_state == JIANGXU) {
+                    level_state = SHENGXU;
                     level_img.setImageResource(R.drawable.shengxu);
-                    myComparator comparator=new myComparator(myComparator.LEVEL_SHENGXU);
+                    myComparator comparator = new myComparator(myComparator.LEVEL_SHENGXU);
                     Collections.sort(dataFragment.dianjiangItemBeans, comparator);
                     mAdapter.notifyDataSetChanged();
 
-                }
-                else {
-                    level_state=JIANGXU;
+                } else {
+                    level_state = JIANGXU;
                     level_img.setImageResource(R.drawable.jiangxu);
-                    myComparator comparator=new myComparator(myComparator.LEVEL_JIANGXU);
+                    myComparator comparator = new myComparator(myComparator.LEVEL_JIANGXU);
                     Collections.sort(dataFragment.dianjiangItemBeans, comparator);
                     mAdapter.notifyDataSetChanged();
                 }
@@ -238,8 +238,8 @@ public class MyFragment2 extends Fragment implements XListView.IXListViewListene
                 pingjia_text.setTextColor(non_color);
                 price_img.setImageResource(R.drawable.paixu);
                 pingjia_img.setImageResource(R.drawable.paixu);
-                pingjia_state=SHENGXU;
-                price_state=SHENGXU;
+                pingjia_state = SHENGXU;
+                price_state = SHENGXU;
             }
         });
 
@@ -247,19 +247,18 @@ public class MyFragment2 extends Fragment implements XListView.IXListViewListene
             @Override
             public void onClick(View v) {
 
-                option_state=PRICE;
+                option_state = PRICE;
 
-                if (price_state==JIANGXU){
-                    price_state=SHENGXU;
+                if (price_state == JIANGXU) {
+                    price_state = SHENGXU;
                     price_img.setImageResource(R.drawable.shengxu);
-                    myComparator comparator=new myComparator(myComparator.PRICE_SHENGXU);
+                    myComparator comparator = new myComparator(myComparator.PRICE_SHENGXU);
                     Collections.sort(dataFragment.dianjiangItemBeans, comparator);
                     mAdapter.notifyDataSetChanged();
-                }
-                else {
-                    price_state=JIANGXU;
+                } else {
+                    price_state = JIANGXU;
                     price_img.setImageResource(R.drawable.jiangxu);
-                    myComparator comparator=new myComparator(myComparator.PRICE_JIANGXU);
+                    myComparator comparator = new myComparator(myComparator.PRICE_JIANGXU);
                     Collections.sort(dataFragment.dianjiangItemBeans, comparator);
                     mAdapter.notifyDataSetChanged();
                 }
@@ -270,8 +269,8 @@ public class MyFragment2 extends Fragment implements XListView.IXListViewListene
                 pingjia_text.setTextColor(non_color);
                 level_img.setImageResource(R.drawable.paixu);
                 pingjia_img.setImageResource(R.drawable.paixu);
-                pingjia_state=SHENGXU;
-                level_state=SHENGXU;
+                pingjia_state = SHENGXU;
+                level_state = SHENGXU;
             }
         });
 
@@ -279,14 +278,13 @@ public class MyFragment2 extends Fragment implements XListView.IXListViewListene
             @Override
             public void onClick(View v) {
 
-                option_state=PINGJIA;
+                option_state = PINGJIA;
 
-                if (pingjia_state==JIANGXU){
-                    pingjia_state=SHENGXU;
+                if (pingjia_state == JIANGXU) {
+                    pingjia_state = SHENGXU;
                     pingjia_img.setImageResource(R.drawable.shengxu);
-                }
-                else {
-                    pingjia_state=JIANGXU;
+                } else {
+                    pingjia_state = JIANGXU;
                     pingjia_img.setImageResource(R.drawable.jiangxu);
                 }
 
@@ -296,8 +294,8 @@ public class MyFragment2 extends Fragment implements XListView.IXListViewListene
                 pingjia_text.setTextColor(main_color);
                 level_img.setImageResource(R.drawable.paixu);
                 price_img.setImageResource(R.drawable.paixu);
-                price_state=SHENGXU;
-                level_state=SHENGXU;
+                price_state = SHENGXU;
+                level_state = SHENGXU;
             }
         });
 
@@ -315,12 +313,47 @@ public class MyFragment2 extends Fragment implements XListView.IXListViewListene
 
         DataFragment fragment=DataFragment.getInstance();
 
+        //来回发消息
         option.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                dataFragment.mhandler.sendEmptyMessage(0x2333);
+                dataFragment.mhandler1.sendEmptyMessage(0x2333);
             }
         });
+
+        dataFragment.mhandler2=new Handler(){
+            @Override
+            public void handleMessage(Message msg) {
+                if (msg.what==0x1111){
+                    //在这里执行具体筛选
+
+                    //工种遍历
+                    if (!dataFragment.gongzhong.equals("点击选择工种")){
+                        for (int i=0;i<dataFragment.dianjiangItemBeans.size();i++){
+                            if (dataFragment.dianjiangItemBeans.get(i).gongzhong!=dataFragment.gongzhong){
+                                dataFragment.dianjiangItemBeans.remove(i);
+                                i--;
+                            }
+                        }
+                    }
+                    //标签遍历
+                    if (!dataFragment.biaoqian.equals("")){
+                        for (int i=0;i<dataFragment.dianjiangItemBeans.size();i++){
+                            if (dataFragment.dianjiangItemBeans.get(i).biaoqian!=dataFragment.biaoqian){
+                                dataFragment.dianjiangItemBeans.remove(i);
+                                i--;
+                            }
+                        }
+                    }
+                    //地区遍历
+
+
+                    //赋值
+
+                    mAdapter.notifyDataSetChanged();
+                }
+            }
+        };
     }
 
     /**
@@ -385,6 +418,7 @@ public class MyFragment2 extends Fragment implements XListView.IXListViewListene
                             Double price = (Double) treemap.get("rixin");
                             Double level = (Double) treemap.get("dengji");
                             bean = new dianjiangItemBean(uri, name, gongzhong, level, price,phone);
+                            bean.biaoqian=(String)treemap.get("biaoqian");
                             dataFragment.dianjiangItemBeans.add(0, bean);
                         }
 

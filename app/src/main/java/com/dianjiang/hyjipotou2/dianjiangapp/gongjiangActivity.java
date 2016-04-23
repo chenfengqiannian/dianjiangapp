@@ -35,6 +35,8 @@ NoSlideViewPager page;
     Resources resources;
     ColorStateList main_text;
     ColorStateList non_color;
+
+    RelativeLayout topbar;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -75,6 +77,9 @@ void init()
     resources=(Resources)getApplicationContext().getResources();
     main_text=(ColorStateList)resources.getColorStateList(R.color.main_color);
     non_color=(ColorStateList)resources.getColorStateList(R.color.non_color);
+
+    topbar= (RelativeLayout) findViewById(R.id.gongjiang_top_bar);
+    title=(TextView)findViewById(R.id.gongjiang_txt_topbar);
 
 
 }
@@ -122,6 +127,8 @@ if(v==rb3)
         { page.setCurrentItem(0);
             image1.setImageResource(R.drawable.xinrenwu);
             tabtext1.setTextColor(main_text);
+            title.setText("新任务");
+            topbar.setVisibility(View.VISIBLE);
         }
 
         if(index==1)
@@ -129,12 +136,15 @@ if(v==rb3)
             page.setCurrentItem(1);
             image2.setImageResource(R.drawable.lishirenwu1);
             tabtext2.setTextColor(main_text);
+            title.setText("历史任务");
+            topbar.setVisibility(View.VISIBLE);
         }
         if(index==2)
         {
             page.setCurrentItem(2);
             image3.setImageResource(R.drawable.gerenzhongxin1);
             tabtext3.setTextColor(main_text);
+            topbar.setVisibility(View.GONE);
         }
 
 

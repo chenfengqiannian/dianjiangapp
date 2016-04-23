@@ -19,6 +19,11 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.facebook.drawee.view.SimpleDraweeView;
+import com.zhy.http.okhttp.OkHttpUtils;
+
+import java.util.ArrayList;
+
 /**
  * Created by hyjipotou2 on 16/3/12.
  */
@@ -36,6 +41,9 @@ public class MyFragment4 extends Fragment{
     private AlertDialog.Builder builder;
     private LinearLayout textDialog;
     private RelativeLayout fankui;
+    private SimpleDraweeView touxiang;
+    private Uri uri;
+
 
     @Nullable
     @Override
@@ -60,6 +68,10 @@ public class MyFragment4 extends Fragment{
         lianxikefu= (RelativeLayout) fview.findViewById(R.id.kefu);
         textDialog=(LinearLayout)getActivity().getLayoutInflater().inflate(R.layout.textdialog, null);
         text= (EditText) textDialog.findViewById(R.id.text123);
+        touxiang=(SimpleDraweeView)fview.findViewById(R.id.touxiang);
+
+        //加载数据
+        getUserData();
     }
     private void setIntentListener(){
         //各种页面跳转
@@ -157,5 +169,21 @@ public class MyFragment4 extends Fragment{
             }
         });
         builder.create().show();
+    }
+    public void getUserData(){
+        //头像
+        ArrayList<String> arrayList;
+        DataFragment dataFragment=DataFragment.getInstance();
+        arrayList=(ArrayList<String>) dataFragment.user_datamap.get("touxiang");
+        if (arrayList.size()>=1){
+            uri=mytool.UriFromSenge(arrayList.get(arrayList.size()-1));
+        }
+        touxiang.setImageURI(uri);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        getUserData();
     }
 }

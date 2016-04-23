@@ -40,7 +40,7 @@ public class shezhiActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.shezhi);
 
-        sharedPreferences=getPreferences(MODE_PRIVATE);
+        sharedPreferences=getSharedPreferences("shezhi",MODE_PRIVATE);
         editor=sharedPreferences.edit();
 
         init();

@@ -201,7 +201,7 @@ public class GongjiangzhuceActivity extends Activity {
                 OkHttpClient client = new OkHttpClient();
                 Gson gson1=new Gson();
                 HashMap<String,Object> data1 =new HashMap<>();
-                data1.put("shenfengzheng",idcard);
+                data1.put("shenfengzhengid",idcard);
                 data1.put("xingming",name);
                 data1.put("phone",zhuceActivity.phonenow);
                 OkHttpUtils
@@ -224,6 +224,7 @@ public class GongjiangzhuceActivity extends Activity {
                                 finish();
                             }
                         });
+
 
             }
         });

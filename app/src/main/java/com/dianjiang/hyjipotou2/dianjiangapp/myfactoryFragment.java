@@ -260,7 +260,7 @@ if(mParam1.equalsIgnoreCase("招标工程") || mParam1.equalsIgnoreCase("指定�
         zhuangtai[1] = 4;
     }
 
-    if (mParam1.equalsIgnoreCase("已经结款"))
+    if (mParam1.equalsIgnoreCase("已结款"))
 
     {
         zhuangtai[0] = 6;
@@ -274,7 +274,7 @@ if(mParam1.equalsIgnoreCase("招标工程") || mParam1.equalsIgnoreCase("指定�
         zhuangtai[1] = 5;
     }
 
-    for(LinkedTreeMap<String,Object> object:gongcheng_set)
+   for(LinkedTreeMap<String,Object> object:gongcheng_set)
     {
         if((int)(double)object.get("zhuangtai")>=zhuangtai[0]||(int)(double)object.get("zhuangtai")<=zhuangtai[0])
         {

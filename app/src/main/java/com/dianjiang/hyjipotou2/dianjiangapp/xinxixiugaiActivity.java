@@ -20,12 +20,19 @@ import android.widget.Toast;
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.google.gson.Gson;
+import com.google.gson.internal.LinkedTreeMap;
+import com.google.gson.reflect.TypeToken;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
+import com.squareup.okhttp.Response;
 import com.zhy.http.okhttp.OkHttpUtils;
+import com.zhy.http.okhttp.builder.PostFormBuilder;
+import com.zhy.http.okhttp.builder.PostStringBuilder;
+import com.zhy.http.okhttp.callback.Callback;
 import com.zhy.http.okhttp.callback.StringCallback;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -80,13 +87,14 @@ public class xinxixiugaiActivity extends Activity {
         gongsidizhi= (EditText) findViewById(R.id.gongsidizhi);
         touxiang= (SimpleDraweeView) findViewById(R.id.xinxixiugai_touxiang);
         baocun= (RelativeLayout) findViewById(R.id.xinxixiugai_baocun);
+        getUserData();
     }
 
     public void setClickListener(){
         touxiang.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                simpleListOption(str1,TOUXIANG_CAMERA,TOUXIANG_PHOTO);
+                simpleListOption(str1, TOUXIANG_CAMERA, TOUXIANG_PHOTO);
             }
         });
 
@@ -95,6 +103,7 @@ public class xinxixiugaiActivity extends Activity {
             public void onClick(View v) {
                 //上传数据  touxiang_file
                 getData();
+                shangchuanData();
 
             }
         });
@@ -178,30 +187,102 @@ public class xinxixiugaiActivity extends Activity {
     public void shangchuanData(){
 
         OkHttpClient client = new OkHttpClient();
+        String str;
         Gson gson1=new Gson();
-        HashMap<String,Object> data1 =new HashMap<>();
-        data1.put("nichang",nichengtext);
-        data1.put("phone",zhuceActivity.phonenow);
-        OkHttpUtils
-                .postString()
-                .url(MainActivity.URL + MainActivity.USERAPI)
-                .content(gson1.toJson(data1))
-                .build()
-                .execute(new StringCallback() {
-                    @Override
-                    public void onError(Request request, Exception e) {
-                        Log.i("LOL", "Dwq");
-                        Toast.makeText(xinxixiugaiActivity.this,"发生未知错误",Toast.LENGTH_LONG).show();
-                    }
+        HashMap<String,Object> data2 =new HashMap<>();
+        data2.put("nichang",nichengtext);
+        data2.put("dizhi",gongsidizhitext);
+        data2.put("gongsi",gongsimingchengtext);
+        data2.put("phone",dengluActivity.phone);
+        str=gson1.toJson(data2);
+                OkHttpUtils
+                        .postString()
+                        .url(MainActivity.URL + MainActivity.USERAPI)
+                        .content(str)
+                        .build()
+                        .execute(new StringCallback() {
+                            @Override
+                            public void onError(Request request, Exception e) {
+                                Log.i("LOL", "Dwq");
+                                Toast.makeText(xinxixiugaiActivity.this, "发生未知错误", Toast.LENGTH_LONG).show();
+                            }
 
-                    @Override
-                    public void onResponse(String response) {
-                        Toast.makeText(xinxixiugaiActivity.this, "信息修改成功", Toast.LENGTH_LONG);
-                        Intent intent = new Intent(xinxixiugaiActivity.this, dengluActivity.class);
-                        startActivity(intent);
-                        finish();
-                    }
-                });
+                            @Override
+                            public void onResponse(String response) {
+                                if (!(touxiang_file==null)) {
+                                    PostFormBuilder buider3 = OkHttpUtils.post();
+                                    buider3.addFile("ffff", touxiang_file.getName(), touxiang_file)
+                                            .url(MainActivity.URL + MainActivity.IMAGEAPI)
+                                            .addParams("id", dengluActivity.phone)
+                                            .addParams("shangchuan", "user,touxiang")
+                                            .build()
+                                            .execute(new StringCallback() {
+                                                @Override
+                                                public void onError(Request request, Exception e) {
+                                                    Log.d("LOL", "wori_touxiang");
+                                                }
+
+                                                @Override
+                                                public void onResponse(String response) {
+                                                    Log.d("LOL", "touxiang");
+                                                    OkHttpUtils
+                                                            .get()
+                                                            .url(MainActivity.URL + MainActivity.USERAPI)
+                                                            .addParams("phone", dengluActivity.phone)
+                                                            .build()
+                                                            .execute(new Callback() {
+                                                                @Override
+                                                                public Object parseNetworkResponse(Response response) throws IOException {
+
+                                                                    Log.i("LOL", "response");
+                                                                    String string = response.body().string();
+
+                                                                    Object ps = new Gson().fromJson(string, new TypeToken<Object>() {
+                                                                    }.getType());
+                                                                    return ps;
+                                                                }
+
+                                                                @Override
+                                                                public void onError(Request request, Exception e) {
+
+                                                                }
+
+                                                                @Override
+                                                                public void onResponse(Object response) {
+                                                                    DataFragment dataFragment1 = DataFragment.getInstance();
+                                                                    dataFragment1.user_datamap = (LinkedTreeMap<String, Object>) response;
+                                                                    Toast.makeText(xinxixiugaiActivity.this, "信息修改成功", Toast.LENGTH_LONG).show();
+                                                                    finish();
+
+                                                                }
+                                                            });
+                                                }
+                                            });
+                                }else {
+                                    finish();
+                                }
+                            }
+                        });
+
+
+    }
+
+    public void getUserData(){
+        DataFragment dataFragment=DataFragment.getInstance();
+        gongsidizhitext= (String) dataFragment.user_datamap.get("dizhi");
+        gongsimingchengtext=(String)dataFragment.user_datamap.get("gongsi");
+        nichengtext=(String)dataFragment.user_datamap.get("nichang");
+        nicheng.setText(nichengtext);
+        gongsidizhi.setText(gongsidizhitext);
+        gongsimingcheng.setText(gongsimingchengtext);
+        //头像
+        Uri uri;
+        ArrayList<String> arrayList;
+        arrayList=(ArrayList<String>) dataFragment.user_datamap.get("touxiang");
+        if (arrayList.size()>=1){
+           uri=mytool.UriFromSenge(arrayList.get(arrayList.size()-1));
+            touxiang.setImageURI(uri);
+        }
     }
 
     @Override

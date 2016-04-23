@@ -1,6 +1,7 @@
 package com.dianjiang.hyjipotou2.dianjiangapp;
 
 import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.content.res.Resources;
@@ -19,6 +20,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import com.facebook.drawee.backends.pipeline.Fresco;
@@ -68,6 +70,7 @@ public class MainActivity extends FragmentActivity implements MyFragment3.OnFrag
     public static final String USERAPI="/userapi/";
     public static final String IMAGEAPI="/imageupapi/";
     public static final String PROCESSAPI="/gongchengapi/";
+    public static final String SHEZHIAPI="/shezhiapi/";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -112,7 +115,7 @@ public class MainActivity extends FragmentActivity implements MyFragment3.OnFrag
 
         DataFragment fragment=DataFragment.getInstance();
         //接收消息
-        fragment.mhandler=new Handler(){
+        fragment.mhandler1=new Handler(){
             @Override
             public void handleMessage(Message msg) {
                 if (msg.what==0x2333){
@@ -124,14 +127,6 @@ public class MainActivity extends FragmentActivity implements MyFragment3.OnFrag
             @Override
             public void onClick(View v) {
                 right_menu.closeDrawer(right_content);
-            }
-        });
-
-        //确认筛选
-        option_queren.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
             }
         });
 
@@ -264,6 +259,8 @@ public class MainActivity extends FragmentActivity implements MyFragment3.OnFrag
             }
         });
 
+        setRightMenuListener();
+
     }
 
     public void RightMenu_init(){
@@ -275,7 +272,37 @@ public class MainActivity extends FragmentActivity implements MyFragment3.OnFrag
     }
 
     public void setRightMenuListener(){
+        gongzhong.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                gongzhongdialog();
+            }
+        });
 
+        //取出筛选要求数据
+        option_queren.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DataFragment dataFragment=DataFragment.getInstance();
+                dataFragment.gongzhong=gongzhongtext.getText().toString();
+                dataFragment.biaoqian=biaoqian.getText().toString();
+                dataFragment.mhandler2.sendEmptyMessage(0x1111);
+                right_menu.closeDrawer(right_content);
+            }
+        });
+    }
+
+    public void gongzhongdialog() {
+        final String[] gongzhong = {"电工","木工","瓦工","焊工","架子工","钢筋工","抹灰工","砌筑工","混凝土工","油漆工","防水工","管道工","吊顶工","无气喷涂工","钻孔工","拆除工","普工/杂工","项目经理","生产经理","工长","监理","施工员","质量员","安全员","材料员","资料员","预算员","机械员","测量员","劳务员","司索指挥","塔吊司机","吊车司机","起重机司机","升降机司机","挖掘机司机","推土机司机","叉车司机","电梯司机","机械修理工","机械安装/拆除工"};
+        AlertDialog.Builder builder = new AlertDialog.Builder(this)
+                .setTitle("请选择工种")
+                .setItems(gongzhong, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        gongzhongtext.setText(gongzhong[which]);
+                    }
+                });
+        builder.create().show();
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////

@@ -232,9 +232,11 @@ public class gongjianglstFragment extends android.support.v4.app.Fragment implem
             mytab=(TabLayout)view.findViewById(R.id.lishirenwu_tabs);
 
             ArrayList<myfactoryFragment> fragments=new ArrayList<>();
-            fragments.add(myfactoryFragment.newInstance("招标中工程"));
-            fragments.add(myfactoryFragment.newInstance("指定工程"));
-            myPagePager page=new myPagePager(getChildFragmentManager(),getActivity().getApplicationContext(),fragments,new String[]{"招标中工程","指定工程"});
+            fragments.add(myfactoryFragment.newInstance("招标成功"));
+            fragments.add(myfactoryFragment.newInstance("进行中"));
+            fragments.add(myfactoryFragment.newInstance("已结款"));
+            fragments.add(myfactoryFragment.newInstance("未结款"));
+            myPagePager page=new myPagePager(getChildFragmentManager(),getActivity().getApplicationContext(),fragments,new String[]{"招标成功","进行中","已结款","未结款"});
             viewPager.setAdapter(page);
             mytab.setupWithViewPager(viewPager);
             mytab.setTabMode(TabLayout.MODE_FIXED);

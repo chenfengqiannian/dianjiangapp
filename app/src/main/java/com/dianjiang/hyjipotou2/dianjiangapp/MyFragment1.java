@@ -45,6 +45,7 @@ public class MyFragment1 extends Fragment implements XListView.IXListViewListene
     private ArrayList<String> arrayList;
     private Handler mHandler;
     private ArrayAdapter mAdapter;
+    private String[] strings;
 
     public DataFragment dataFragment=DataFragment.getInstance();
     private LinkedTreeMap linkedTreeMap;
@@ -61,9 +62,14 @@ public class MyFragment1 extends Fragment implements XListView.IXListViewListene
 
         //设置各种监听器
         setListener();
-
+        initdata();
 
         return viewFragment;
+    }
+
+    //获取数据
+    public void initdata(){
+        GetHttp();
     }
 
     private void setListener(){
@@ -77,10 +83,14 @@ public class MyFragment1 extends Fragment implements XListView.IXListViewListene
             }
         });
 
-
+        //首页轮播图跳转
         jiaodianpager.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                DataFragment dataFragment=DataFragment.getInstance();
+                int count=jiaodianpager.getCurrentItem();
+
+
             }
         });
     }
@@ -92,19 +102,19 @@ public class MyFragment1 extends Fragment implements XListView.IXListViewListene
         qingkong=(RelativeLayout)viewFragment.findViewById(R.id.qingkong);
 
         //焦点图轮播
+
         uris=new Uri[]{Uri.fromFile(new File("/storage/sdcard1/tieba/kinght.jpg")),Uri.fromFile(new File("/storage/sdcard1/tieba/king.jpg")),Uri.fromFile(new File("/storage/sdcard1/tieba/miaoniang.jpg"))};
         PagerAdapter adapter = new SimpleCarouselAdapter(jiaodianpager,uris,getActivity());
         jiaodianpager.setAdapter(adapter);
 
         //初始化LISTVIEW adapter
-        arrayList.add("xiaoxi1");
-        arrayList.add("xiaoxi2");
+
         mAdapter=new ArrayAdapter(this.getActivity(),R.layout.testitem,R.id.testText,arrayList);
         xListView.setAdapter(mAdapter);
 
         xListView.setXListViewListener(this);
         mHandler=new Handler();
-
+        GetHttp();
     }
 
     private void onLoad() {
@@ -116,7 +126,8 @@ public class MyFragment1 extends Fragment implements XListView.IXListViewListene
     @Override
     public void onRefresh() {
 
-       // 需修改 GetHttp();
+       GetHttp();
+
     }
 
     @Override
@@ -140,8 +151,7 @@ public class MyFragment1 extends Fragment implements XListView.IXListViewListene
     public void GetHttp(){
         OkHttpUtils
                 .get()
-                .url(MainActivity.URL + MainActivity.USERAPI)
-                .addParams("job", "false")
+                .url(MainActivity.URL + MainActivity.SHEZHIAPI)
                 .build()
                 .execute(new mCallBack<Object>(this) {
                     @Override
@@ -162,37 +172,17 @@ public class MyFragment1 extends Fragment implements XListView.IXListViewListene
 
                     @Override
                     public void onResponse(Object response) {
+                        arrayList.clear();
+                        linkedTreeMap = (LinkedTreeMap) response;
+                        ArrayList<String> arr1=new ArrayList<String>();
+                        arr1= (ArrayList<String>) linkedTreeMap.get("xiaoxi");
+                        strings=arr1.get(0).split(",");
 
-                        linkedTreeMapArrayList = (ArrayList<LinkedTreeMap>) response;
-                        dataFragment.dianjiangItemBeans.clear();
-
-                        dianjiangItemBean bean;
-
-                        for (LinkedTreeMap treemap : linkedTreeMapArrayList
-                                ) {
-                            //URI
-                            ArrayList<String> arrayList;
-                            String string;
-                            Uri uri=null;
-                            arrayList = (ArrayList<String>) treemap.get("touxiang");
-                            if (!arrayList.isEmpty()){
-                                string = arrayList.get(arrayList.size() - 1);
-                                uri = mytool.UriFromSenge(string);
-                            }
-
-                            String phone=(String)treemap.get("phone");
-                            String name = (String) treemap.get("xingming");
-                            String gongzhong = (String) treemap.get("gongzhong");
-                            Double price = (Double) treemap.get("rixin");
-                            Double level = (Double) treemap.get("dengji");
-                            bean = new dianjiangItemBean(uri, name, gongzhong, level, price,phone);
-
-                            dataFragment.dianjiangItemBeans.add(0, bean);
+                        for (int i=0;i<strings.length;i++){
+                            arrayList.add(strings[i]);
                         }
+                        mAdapter.notifyDataSetChanged();
 
-                        //dianjiangItemBean bean=new dianjiangItemBean(linkedTreeMap.get("tupian"))
-                        //dataFragment.dianjiangItemBeans.add()
-                        mfragment.mAdapter.notifyDataSetChanged();
                         onLoad();
                     }
                 });
@@ -229,5 +219,40 @@ public class MyFragment1 extends Fragment implements XListView.IXListViewListene
                     ViewGroup.LayoutParams.MATCH_PARENT);
             return simpleDraweeView;
         }
+    }
+    public void getImgHttp(){
+        OkHttpUtils
+                .get()
+                .url(MainActivity.URL + MainActivity.SHEZHIAPI)
+                .build()
+                .execute(new mCallBack<Object>(this) {
+                    @Override
+                    public Object parseNetworkResponse(Response response) throws IOException {
+
+                        Log.i("LOL", "response");
+                        String string = response.body().string();
+
+                        Object ps = new Gson().fromJson(string, new TypeToken<Object>() {
+                        }.getType());
+                        return ps;
+                    }
+
+                    @Override
+                    public void onError(Request request, Exception e) {
+
+                    }
+
+                    @Override
+                    public void onResponse(Object response) {
+                        linkedTreeMap = (LinkedTreeMap) response;
+                        ArrayList<String> arrayList1;
+                        ArrayList<String> arrayList2;
+                        ArrayList<String> arrayList3;
+                        arrayList1= (ArrayList<String>) linkedTreeMap.get("tupian1");
+                        arrayList2= (ArrayList<String>) linkedTreeMap.get("tupian2");
+                        arrayList3= (ArrayList<String>) linkedTreeMap.get("tupian3");
+
+                    }
+                });
     }
 }

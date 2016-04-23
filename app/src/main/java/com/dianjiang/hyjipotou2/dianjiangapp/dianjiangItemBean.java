@@ -15,9 +15,9 @@ public class dianjiangItemBean {
     public Double level;
     public Double price;
     public String phone;
+    public String biaoqian;
 
     public dianjiangItemBean(Uri imageuri,String name,String gongzhong,Double level,Double price,String phone){
-
         this.imageuri=imageuri;
         this.name=name;
         this.gongzhong=gongzhong;

@@ -1,6 +1,7 @@
 package com.dianjiang.hyjipotou2.dianjiangapp;
 
 import android.app.Fragment;
+import android.net.Uri;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
@@ -30,8 +31,11 @@ public class DataFragment extends Fragment{
     public List<dianjiangItemBean> dianjiangItemBeans=new ArrayList<dianjiangItemBean>();
     public Map<String,Object> fabu_datamap=new HashMap<>();
     public dianjiangItemBean dianjiangItemBean;
+    public Uri shouyeImgUri;
 
-    public Handler mhandler=new Handler();
+    public Handler mhandler1=new Handler();
+    public Handler mhandler2=new Handler();
+
 
     public static final String URL="http://192.168.191.1:8000";
     public static final String USERAPI="/userapi/";
@@ -48,7 +52,10 @@ public class DataFragment extends Fragment{
      return  instance;
     }
 
-
+    //筛选相关
+    public String gongzhong;
+    public String diqu;
+    public String biaoqian;
 
     public void getData(){
         OkHttpUtils
