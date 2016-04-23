@@ -1,10 +1,12 @@
 package com.dianjiang.hyjipotou2.dianjiangapp;
 
+import android.app.ActionBar;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.app.Fragment;
@@ -107,7 +109,8 @@ public class gongjianglstFragment extends android.support.v4.app.Fragment implem
         if(mParam1.equalsIgnoreCase("tab3"))
         view=init(2,inflater, container);
 
-
+        //if(mParam1.equalsIgnoreCase("ketang"))
+           // view=init(3,inflater, container);
 
         return view;
     }
@@ -191,8 +194,36 @@ public class gongjianglstFragment extends android.support.v4.app.Fragment implem
             });
             builder.create().show();}
 
+        if(v==wodezhanghu)
+        {
+            Intent intent=new Intent();
+            intent.setClass(getActivity().getApplicationContext(),wodezhanghuActivity.class);
+            startActivity(intent);
 
 
+
+        }
+        if(v==dianjiangketang)
+        {
+
+onButtonPressed("dianjiangketang");
+
+
+        }
+        if(v==gerenxinxi)
+        {onButtonPressed("gerenxinxi");}
+        if(v==suoyaofapiao)
+        {}
+
+        if(v==wodebanzu)
+        {}
+        if(v==banggongyou)
+        {   onButtonPressed("banggongyou");
+
+
+
+
+        }
 
     }
 
@@ -264,7 +295,7 @@ public class gongjianglstFragment extends android.support.v4.app.Fragment implem
             gerenxinxi.setOnClickListener(this);
             wodebanzu.setOnClickListener(this);
             suoyaofapiao.setOnClickListener(this);
-            wodebanzu.setOnClickListener(this);
+            wodezhanghu.setOnClickListener(this);
             banggongyou.setOnClickListener(this);
             dianjiangketang.setOnClickListener(this);
             lianxikefu.setOnClickListener(this);
@@ -274,7 +305,11 @@ public class gongjianglstFragment extends android.support.v4.app.Fragment implem
 
         }
 
+if(index==3)
+{
 
+    view=inflater.inflate(R.layout.fragment_blank, container, false);
+}
     return view;
     }
 

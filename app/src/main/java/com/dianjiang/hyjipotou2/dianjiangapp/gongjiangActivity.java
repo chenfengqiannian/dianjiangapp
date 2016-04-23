@@ -1,5 +1,6 @@
 package com.dianjiang.hyjipotou2.dianjiangapp;
 
+import android.app.FragmentTransaction;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.ColorStateList;
@@ -94,6 +95,31 @@ void init()
             startActivity(intent);
         }
 
+
+
+        if(uri.equalsIgnoreCase("dianjiangketang"))
+        {
+
+       //Intent intent1=new Intent();
+         //   intent.setClass(getApplicationContext(),gongjiangmoreActivity.class);
+           // startActivity(intent1);
+
+
+
+        }
+        if(uri.equalsIgnoreCase("banggongyou"))
+        {
+
+            intent.setClass(getApplicationContext(), zhuceActivity.class);
+            startActivity(intent);
+        }
+        if(uri.equalsIgnoreCase("gerenxinxi"))
+        {
+            intent.putExtra("leixing","gerenxinxi");
+            intent.setClass(getApplicationContext(),gongjiangmoreActivity.class);
+            startActivity(intent);
+
+        }
     }
 
     @Override

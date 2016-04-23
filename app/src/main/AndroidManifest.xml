@@ -18,28 +18,35 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".MainActivity"></activity>
-        <activity android:name=".xinxixiugaiActivity"></activity>
-        <activity android:name=".wodezhanghuActivity"></activity>
-        <activity android:name=".dengluActivity"></activity>
-        <activity android:name=".zhuceActivity"></activity>
-        <activity android:name=".zhaohuiActivity"></activity>
-        <activity android:name=".SearchActivity"></activity>
-        <activity android:name=".shezhiActivity"></activity>
-        <activity android:name=".xiugaimimaActivity"></activity>
-        <activity android:name=".guanyuActivity"></activity>
-        <activity android:name=".suoyaofapiaoActivity"></activity>
-        <activity android:name=".fabuActivity"></activity>
-        <activity android:name=".GongjiangzhuceActivity"></activity>
-        <activity android:name=".gongjiangActivity"></activity>
-        <activity android:name=".dianjiangItemActivity"></activity>
-
-        <!-- ATTENTION: This was auto-generated to add Google Play services to your project for
-             App Indexing.  See https://g.co/AppIndexing/AndroidStudio for more information. -->
+        <activity android:name=".MainActivity" />
+        <activity android:name=".xinxixiugaiActivity" />
+        <activity android:name=".wodezhanghuActivity" />
+        <activity android:name=".dengluActivity" />
+        <activity android:name=".zhuceActivity" />
+        <activity android:name=".zhaohuiActivity" />
+        <activity android:name=".SearchActivity" />
+        <activity android:name=".shezhiActivity" />
+        <activity android:name=".xiugaimimaActivity" />
+        <activity android:name=".guanyuActivity" />
+        <activity android:name=".suoyaofapiaoActivity" />
+        <activity android:name=".fabuActivity" />
+        <activity android:name=".GongjiangzhuceActivity" />
+        <activity android:name=".dianjiangItemActivity" />
+        <activity android:name=".tixianActivity" />
+        <activity android:name=".gongjiangActivity" />
+        <!--
+             ATTENTION: This was auto-generated to add Google Play services to your project for
+             App Indexing.  See https://g.co/AppIndexing/AndroidStudio for more information.
+        -->
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
 
+        <activity
+            android:name=".gongjiangmoreActivity"
+            android:label="@string/title_activity_dianjiangketang"
+            android:theme="@style/AppTheme.NoActionBar" >
+        </activity>
     </application>
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"></uses-permission>
     <uses-permission android:name="android.permission.CALL_PHONE"></uses-permission>
