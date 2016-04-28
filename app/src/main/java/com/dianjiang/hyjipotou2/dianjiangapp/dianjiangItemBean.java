@@ -9,6 +9,7 @@ import com.facebook.drawee.backends.pipeline.Fresco;
  * Created by hyjipotou2 on 16/4/14.
  */
 public class dianjiangItemBean {
+    public String diqu;
     public Uri imageuri;
     public String name;
     public String gongzhong;
@@ -16,6 +17,7 @@ public class dianjiangItemBean {
     public Double price;
     public String phone;
     public String biaoqian;
+    public Double pingjia;
 
     public dianjiangItemBean(Uri imageuri,String name,String gongzhong,Double level,Double price,String phone){
         this.imageuri=imageuri;

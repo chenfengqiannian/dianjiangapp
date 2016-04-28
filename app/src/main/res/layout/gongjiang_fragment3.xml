@@ -26,7 +26,6 @@
             android:id="@+id/gongjiang_touxiang"
             android:layout_width="88dp"
             android:layout_height="88dp"
-            android:background="#ffffff"
             fresco:roundAsCircle="true" />
 
         <TextView
@@ -46,7 +45,6 @@
             android:layout_toRightOf="@+id/gongjiang_huanying"
             android:layout_marginLeft="6dp"
             android:textColor="#ffffff"
-            android:text="XXXXXX"
             android:textSize="13sp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
@@ -55,7 +53,6 @@
             android:id="@+id/gongjiang_shoujihao"
             android:layout_marginTop="72dp"
             android:layout_alignLeft="@+id/gongjiang_huanying"
-            android:text="18842683303"
             android:textColor="#ffffff"
             android:textSize="13sp"
             android:layout_width="wrap_content"
@@ -140,7 +137,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="40dp"
-                    android:text="索要发票"
+                    android:text="我的业绩"
                     android:textColor="#000000"
                     android:textSize="9sp"
                     />

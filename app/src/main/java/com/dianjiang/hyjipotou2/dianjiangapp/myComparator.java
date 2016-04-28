@@ -25,26 +25,37 @@ public class myComparator implements Comparator {
 
         int flag;
 
-        if (param==LEVEL_JIANGXU){
-            dianjiangItemBean dianjiangItemBean1= (dianjiangItemBean) lhs;
-            dianjiangItemBean dianjiangItemBean0= (dianjiangItemBean) rhs;
-            flag=dianjiangItemBean0.level.compareTo(dianjiangItemBean1.level);
+        if (param == LEVEL_JIANGXU) {
+            dianjiangItemBean dianjiangItemBean1 = (dianjiangItemBean) lhs;
+            dianjiangItemBean dianjiangItemBean0 = (dianjiangItemBean) rhs;
+            flag = dianjiangItemBean0.level.compareTo(dianjiangItemBean1.level);
             return flag;
-        }else if (param==LEVEL_SHENGXU){
-            dianjiangItemBean dianjiangItemBean0= (dianjiangItemBean) lhs;
-            dianjiangItemBean dianjiangItemBean1= (dianjiangItemBean) rhs;
-            flag=dianjiangItemBean0.level.compareTo(dianjiangItemBean1.level);
+        } else if (param == LEVEL_SHENGXU) {
+            dianjiangItemBean dianjiangItemBean0 = (dianjiangItemBean) lhs;
+            dianjiangItemBean dianjiangItemBean1 = (dianjiangItemBean) rhs;
+            flag = dianjiangItemBean0.level.compareTo(dianjiangItemBean1.level);
             return flag;
-        }else if (param==PRICE_JIANGXU){
-            dianjiangItemBean dianjiangItemBean1= (dianjiangItemBean) lhs;
-            dianjiangItemBean dianjiangItemBean0= (dianjiangItemBean) rhs;
-            flag=dianjiangItemBean0.price.compareTo(dianjiangItemBean1.price);
+        } else if (param == PRICE_JIANGXU) {
+            dianjiangItemBean dianjiangItemBean1 = (dianjiangItemBean) lhs;
+            dianjiangItemBean dianjiangItemBean0 = (dianjiangItemBean) rhs;
+            flag = dianjiangItemBean0.price.compareTo(dianjiangItemBean1.price);
+            return flag;
+        } else if (param == PRICE_SHENGXU) {
+            dianjiangItemBean dianjiangItemBean0 = (dianjiangItemBean) lhs;
+            dianjiangItemBean dianjiangItemBean1 = (dianjiangItemBean) rhs;
+            flag = dianjiangItemBean0.price.compareTo(dianjiangItemBean1.price);
+            return flag;
+        }else if (param==PINGJIA_JIANGXU){
+            dianjiangItemBean dianjiangItemBean1 = (dianjiangItemBean) lhs;
+            dianjiangItemBean dianjiangItemBean0 = (dianjiangItemBean) rhs;
+            flag = dianjiangItemBean0.pingjia.compareTo(dianjiangItemBean1.pingjia);
             return flag;
         }else {
-            dianjiangItemBean dianjiangItemBean0= (dianjiangItemBean) lhs;
-            dianjiangItemBean dianjiangItemBean1= (dianjiangItemBean) rhs;
-            flag=dianjiangItemBean0.price.compareTo(dianjiangItemBean1.price);
+            dianjiangItemBean dianjiangItemBean0 = (dianjiangItemBean) lhs;
+            dianjiangItemBean dianjiangItemBean1 = (dianjiangItemBean) rhs;
+            flag = dianjiangItemBean0.pingjia.compareTo(dianjiangItemBean1.pingjia);
             return flag;
         }
+
     }
 }

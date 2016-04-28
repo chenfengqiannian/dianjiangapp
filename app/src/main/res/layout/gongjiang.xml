@@ -91,7 +91,7 @@
                 <ImageView
                     android:layout_marginTop="12dp"
                     android:id="@+id/img3"
-                    android:src="@drawable/geren"
+                    android:src="@drawable/zhongxin"
                     android:layout_width="20dp"
                     android:layout_height="20dp"
                     android:layout_centerHorizontal="true"

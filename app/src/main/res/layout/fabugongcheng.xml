@@ -28,6 +28,19 @@
             android:scaleType="fitXY"
             android:id="@+id/fanhui" />
 
+        <Button
+            android:layout_alignParentRight="true"
+            android:id="@+id/gongchengbaocun"
+            android:layout_width="40dp"
+            android:layout_height="wrap_content"
+            android:text="保存"
+            android:textSize="17sp"
+            android:layout_centerVertical="true"
+            android:textColor="#ffffff"
+            android:layout_marginRight="3dp"
+            android:background="#00000000"
+            />
+
         <View
             android:layout_width="match_parent"
             android:layout_height="2px"

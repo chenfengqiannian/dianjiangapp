@@ -283,9 +283,15 @@ public class MyFragment2 extends Fragment implements XListView.IXListViewListene
                 if (pingjia_state == JIANGXU) {
                     pingjia_state = SHENGXU;
                     pingjia_img.setImageResource(R.drawable.shengxu);
+                    myComparator comparator = new myComparator(myComparator.PINGJIA_SHENGXU);
+                    Collections.sort(dataFragment.dianjiangItemBeans, comparator);
+                    mAdapter.notifyDataSetChanged();
                 } else {
                     pingjia_state = JIANGXU;
                     pingjia_img.setImageResource(R.drawable.jiangxu);
+                    myComparator comparator = new myComparator(myComparator.PINGJIA_JIANGXU);
+                    Collections.sort(dataFragment.dianjiangItemBeans, comparator);
+                    mAdapter.notifyDataSetChanged();
                 }
 
                 //改变颜色
@@ -346,7 +352,22 @@ public class MyFragment2 extends Fragment implements XListView.IXListViewListene
                         }
                     }
                     //地区遍历
+                    if (dataFragment.sheng_!=null && dataFragment.shi_!=null){
+                        for (int i=0;i<dataFragment.dianjiangItemBeans.size();i++){
+            if(dataFragment.dianjiangItemBeans.get(i).diqu==null) {
+                continue;
+            }               if (dataFragment.dianjiangItemBeans.get(i).diqu.split(",").length>=2)
+                            {
+                                if (!dataFragment.dianjiangItemBeans.get(i).diqu.split(",")[1].equals(dataFragment.shi_)){
+                                    dataFragment.dianjiangItemBeans.remove(i);
+                                    i--;
+                                }
+                        }
+                           else {dataFragment.dianjiangItemBeans.remove(i);
+                            i--;}
 
+                        }
+                    }
 
                     //赋值
 
@@ -374,7 +395,100 @@ public class MyFragment2 extends Fragment implements XListView.IXListViewListene
     public void GetHttp(){
         OkHttpUtils
                 .get()
-                .url(URL + USERAPI)
+                .url(MainActivity.URL + MainActivity.USERAPI)
+                .addParams("job", "false")
+                .build()
+                .execute(new mCallBack<Object>(this) {
+                    @Override
+                    public Object parseNetworkResponse(Response response) throws IOException {
+
+                        Log.i("LOL", "response");
+                        String string = response.body().string();
+
+                        Object ps = new Gson().fromJson(string, new TypeToken<Object>() {
+                        }.getType());
+                        return ps;
+                    }
+
+                    @Override
+                    public void onError(Request request, Exception e) {
+
+                    }
+
+                    @Override
+                    public void onResponse(Object response) {
+                        DataFragment dataFragment=DataFragment.getInstance();
+                        dataFragment.gongjiang_data= (ArrayList<LinkedTreeMap<String, Object>>) response;
+                        linkedTreeMapArrayList = (ArrayList<LinkedTreeMap>) response;
+                        dataFragment.dianjiangItemBeans.clear();
+                        dianjiangItemBean bean;
+
+                        for (LinkedTreeMap treemap : linkedTreeMapArrayList
+                                ) {
+                            //URI
+                            ArrayList<String> arrayList;
+                            String string;
+                            Uri uri=null;
+                            arrayList = (ArrayList<String>) treemap.get("touxiang");
+                            if (!arrayList.isEmpty()){
+                                string = arrayList.get(arrayList.size() - 1);
+                                uri = mytool.UriFromSenge(string);
+                            }
+                            String phone=(String)treemap.get("phone");
+                            String name = (String) treemap.get("xingming");
+                            String gongzhong = (String) treemap.get("gongzhong");
+                            Double price = (Double) treemap.get("rixin");
+                            Double level = (Double) treemap.get("dengji");
+                            bean = new dianjiangItemBean(uri, name, gongzhong, level, price,phone);
+                            bean.biaoqian=(String)treemap.get("biaoqian");
+                            bean.pingjia= (Double) treemap.get("pingjiaxingji");
+                            dataFragment.dianjiangItemBeans.add(0, bean);
+                        }
+
+                        //dianjiangItemBean bean=new dianjiangItemBean(linkedTreeMap.get("tupian"))
+                        //dataFragment.dianjiangItemBeans.add()
+                        switch (option_state){
+                            case LEVEL:
+                                if (level_state==JIANGXU){
+                                myComparator comparator=new myComparator(myComparator.LEVEL_JIANGXU);
+                                Collections.sort(dataFragment.dianjiangItemBeans,comparator);
+                            }else {
+                                    myComparator comparator=new myComparator(myComparator.LEVEL_SHENGXU);
+                                    Collections.sort(dataFragment.dianjiangItemBeans,comparator);
+                                }
+                                break;
+
+                            case PRICE:
+                                if (price_state==JIANGXU){
+                                    myComparator comparator=new myComparator(myComparator.PRICE_JIANGXU);
+                                    Collections.sort(dataFragment.dianjiangItemBeans,comparator);
+                                }else {
+                                    myComparator comparator=new myComparator(myComparator.PRICE_SHENGXU);
+                                    Collections.sort(dataFragment.dianjiangItemBeans,comparator);
+                                }
+                                break;
+
+                            case PINGJIA:
+                                if (pingjia_state==JIANGXU){
+                                    myComparator comparator=new myComparator(myComparator.PINGJIA_JIANGXU);
+                                    Collections.sort(dataFragment.dianjiangItemBeans,comparator);
+                                }else {
+                                    myComparator comparator=new myComparator(myComparator.PINGJIA_SHENGXU);
+                                    Collections.sort(dataFragment.dianjiangItemBeans,comparator);
+                                }
+                                break;
+                        }
+
+                        mfragment.mAdapter.notifyDataSetChanged();
+                        onLoad();
+                    }
+                });
+    }
+
+    public void initdata(){
+        OkHttpUtils
+                .get()
+                .url(MainActivity.URL + MainActivity.USERAPI)
                 .addParams("job", "false")
                 .build()
                 .execute(new mCallBack<Object>(this) {
@@ -419,89 +533,8 @@ public class MyFragment2 extends Fragment implements XListView.IXListViewListene
                             Double level = (Double) treemap.get("dengji");
                             bean = new dianjiangItemBean(uri, name, gongzhong, level, price,phone);
                             bean.biaoqian=(String)treemap.get("biaoqian");
-                            dataFragment.dianjiangItemBeans.add(0, bean);
-                        }
-
-                        //dianjiangItemBean bean=new dianjiangItemBean(linkedTreeMap.get("tupian"))
-                        //dataFragment.dianjiangItemBeans.add()
-                        switch (option_state){
-                            case LEVEL:
-                                if (level_state==JIANGXU){
-                                myComparator comparator=new myComparator(myComparator.LEVEL_JIANGXU);
-                                Collections.sort(dataFragment.dianjiangItemBeans,comparator);
-                            }else {
-                                    myComparator comparator=new myComparator(myComparator.LEVEL_SHENGXU);
-                                    Collections.sort(dataFragment.dianjiangItemBeans,comparator);
-                                }
-                                break;
-
-                            case PRICE:
-                                if (price_state==JIANGXU){
-                                    myComparator comparator=new myComparator(myComparator.PRICE_JIANGXU);
-                                    Collections.sort(dataFragment.dianjiangItemBeans,comparator);
-                                }else {
-                                    myComparator comparator=new myComparator(myComparator.PRICE_SHENGXU);
-                                    Collections.sort(dataFragment.dianjiangItemBeans,comparator);
-                                }
-                                break;
-
-                            case PINGJIA:
-                                break;
-                        }
-
-                        mfragment.mAdapter.notifyDataSetChanged();
-                        onLoad();
-                    }
-                });
-    }
-
-    public void initdata(){
-        OkHttpUtils
-                .get()
-                .url(URL + USERAPI)
-                .addParams("job", "false")
-                .build()
-                .execute(new mCallBack<Object>(this) {
-                    @Override
-                    public Object parseNetworkResponse(Response response) throws IOException {
-
-                        Log.i("LOL", "response");
-                        String string = response.body().string();
-
-                        Object ps = new Gson().fromJson(string, new TypeToken<Object>() {
-                        }.getType());
-                        return ps;
-                    }
-
-                    @Override
-                    public void onError(Request request, Exception e) {
-
-                    }
-
-                    @Override
-                    public void onResponse(Object response) {
-
-                        linkedTreeMapArrayList = (ArrayList<LinkedTreeMap>) response;
-                        dataFragment.dianjiangItemBeans.clear();
-                        dianjiangItemBean bean;
-
-                        for (LinkedTreeMap treemap : linkedTreeMapArrayList
-                                ) {
-                            //URI
-                            ArrayList<String> arrayList;
-                            String string;
-                            Uri uri=null;
-                            arrayList = (ArrayList<String>) treemap.get("touxiang");
-                            if (!arrayList.isEmpty()){
-                                string = arrayList.get(arrayList.size() - 1);
-                                uri = mytool.UriFromSenge(string);
-                            }
-                            String phone=(String)treemap.get("phone");
-                            String name = (String) treemap.get("xingming");
-                            String gongzhong = (String) treemap.get("gongzhong");
-                            Double price = (Double) treemap.get("rixin");
-                            Double level = (Double) treemap.get("dengji");
-                            bean = new dianjiangItemBean(uri, name, gongzhong, level, price,phone);
+                            bean.pingjia= (Double) treemap.get("pingjiaxingji");
+                            bean.diqu=(String)treemap.get("didianchar");
                             dataFragment.dianjiangItemBeans.add(0, bean);
                         }
 
@@ -529,6 +562,13 @@ public class MyFragment2 extends Fragment implements XListView.IXListViewListene
                                 break;
 
                             case PINGJIA:
+                                if (pingjia_state==JIANGXU){
+                                    myComparator comparator=new myComparator(myComparator.PINGJIA_JIANGXU);
+                                    Collections.sort(dataFragment.dianjiangItemBeans,comparator);
+                                }else {
+                                    myComparator comparator=new myComparator(myComparator.PINGJIA_SHENGXU);
+                                    Collections.sort(dataFragment.dianjiangItemBeans,comparator);
+                                }
                                 break;
                         }
 

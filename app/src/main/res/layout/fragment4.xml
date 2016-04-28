@@ -46,7 +46,6 @@
             android:layout_toRightOf="@+id/huanying"
             android:layout_marginLeft="6dp"
             android:textColor="#ffffff"
-            android:text="XXXXXX"
             android:textSize="13sp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
@@ -55,7 +54,6 @@
             android:id="@+id/shoujihao"
             android:layout_marginTop="72dp"
             android:layout_alignLeft="@+id/huanying"
-            android:text="18842683303"
             android:textColor="#ffffff"
             android:textSize="13sp"
             android:layout_width="wrap_content"
@@ -187,38 +185,7 @@
         android:layout_height="2px"
         android:background="@color/divider"
         android:layout_marginTop="26dp"></View>
-    
-    <RelativeLayout
-        android:id="@+id/gongcheng"
-        android:layout_width="match_parent"
-        android:layout_height="37dp"
-        android:background="#ffffff">
-        <ImageView
-            android:id="@+id/gongchengimg"
-            android:layout_width="17dp"
-            android:layout_height="16dp"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="19dp"
-            android:src="@drawable/gongcheng" />
 
-        <TextView
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="42dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="工程信息"
-            android:textColor="@color/black_color"/>
-
-        <ImageView
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="15dp"
-            android:id="@+id/qianjin"
-            android:layout_width="6dp"
-            android:layout_height="12dp"
-            android:src="@drawable/jianjin"/>
-
-    </RelativeLayout>
 
     <View
         android:id="@+id/string3"

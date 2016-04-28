@@ -35,6 +35,7 @@ public class MyFragment4 extends Fragment{
     private RelativeLayout wodezhanghu;
     private RelativeLayout suoyaofapiao;
     private RelativeLayout bianjiechongzhi;
+    private RelativeLayout gongjiangxinxi;
     private ImageView shezhi;
     private RelativeLayout lianxikefu;
     private EditText text;
@@ -43,7 +44,11 @@ public class MyFragment4 extends Fragment{
     private RelativeLayout fankui;
     private SimpleDraweeView touxiang;
     private Uri uri;
-
+    String fankuiMessage;
+    private String dianhua;
+    private TextView nicheng;
+    private String si;
+    private TextView sii;
 
     @Nullable
     @Override
@@ -59,6 +64,7 @@ public class MyFragment4 extends Fragment{
 
     private void init(){
         //实例化
+        sii=(TextView)fview.findViewById(R.id.shoujihao);
         fankui=(RelativeLayout)fview.findViewById(R.id.yijian);
         shezhi=(ImageView)fview.findViewById(R.id.shezhi);
         gerenxinxi=(RelativeLayout)fview.findViewById(R.id.xinxi);
@@ -69,9 +75,12 @@ public class MyFragment4 extends Fragment{
         textDialog=(LinearLayout)getActivity().getLayoutInflater().inflate(R.layout.textdialog, null);
         text= (EditText) textDialog.findViewById(R.id.text123);
         touxiang=(SimpleDraweeView)fview.findViewById(R.id.touxiang);
+        gongjiangxinxi= (RelativeLayout) fview.findViewById(R.id.gongjiang);
+        nicheng=(TextView)fview.findViewById(R.id.nicheng);
 
         //加载数据
         getUserData();
+        getkefudianhua();
     }
     private void setIntentListener(){
         //各种页面跳转
@@ -109,6 +118,14 @@ public class MyFragment4 extends Fragment{
                 lianxidialog();
             }
         });
+
+        gongjiangxinxi.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+
         fankui.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -118,7 +135,7 @@ public class MyFragment4 extends Fragment{
     }
 
     public void lianxidialog(){
-        final String[] phonenum={"18842635112"};
+        final String[] phonenum={dianhua};
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity())
                 .setTitle("点击拨打客服电话")
                 .setItems(phonenum, new OnClickListener() {
@@ -136,11 +153,11 @@ public class MyFragment4 extends Fragment{
                 .setTitle("请输入反馈信息")
                 .setView(null)
                 .setView(textDialog)
-                .setPositiveButton("提交", new DialogInterface.OnClickListener() {
+                .setPositiveButton("提交", new OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         //提取消息
-
+                        fankuiMessage=text.getText().toString();
                         textDialog=null;
                         if (textDialog==null){
                             textDialog=(LinearLayout)getActivity().getLayoutInflater().inflate(R.layout.textdialog, null);
@@ -179,6 +196,22 @@ public class MyFragment4 extends Fragment{
             uri=mytool.UriFromSenge(arrayList.get(arrayList.size()-1));
         }
         touxiang.setImageURI(uri);
+
+        //
+        sii.setText(dengluActivity.phone);
+        nicheng.setText(dataFragment.user_datamap.get("nichang").toString());
+    }
+
+    public void fankui(){
+
+    }
+
+    public void getkefudianhua(){
+        ArrayList<String> arrayList=new ArrayList<>();
+        DataFragment dataFragment=DataFragment.getInstance();
+        arrayList= (ArrayList<String>) dataFragment.linkedTreeMap.get("lianxikefu");
+        dianhua=arrayList.get(0);
+
     }
 
     @Override

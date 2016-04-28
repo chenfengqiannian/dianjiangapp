@@ -38,35 +38,23 @@
             android:layout_height="23dp"
             android:src="@drawable/dingwei"/>
         <TextView
-            android:id="@+id/gongjiang_sheng_"
+            android:id="@+id/gongjiang_sheng"
             android:layout_centerVertical="true"
             android:layout_toRightOf="@+id/gongjiang_gpsdingwei_"
             android:layout_marginLeft="12dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="15sp"
-            android:textColor="#ffffff"
-            android:text="四川省"/>
+            android:textColor="#ffffff" />
         <TextView
-            android:id="@+id/gongjiang_shi_"
+            android:id="@+id/gongjiang_shi"
             android:layout_centerVertical="true"
-            android:layout_toRightOf="@+id/gongjiang_sheng_"
+            android:layout_toRightOf="@+id/gongjiang_sheng"
             android:layout_marginLeft="12dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="15sp"
-            android:textColor="#ffffff"
-            android:text="成都市"/>
-        <TextView
-            android:id="@+id/gongjiang_qujie_"
-            android:layout_centerVertical="true"
-            android:layout_toRightOf="@+id/gongjiang_shi_"
-            android:layout_marginLeft="12dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="15sp"
-            android:textColor="#ffffff"
-            android:text="新都区"/>
+            android:textColor="#ffffff" />
         <Button
             android:id="@+id/gongjiang_qiehuan_"
             android:layout_alignParentRight="true"

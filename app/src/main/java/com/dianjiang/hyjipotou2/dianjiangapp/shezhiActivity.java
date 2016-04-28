@@ -15,6 +15,8 @@ import android.widget.RelativeLayout;
 
 import com.squareup.okhttp.Response;
 
+import java.util.ArrayList;
+
 /**
  * Created by hyjipotou2 on 16/4/17.
  */
@@ -24,13 +26,15 @@ public class shezhiActivity extends Activity {
     private LinearLayout dingweikaiguan;
     private Button off;
     private Button on;
-    private int state=0;
+    private int state=1;
     private RelativeLayout guanyu;
     private RelativeLayout tuichu;
     private ImageButton fanhui;
+    private Boolean gps_state;
+    private String dianhua;
 
-    public static final int OFF=0;
-    public static final int ON=1;
+    public static final Boolean OFF=false;
+    public static final Boolean ON=true;
 
     SharedPreferences sharedPreferences;
     SharedPreferences.Editor editor;
@@ -55,6 +59,18 @@ public class shezhiActivity extends Activity {
         guanyu= (RelativeLayout) findViewById(R.id.shezhi_guanyu);
         tuichu= (RelativeLayout) findViewById(R.id.tuichu);
         fanhui=(ImageButton)findViewById(R.id.shezhi_fanhui);
+        gps_state=sharedPreferences.getBoolean("gps",true);
+        if (gps_state==true){
+            on.setBackgroundColor(Color.parseColor("#0364dc"));
+            off.setBackgroundColor(Color.parseColor("#bebebe"));
+            off.setText("");
+            on.setText("ON");
+        }else {
+            on.setBackgroundColor(Color.parseColor("#bebebe"));
+            off.setBackgroundColor(Color.parseColor("#dc7803"));
+            on.setText("");
+            off.setText("OFF");
+        }
     }
 
     public void setListener(){
@@ -74,7 +90,11 @@ public class shezhiActivity extends Activity {
                 off.setBackgroundColor(Color.parseColor("#bebebe"));
                 off.setText("");
                 on.setText("ON");
-                state=ON;
+                gps_state=ON;
+
+                editor.putBoolean("gps",true);
+                editor.commit();
+
             }
         });
 
@@ -85,7 +105,10 @@ public class shezhiActivity extends Activity {
                 off.setBackgroundColor(Color.parseColor("#dc7803"));
                 on.setText("");
                 off.setText("OFF");
-                state=OFF;
+                gps_state=OFF;
+
+                editor.putBoolean("gps",false);
+                editor.commit();
             }
         });
 
@@ -100,6 +123,9 @@ public class shezhiActivity extends Activity {
         tuichu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                DataFragment dataFragment=DataFragment.getInstance();
+                dataFragment.mhandler1.sendEmptyMessage(0x3333);
+                dataFragment.mhandler3.sendEmptyMessage(0x4444);
                 editor.clear().commit();
                 Intent intent=new Intent(shezhiActivity.this,dengluActivity.class);
                 startActivity(intent);
@@ -114,4 +140,5 @@ public class shezhiActivity extends Activity {
             }
         });
     }
+
 }

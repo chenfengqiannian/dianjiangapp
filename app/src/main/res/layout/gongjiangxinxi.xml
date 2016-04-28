@@ -53,31 +53,58 @@
             android:background="#ffffff" />
 
         <EditText
+            android:layout_alignTop="@+id/dianjiang_touxiang"
             android:id="@+id/dianjiang_name"
             android:layout_marginLeft="16dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="15sp"
+            android:textSize="14sp"
             android:textColor="@color/black_color"
             android:hint="请输入姓名"
             android:background="#ffffff"
 
             android:text="XXXXXXXX"
-            android:layout_marginStart="16dp"
             android:layout_below="@+id/dianjiang_dengji"
             android:layout_toEndOf="@+id/dianjiang_touxiang" />
 
         <TextView
+            android:layout_centerVertical="true"
             android:id="@+id/dianjiang_gongzhong"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="15sp"
+            android:textSize="14sp"
             android:textColor="@color/divider"
+            android:text="请设置工种"
+            android:layout_alignStart="@+id/dianjiang_name" />
 
-            android:text="XXXXXXXX"
+        <TextView
+            android:id="@+id/dianjiang_rixin_yuan"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_alignBottom="@+id/dianjiang_touxiang"
-            android:layout_alignStart="@+id/dianjiang_name"
-            android:layout_marginBottom="13dp" />
+            android:layout_alignLeft="@+id/dianjiang_gongzhong"
+            android:textSize="13sp"
+            android:textColor="@color/main_color"
+            android:text="￥"/>
+        <EditText
+            android:background="#ffffff"
+            android:id="@+id/dianjiang_rixin_num"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/dianjiang_rixin_yuan"
+            android:layout_toRightOf="@+id/dianjiang_rixin_yuan"
+            android:textSize="20sp"
+            android:textColor="@color/main_color"
+            android:hint="请输入日薪"
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/dianjiang_rixin_num"
+            android:layout_toRightOf="@+id/dianjiang_rixin_num"
+            android:textSize="13sp"
+            android:textColor="@color/main_color"
+            android:text="/日均"/>
 
         <TextView
             android:id="@+id/dianjiang_dengji"

@@ -1,15 +1,21 @@
 package com.dianjiang.hyjipotou2.dianjiangapp;
 
+import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.location.Location;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
 import android.support.annotation.UiThread;
+import android.support.v4.app.ActivityCompat;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
@@ -38,10 +44,10 @@ import java.util.TreeMap;
 /**
  * Created by hyjipotou2 on 16/4/15.
  */
-public class dengluActivity extends Activity implements View.OnClickListener{
+public class dengluActivity extends Activity implements View.OnClickListener {
 
-    public static final String URL="http://192.168.191.1:8000";
-    public static final String USERAPI="/userapi/";
+    public static final String URL = "http://192.168.191.1:8000";
+    public static final String USERAPI = "/userapi/";
 
     private EditText shoujihao;
     private EditText mima;
@@ -62,8 +68,8 @@ public class dengluActivity extends Activity implements View.OnClickListener{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        sharedPreferences=getSharedPreferences("shezhi",MODE_PRIVATE);
-        editor=sharedPreferences.edit();
+        sharedPreferences = getSharedPreferences("shezhi", MODE_PRIVATE);
+        editor = sharedPreferences.edit();
 
         setContentView(R.layout.zongdenglu);
 
@@ -73,7 +79,7 @@ public class dengluActivity extends Activity implements View.OnClickListener{
         zhuce.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent=new Intent(dengluActivity.this,zhuceActivity.class);
+                Intent intent = new Intent(dengluActivity.this, zhuceActivity.class);
                 startActivity(intent);
             }
         });
@@ -87,19 +93,18 @@ public class dengluActivity extends Activity implements View.OnClickListener{
 
     }
 
-    public void init(){
-        shoujihao=(EditText)findViewById(R.id.denglu_shoujihao);
-        mima=(EditText)findViewById(R.id.denglu_mima);
-        denglu=(RelativeLayout)findViewById(R.id.zhanghao_button);
-        zhuce=(TextView)findViewById(R.id.denglu_zhuce);
-        zhaohui=(TextView)findViewById(R.id.denglu_wangji);
+    public void init() {
+        shoujihao = (EditText) findViewById(R.id.denglu_shoujihao);
+        mima = (EditText) findViewById(R.id.denglu_mima);
+        denglu = (RelativeLayout) findViewById(R.id.zhanghao_button);
+        zhuce = (TextView) findViewById(R.id.denglu_zhuce);
+        zhaohui = (TextView) findViewById(R.id.denglu_wangji);
 
         GetDenglu();
-        if (phone==null){
+        if (phone == null) {
             return;
-        }
-        else {
-            if (state==true){
+        } else {
+            if (state == true) {
                 OkHttpUtils
                         .get()
                         .url(MainActivity.URL + MainActivity.USERAPI)
@@ -124,45 +129,45 @@ public class dengluActivity extends Activity implements View.OnClickListener{
 
                             @Override
                             public void onResponse(Object response) {
-                                DataFragment fragment=DataFragment.getInstance();
+                                DataFragment fragment = DataFragment.getInstance();
                                 fragment.user_datamap = (LinkedTreeMap<String, Object>) response;
-                                Intent intent=new Intent(dengluActivity.this,gongjiangActivity.class);
+                                Intent intent = new Intent(dengluActivity.this, gongjiangActivity.class);
                                 startActivity(intent);
                                 finish();
                             }
                         });
-            }else {
+            } else {
                 OkHttpUtils
-                    .get()
-                    .url(MainActivity.URL + MainActivity.USERAPI)
-                    .addParams("phone", dengluActivity.phone)
-                    .build()
-                    .execute(new Callback() {
-                        @Override
-                        public Object parseNetworkResponse(Response response) throws IOException {
+                        .get()
+                        .url(MainActivity.URL + MainActivity.USERAPI)
+                        .addParams("phone", dengluActivity.phone)
+                        .build()
+                        .execute(new Callback() {
+                            @Override
+                            public Object parseNetworkResponse(Response response) throws IOException {
 
-                            Log.i("LOL", "response");
-                            String string = response.body().string();
+                                Log.i("LOL", "response");
+                                String string = response.body().string();
 
-                            Object ps = new Gson().fromJson(string, new TypeToken<Object>() {
-                            }.getType());
-                            return ps;
-                        }
+                                Object ps = new Gson().fromJson(string, new TypeToken<Object>() {
+                                }.getType());
+                                return ps;
+                            }
 
-                        @Override
-                        public void onError(Request request, Exception e) {
+                            @Override
+                            public void onError(Request request, Exception e) {
 
-                        }
+                            }
 
-                        @Override
-                        public void onResponse(Object response) {
-                            DataFragment fragment=DataFragment.getInstance();
-                            fragment.user_datamap = (LinkedTreeMap<String, Object>) response;
-                            Intent intent = new Intent(dengluActivity.this, MainActivity.class);
-                            startActivity(intent);
-                            finish();
-                        }
-                    });
+                            @Override
+                            public void onResponse(Object response) {
+                                DataFragment fragment = DataFragment.getInstance();
+                                fragment.user_datamap = (LinkedTreeMap<String, Object>) response;
+                                Intent intent = new Intent(dengluActivity.this, MainActivity.class);
+                                startActivity(intent);
+                                finish();
+                            }
+                        });
             }
         }
     }
@@ -172,33 +177,35 @@ public class dengluActivity extends Activity implements View.OnClickListener{
 
         setdata();
 
-        if (phone.equals("")||password.equals("")){
-            Toast.makeText(this,"账号密码不能为空",Toast.LENGTH_LONG);
+        if (phone.equals("") || password.equals("")) {
+            Toast.makeText(this, "账号密码不能为空", Toast.LENGTH_LONG);
             return;
         }
 
-        final DataFragment fragment=DataFragment.getInstance();
+        final DataFragment fragment = DataFragment.getInstance();
 
         ProgressDialog.show(this, "登录中", "登录中,请稍后", false, true);
 
         dengluHttp();
     }
 
-    public void setdata(){
-        phone=shoujihao.getText().toString();
-        password=mytool.getMD5Str(mima.getText().toString());
-    }
-    public void SaveDenglu(){
-        editor.putString("zhanghao",phone);
-        editor.putBoolean("state",state);
-        editor.commit();
-    }
-    public void GetDenglu(){
-        phone=sharedPreferences.getString("zhanghao",null);
-        state=sharedPreferences.getBoolean("state",true);
+    public void setdata() {
+        phone = shoujihao.getText().toString();
+        password = mytool.getMD5Str(mima.getText().toString());
     }
 
-    public void dengluHttp(){
+    public void SaveDenglu() {
+        editor.putString("zhanghao", phone);
+        editor.putBoolean("state", state);
+        editor.commit();
+    }
+
+    public void GetDenglu() {
+        phone = sharedPreferences.getString("zhanghao", null);
+        state = sharedPreferences.getBoolean("state", true);
+    }
+
+    public void dengluHttp() {
         OkHttpUtils
                 .get()
                 .url(MainActivity.URL + MainActivity.USERAPI)
@@ -223,11 +230,11 @@ public class dengluActivity extends Activity implements View.OnClickListener{
 
                     @Override
                     public void onResponse(Object response) {
-                        DataFragment fragment=DataFragment.getInstance();
+                        DataFragment fragment = DataFragment.getInstance();
                         fragment.user_datamap = (LinkedTreeMap<String, Object>) response;
-                        state= (boolean) fragment.user_datamap.get("job");
-                        Gson gson=new Gson();
-                        HashMap<String,String> data =new HashMap<>();
+                        state = (boolean) fragment.user_datamap.get("job");
+                        Gson gson = new Gson();
+                        HashMap<String, String> data = new HashMap<>();
                         data.put("phone", phone);
                         data.put("userpw", password);
                         data.put("leixing", "0");
@@ -251,12 +258,11 @@ public class dengluActivity extends Activity implements View.OnClickListener{
                                             Intent intent = new Intent(dengluActivity.this, MainActivity.class);
                                             startActivity(intent);
                                             finish();
-                                        }else {
-                                            Intent intent=new Intent(dengluActivity.this,gongjiangActivity.class);
+                                        } else {
+                                            Intent intent = new Intent(dengluActivity.this, gongjiangActivity.class);
                                             startActivity(intent);
                                             finish();
                                         }
-                                        Log.d("LOL", response);
                                     }
                                 });
                     }

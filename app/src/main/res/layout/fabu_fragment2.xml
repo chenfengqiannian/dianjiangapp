@@ -117,19 +117,13 @@
             android:layout_width="99dp"
             android:layout_height="match_parent">
             <TextView
+                android:id="@+id/shigongtime"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
                 android:textSize="12sp"
                 android:textColor="@color/black_color"
-                android:text="施工日期"/>
-            <ImageView
-                android:layout_centerVertical="true"
-                android:layout_alignParentRight="true"
-                android:layout_marginRight="10dp"
-                android:layout_width="10dp"
-                android:layout_height="5dp"
-                android:src="@drawable/xiala"/>
+                android:text="选择施工日期"/>
         </RelativeLayout>
         <View
             android:layout_width="2px"
@@ -157,19 +151,13 @@
             android:layout_width="99dp"
             android:layout_height="match_parent">
             <TextView
+                android:id="@+id/wangongtime"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
                 android:textSize="12sp"
                 android:textColor="@color/black_color"
-                android:text="完工日期"/>
-            <ImageView
-                android:layout_centerVertical="true"
-                android:layout_alignParentRight="true"
-                android:layout_marginRight="10dp"
-                android:layout_width="10dp"
-                android:layout_height="5dp"
-                android:src="@drawable/xiala"/>
+                android:text="选择完工日期"/>
         </RelativeLayout>
 
     </LinearLayout>

@@ -81,8 +81,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="15sp"
-                android:textColor="#ffffff"
-                android:text="四川省"/>
+                android:textColor="#ffffff" />
             <TextView
                 android:id="@+id/shi"
                 android:layout_centerVertical="true"
@@ -91,18 +90,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="15sp"
-                android:textColor="#ffffff"
-                android:text="成都市"/>
-            <TextView
-                android:id="@+id/qujie"
-                android:layout_centerVertical="true"
-                android:layout_toRightOf="@+id/shi"
-                android:layout_marginLeft="12dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="15sp"
-                android:textColor="#ffffff"
-                android:text="新都区"/>
+                android:textColor="#ffffff" />
             <Button
                 android:id="@+id/qiehuan"
                 android:layout_alignParentRight="true"

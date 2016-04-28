@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.PersistableBundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ListView;
@@ -15,7 +16,15 @@ import android.widget.TextView;
 import com.google.android.gms.appindexing.Action;
 import com.google.android.gms.appindexing.AppIndex;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.gson.Gson;
+import com.google.gson.internal.LinkedTreeMap;
+import com.google.gson.reflect.TypeToken;
+import com.squareup.okhttp.Request;
+import com.squareup.okhttp.Response;
+import com.zhy.http.okhttp.OkHttpUtils;
+import com.zhy.http.okhttp.callback.Callback;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -37,6 +46,8 @@ public class wodezhanghuActivity extends Activity {
     private int liststate=0;
     private ImageButton fanhui;
 
+    ArrayList<String> shouzhijilulist=new ArrayList<>();
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -53,7 +64,7 @@ public class wodezhanghuActivity extends Activity {
         tixian.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent=new Intent(wodezhanghuActivity.this,tixianActivity.class);
+                Intent intent = new Intent(wodezhanghuActivity.this, tixianActivity.class);
                 startActivity(intent);
             }
         });
@@ -61,13 +72,12 @@ public class wodezhanghuActivity extends Activity {
         jilu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (liststate==OFF){
+                if (liststate == OFF) {
                     jilulist.setVisibility(View.VISIBLE);
-                    liststate=ON;
-                }
-                else {
+                    liststate = ON;
+                } else {
                     jilulist.setVisibility(View.INVISIBLE);
-                    liststate=OFF;
+                    liststate = OFF;
                 }
             }
         });
@@ -108,5 +118,37 @@ public class wodezhanghuActivity extends Activity {
         DataFragment dataFragment=DataFragment.getInstance();
 
         yue.setText(dataFragment.user_datamap.get("zhanghuyue").toString());
+    }
+
+    public void getHttp(){
+        OkHttpUtils
+                .get()
+                .url(MainActivity.URL + MainActivity.USERAPI)
+                .addParams("phone", dengluActivity.phone)
+                .build()
+                .execute(new Callback() {
+                    @Override
+                    public Object parseNetworkResponse(Response response) throws IOException {
+
+                        Log.i("LOL", "response");
+                        String string = response.body().string();
+
+                        Object ps = new Gson().fromJson(string, new TypeToken<Object>() {
+                        }.getType());
+                        return ps;
+                    }
+
+                    @Override
+                    public void onError(Request request, Exception e) {
+
+                    }
+
+                    @Override
+                    public void onResponse(Object response) {
+                        DataFragment fragment=DataFragment.getInstance();
+                        fragment.user_datamap = (LinkedTreeMap<String, Object>) response;
+                        shouzhijilulist= (ArrayList<String>) fragment.user_datamap.get("shouzhijilu");
+                    }
+                });
     }
 }

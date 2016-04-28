@@ -6,6 +6,8 @@ import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.content.res.Resources;
 import android.net.Uri;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -49,7 +51,16 @@ NoSlideViewPager page;
         page.setAdapter(adapter);
 
 
+        DataFragment dataFragment=DataFragment.getInstance();
+        dataFragment.mhandler3=new Handler(){
+            @Override
+            public void handleMessage(Message msg) {
+                if (msg.what==0x4444){
+                    finish();
+                }
 
+            }
+        };
 
 
 
@@ -100,9 +111,10 @@ void init()
         if(uri.equalsIgnoreCase("dianjiangketang"))
         {
 
-       //Intent intent1=new Intent();
-         //   intent.setClass(getApplicationContext(),gongjiangmoreActivity.class);
-           // startActivity(intent1);
+
+            intent.setClass(getApplicationContext(),gongjiangmoreActivity.class);
+            intent.putExtra("leixing","ketang");
+           startActivity(intent);
 
 
 
@@ -119,6 +131,15 @@ void init()
             intent.setClass(getApplicationContext(),gongjiangmoreActivity.class);
             startActivity(intent);
 
+        }
+        if (uri.equalsIgnoreCase("wodebanzu")){
+            Intent intent1=new Intent(gongjiangActivity.this,wodebanzu.class);
+            startActivity(intent1);
+        }
+        if (uri.equalsIgnoreCase("wodeyeji")){
+            Intent intent2=new Intent(gongjiangActivity.this,gongjiangmoreActivity.class);
+            intent2.putExtra("leixing","wodeyeji");
+            startActivity(intent2);
         }
     }
 

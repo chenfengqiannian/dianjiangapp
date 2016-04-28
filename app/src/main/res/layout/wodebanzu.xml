@@ -1,24 +1,21 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.dianjiang.hyjipotou2.dianjiangapp.BlankFragment"
     android:background="#ffffff">
 
-    <!-- TODO: Update blank fragment layout -->
-
     <RelativeLayout
-        android:id="@+id/fabu_topbar"
+        android:id="@+id/dianjiang_topbar"
         android:layout_width="match_parent"
         android:layout_height="48dp"
         android:background="@color/main_color">
         <TextView
-            android:id="@+id/fabu2_top_text"
+            android:id="@+id/dianjiang_top_text"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_centerInParent="true"
             android:gravity="center"
-            android:text="点匠课堂"
+            android:text="班组成员"
             android:textColor="#ffffff"
             android:textSize="18sp" />
 
@@ -30,7 +27,7 @@
             android:layout_height="wrap_content"
             android:src="@drawable/fanhui"
             android:scaleType="fitXY"
-            android:id="@+id/fanhui" />
+            android:id="@+id/dianjiang_fanhui" />
 
         <View
             android:layout_width="match_parent"
@@ -39,15 +36,11 @@
             android:background="@color/divider" />
     </RelativeLayout>
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="XXXXXXXXXXXXXXXXXX"
-        android:id="@+id/textView"
-        android:layout_below="@+id/fabu_topbar"
-        android:layout_marginTop="10dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"/>
+    <ListView
+        android:id="@+id/banzulist"
+        android:divider="@color/divider"
+        android:dividerHeight="2px"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"></ListView>
 
-
-</RelativeLayout>
+</LinearLayout>

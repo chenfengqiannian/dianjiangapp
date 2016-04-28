@@ -158,6 +158,7 @@ public class xinxixiugaiActivity extends Activity {
         mUri=uri;
         // 开启一个带有返回值的Activity，请求码为PHOTO_REQUEST_CUT
         touxiang_file = mytool.getFileByUri(uri, this);
+        mytool.compressImage(touxiang_file);
         startActivityForResult(intent,f);
     }
 

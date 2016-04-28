@@ -2,6 +2,7 @@ package com.dianjiang.hyjipotou2.dianjiangapp;
 
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -46,6 +47,9 @@ public class MyFragment1 extends Fragment implements XListView.IXListViewListene
     private Handler mHandler;
     private ArrayAdapter mAdapter;
     private String[] strings;
+    private String[] strings1;
+    private SimpleDraweeView simpleDraweeView;
+    private PagerAdapter adapter;
 
     public DataFragment dataFragment=DataFragment.getInstance();
     private LinkedTreeMap linkedTreeMap;
@@ -78,21 +82,13 @@ public class MyFragment1 extends Fragment implements XListView.IXListViewListene
             @Override
             public void onClick(View v) {
                 arrayList.clear();
-                Toast.makeText(getActivity(),"消息已清空",Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), "消息已清空", Toast.LENGTH_SHORT).show();
                 mAdapter.notifyDataSetChanged();
             }
         });
 
         //首页轮播图跳转
-        jiaodianpager.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                DataFragment dataFragment=DataFragment.getInstance();
-                int count=jiaodianpager.getCurrentItem();
 
-
-            }
-        });
     }
 
     private void initViews(){
@@ -103,9 +99,8 @@ public class MyFragment1 extends Fragment implements XListView.IXListViewListene
 
         //焦点图轮播
 
-        uris=new Uri[]{Uri.fromFile(new File("/storage/sdcard1/tieba/kinght.jpg")),Uri.fromFile(new File("/storage/sdcard1/tieba/king.jpg")),Uri.fromFile(new File("/storage/sdcard1/tieba/miaoniang.jpg"))};
-        PagerAdapter adapter = new SimpleCarouselAdapter(jiaodianpager,uris,getActivity());
-        jiaodianpager.setAdapter(adapter);
+        getImgHttp();
+
 
         //初始化LISTVIEW adapter
 
@@ -198,11 +193,13 @@ public class MyFragment1 extends Fragment implements XListView.IXListViewListene
     private static class SimpleCarouselAdapter extends CarouselPagerAdapter<CarouselViewPager> {
         private Uri[] viewResIds;
         private Context context;
+        private String[] strings1;
 
-        public SimpleCarouselAdapter(CarouselViewPager viewPager, Uri[] viewResIds,Context context) {
+        public SimpleCarouselAdapter(CarouselViewPager viewPager, Uri[] viewResIds,Context context,String[] strings1) {
             super(viewPager);
             this.viewResIds = viewResIds;
             this.context=context;
+            this.strings1=strings1;
         }
 
         @Override
@@ -211,12 +208,22 @@ public class MyFragment1 extends Fragment implements XListView.IXListViewListene
         }
 
         @Override
-        public Object instantiateRealItem(ViewGroup container, int position) {
-            Uri resId = viewResIds[position];
+        public Object instantiateRealItem(final ViewGroup container, int position) {
+            final Uri resId = viewResIds[position];
+            final String string=strings1[position];
             SimpleDraweeView simpleDraweeView=new SimpleDraweeView(context);
             simpleDraweeView.setImageURI(resId);
             container.addView(simpleDraweeView, ViewGroup.LayoutParams.MATCH_PARENT,
                     ViewGroup.LayoutParams.MATCH_PARENT);
+            simpleDraweeView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent=new Intent(context,jiaodianxiangxiActivity.class);
+                    intent.setData(resId);
+                    intent.putExtra("text", string);
+                    context.startActivity(intent);
+                }
+            });
             return simpleDraweeView;
         }
     }
@@ -251,7 +258,10 @@ public class MyFragment1 extends Fragment implements XListView.IXListViewListene
                         arrayList1= (ArrayList<String>) linkedTreeMap.get("tupian1");
                         arrayList2= (ArrayList<String>) linkedTreeMap.get("tupian2");
                         arrayList3= (ArrayList<String>) linkedTreeMap.get("tupian3");
-
+                        uris=new Uri[]{mytool.UriFromSenge(arrayList1.get(1)),mytool.UriFromSenge(arrayList2.get(1)),mytool.UriFromSenge(arrayList3.get(1))};
+                        strings1=new String[]{arrayList1.get(0),arrayList2.get(0),arrayList3.get(0)};
+                        adapter = new SimpleCarouselAdapter(jiaodianpager,uris,getActivity(),strings1);
+                        jiaodianpager.setAdapter(adapter);
                     }
                 });
     }

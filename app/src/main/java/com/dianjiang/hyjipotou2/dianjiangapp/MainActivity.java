@@ -3,6 +3,7 @@ package com.dianjiang.hyjipotou2.dianjiangapp;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.ColorStateList;
 import android.content.res.Resources;
 import android.net.Uri;
@@ -24,7 +25,13 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import com.facebook.drawee.backends.pipeline.Fresco;
+import com.google.gson.internal.LinkedTreeMap;
 import com.squareup.okhttp.MediaType;
+
+import java.util.ArrayList;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Set;
 
 public class MainActivity extends FragmentActivity implements MyFragment3.OnFragmentInteractionListener,MyFragment2.OnFragmentInteractionListener1,myfactoryFragment.OnFragmentInteractionListener{
 
@@ -56,6 +63,11 @@ public class MainActivity extends FragmentActivity implements MyFragment3.OnFrag
     private RelativeLayout right_content;
     private ImageButton option_fanhui;
     private Button option_queren;
+    private TextView sheng;
+    private TextView shi;
+
+    private String sheng_;
+    private String shi_;
 
     //Right Menu
     private RelativeLayout gongzhong;
@@ -64,9 +76,10 @@ public class MainActivity extends FragmentActivity implements MyFragment3.OnFrag
     private EditText biaoqian;
     private TextView gongzhongtext;
     private TextView diqutext;
+    private Button qiehuan;
 
     public static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
-    public static final String URL="http://192.168.191.1:8000";
+    public static final String URL="http://120.27.30.221:8000";
     public static final String USERAPI="/userapi/";
     public static final String IMAGEAPI="/imageupapi/";
     public static final String PROCESSAPI="/gongchengapi/";
@@ -99,6 +112,13 @@ public class MainActivity extends FragmentActivity implements MyFragment3.OnFrag
         imageView2=(ImageView)findViewById(R.id.img2);
         imageView3=(ImageView)findViewById(R.id.img3);
         imageView4=(ImageView)findViewById(R.id.img4);
+        qiehuan=(Button)findViewById(R.id.qiehuan);
+
+        sheng=(TextView)findViewById(R.id.sheng);
+        shi= (TextView) findViewById(R.id.shi);
+        DataFragment dataFragment=DataFragment.getInstance();
+        sheng.setText(dataFragment.province);
+        shi.setText(dataFragment.city);
 
         RightMenu_init();
 
@@ -121,6 +141,9 @@ public class MainActivity extends FragmentActivity implements MyFragment3.OnFrag
                 if (msg.what==0x2333){
                     right_menu.openDrawer(right_content);
                 }
+                if (msg.what==0x3333){
+                    finish();
+                }
             }
         };
         option_fanhui.setOnClickListener(new View.OnClickListener() {
@@ -131,6 +154,13 @@ public class MainActivity extends FragmentActivity implements MyFragment3.OnFrag
         });
 
 
+        qiehuan.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                setDiqudialog();
+            }
+        });
+
         fabu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -138,6 +168,7 @@ public class MainActivity extends FragmentActivity implements MyFragment3.OnFrag
                 startActivity(intent);
             }
         });
+
 
 
 
@@ -290,6 +321,13 @@ public class MainActivity extends FragmentActivity implements MyFragment3.OnFrag
                 right_menu.closeDrawer(right_content);
             }
         });
+
+        diqu.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                setDiqudialog2();
+            }
+        });
     }
 
     public void gongzhongdialog() {
@@ -304,6 +342,87 @@ public class MainActivity extends FragmentActivity implements MyFragment3.OnFrag
                 });
         builder.create().show();
     }
+
+    public void setDiqudialog(){
+        final ArrayList<Map<String,Object>> arrayList;
+        final DataFragment dataFragment=DataFragment.getInstance();
+        arrayList=dataFragment.getGson();
+
+
+        ArrayList<ArrayList> citylist=new ArrayList<>();
+        final String[] sheng1=new String[arrayList.size()];
+        for (int i=0;i<arrayList.size();i++){
+            sheng1[i]=(String) arrayList.get(i).get("name");
+            //citylist.add((ArrayList) arrayList.get(i).get("city"));
+        }
+        AlertDialog.Builder builder = new AlertDialog.Builder(this)
+                .setTitle("请选择区域")
+                .setItems(sheng1, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dataFragment.province=sheng1[which];
+                        sheng.setText(sheng1[which]);
+                        ArrayList<LinkedTreeMap<String,Object>> arrayList1;
+                        arrayList1= (ArrayList<LinkedTreeMap<String, Object>>) arrayList.get(which).get("city");
+                        final String[] shi1=new String[arrayList1.size()];
+                        for (int i=0;i<arrayList1.size();i++){
+                            shi1[i]= (String) arrayList1.get(i).get("name");
+                        }
+                        AlertDialog.Builder builder1=new AlertDialog.Builder(MainActivity.this)
+                                .setTitle("请选择区域")
+                                .setItems(shi1, new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        shi.setText(shi1[which]);
+                                        dataFragment.city=shi1[which];
+                                    }
+                                });
+                        builder1.create().show();
+                    }
+                });
+        builder.create().show();
+    }
+
+    public void setDiqudialog2(){
+        final ArrayList<Map<String,Object>> arrayList;
+        final DataFragment dataFragment=DataFragment.getInstance();
+        arrayList=dataFragment.getGson();
+
+
+        ArrayList<ArrayList> citylist=new ArrayList<>();
+        final String[] sheng1=new String[arrayList.size()];
+        for (int i=0;i<arrayList.size();i++){
+            sheng1[i]=(String) arrayList.get(i).get("name");
+            //citylist.add((ArrayList) arrayList.get(i).get("city"));
+        }
+        AlertDialog.Builder builder = new AlertDialog.Builder(this)
+                .setTitle("请选择区域")
+                .setItems(sheng1, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dataFragment.sheng_=sheng1[which];
+                        ArrayList<LinkedTreeMap<String,Object>> arrayList1;
+                        arrayList1= (ArrayList<LinkedTreeMap<String, Object>>) arrayList.get(which).get("city");
+                        final String[] shi1=new String[arrayList1.size()];
+                        for (int i=0;i<arrayList1.size();i++){
+                            shi1[i]= (String) arrayList1.get(i).get("name");
+                        }
+                        AlertDialog.Builder builder1=new AlertDialog.Builder(MainActivity.this)
+                                .setTitle("请选择区域")
+                                .setItems(shi1, new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        dataFragment.shi_=shi1[which];
+
+                                        diqutext.setText(dataFragment.sheng_+","+dataFragment.shi_);
+                                    }
+                                });
+                        builder1.create().show();
+                    }
+                });
+        builder.create().show();
+    }
+
 
     ////////////////////////////////////////////////////////////////////////////////////////
     @Override

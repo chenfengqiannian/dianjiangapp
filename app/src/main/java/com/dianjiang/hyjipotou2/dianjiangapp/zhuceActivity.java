@@ -130,7 +130,7 @@ public class zhuceActivity extends Activity {
         data1.put("phone",phonenow);
         OkHttpUtils
                 .postString()
-                .url(URL + USERAPI)
+                .url(MainActivity.URL + MainActivity.USERAPI)
                 .content(gson1.toJson(data1))
                 .build()
                 .execute(new StringCallback() {
@@ -170,7 +170,7 @@ public class zhuceActivity extends Activity {
         data1.put("phone",phonenow);
         OkHttpUtils
                 .postString()
-                .url(URL + USERAPI)
+                .url(MainActivity.URL + MainActivity.USERAPI)
                 .content(gson1.toJson(data1))
                 .build()
                 .execute(new StringCallback() {
@@ -191,7 +191,8 @@ public class zhuceActivity extends Activity {
         password=mytool.getMD5Str(mima.getText().toString());
         password_ok=mytool.getMD5Str(querenmima.getText().toString());
         test=yanzhengma.getText().toString();
-        gps=xiangxidizhi.getText().toString();
 
+        gps=DataFragment.getInstance().province+","+DataFragment.getInstance().city;
+        xiangxidizhi.setText(gps);
     }
 }

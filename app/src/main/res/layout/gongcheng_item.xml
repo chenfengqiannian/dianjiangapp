@@ -22,9 +22,7 @@
             android:textSize="13sp"
             android:textColor="@color/black_color"
             android:layout_width="115dp"
-            android:layout_height="wrap_content"
-
-            android:text="XXXXXXXXXX"/>
+            android:layout_height="wrap_content" />
         <TextView
             android:singleLine="true"
             android:id="@+id/number"
@@ -35,8 +33,7 @@
             android:textColor="@color/texthui_color"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-
-            android:text="XXXXXXXXX"/>
+            />
         
         <TextView
             android:layout_centerVertical="true"
@@ -45,8 +42,7 @@
             android:layout_width="236dp"
             android:layout_height="22dp"
             android:textSize="8sp"
-            android:textColor="@color/texthui_color"
-            android:text="XXXXXXXXXXXXXXXX"/>
+            android:textColor="@color/texthui_color" />
         
         <ImageView
             android:id="@+id/shenhe_img"
@@ -63,9 +59,7 @@
             android:textSize="11sp"
             android:textColor="@color/blue_color"
             android:layout_toRightOf="@id/shenhe_img"
-            android:layout_marginLeft="2dp"
-
-            android:text="XXXXXX"/>
+            android:layout_marginLeft="2dp" />
         
         <TextView
             android:id="@+id/date"
@@ -75,9 +69,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/texthui_color"
-            android:textSize="8sp"
-
-            android:text="XXXXXXXX"/>
+            android:textSize="8sp" />
     </RelativeLayout>
     <RelativeLayout
         android:background="#ffffff"
@@ -107,8 +99,7 @@
             android:layout_height="wrap_content"
             android:textColor="@color/black_color"
             android:textSize="13sp"
-
-            android:text="XXXXXXXXXX"
+            android:hint="未设置工程进度"
             android:id="@+id/processjindu" />
         <View
             android:layout_width="match_parent"

@@ -1,6 +1,7 @@
 package com.dianjiang.hyjipotou2.dianjiangapp;
 
 import android.app.AlertDialog;
+import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -15,6 +16,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -26,6 +28,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -90,7 +93,10 @@ public class fabuFragment extends Fragment {
     private RelativeLayout jiebao_fukuanfangshi;
     private EditText jiebao_beizhu;
     private TextView jiebao_gongzhongtext;
+    private TextView jiebao_shigong;
+    private TextView jiebao_wangong;
     private TextView jiebao_fukuantext;
+    private static boolean[] state={false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false};
 
     //预览发布
     private TextView yulan_gongchenghao;
@@ -176,7 +182,6 @@ public class fabuFragment extends Fragment {
         xinxi_tupian2= (ImageView) view.findViewById(R.id.xinxi_tupian2);
         xinxi_tupianOption= (ImageView) view.findViewById(R.id.img_option);
         xinxi_tupiantext=(TextView)view.findViewById(R.id.fabu1_tupian);
-        xinxi_shigongdiqu=(RelativeLayout)view.findViewById(R.id.fabu1_diqu);
         xinxi_xiangxidizhi=(EditText)view.findViewById(R.id.fabu1_dizhi);
 
         //监听器
@@ -220,10 +225,31 @@ public class fabuFragment extends Fragment {
         jiebao_fukuanfangshi=(RelativeLayout)view.findViewById(R.id.fabu2_fukuanfangshi);
         jiebao_beizhu=(EditText)view.findViewById(R.id.fabu2_shurubeizhu);
         jiebao_fukuantext=(TextView)view.findViewById(R.id.fabu2_fukuantext);
+        jiebao_shigong=(TextView)view.findViewById(R.id.shigongtime);
+        jiebao_wangong=(TextView)view.findViewById(R.id.wangongtime);
+
+        jiebao_gongzhong.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                jiebao_gongzhongtext.setText("请选择接包工种");
+                gongzhongdialog();
+            }
+        });
+        jiebao_shigongtime.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                StartDateDialog();
+            }
+        });
+        jiebao_wangongtime.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                EndDateDialog();
+            }
+        });
     }
     //预览发布初始化
     public void yulanInit(){
-        yulan_gongchenghao=(TextView)view.findViewById(R.id.fabu3_gongchenghao);
         yulan_gongchengname= (TextView) view.findViewById(R.id.fabu3_gongchengming);
         yulan_gongchengmiaoshu=(TextView)view.findViewById(R.id.fabu3_miaoshu);
         yulan_dizhi=(TextView)view.findViewById(R.id.fabu3_dizhi);
@@ -242,6 +268,7 @@ public class fabuFragment extends Fragment {
         yulan_yaoqiu.setText(dataFragment.fabu_datamap.get("yaoqiu").toString());
         yulan_price.setText(dataFragment.fabu_datamap.get("choulao").toString());
         yulan_beizhu.setText(dataFragment.fabu_datamap.get("beizhu").toString());
+        yulan_shichang.setText(dataFragment.fabu_datamap.get("shichang").toString());
     }
 
     public void simpleListOption(String[] str1, final int camera, final int photo){
@@ -362,6 +389,9 @@ public class fabuFragment extends Fragment {
             dataFragment.fabu_datamap.put("choulao",jiebao_price.getText().toString());
             dataFragment.fabu_datamap.put("fukuan",jiebao_fukuantext.getText().toString());
             dataFragment.fabu_datamap.put("beizhu",jiebao_beizhu.getText().toString());
+            dataFragment.fabu_datamap.put("shichang",jiebao_shigong.getText().toString()+"至"+jiebao_wangong.getText().toString());
+            dataFragment.fabu_datamap.put("kaishitime",jiebao_shigong.getText().toString());
+            dataFragment.fabu_datamap.put("jieshutime",jiebao_wangong.getText().toString());
 
         }
         else if (mParam1.equalsIgnoreCase("预览发布")){
@@ -429,6 +459,58 @@ public class fabuFragment extends Fragment {
                 break;
 
         }
+    }
+
+    public void gongzhongdialog() {
+       // boolean[] state={false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false};
+        final String[] gongzhong = {"电工","木工","瓦工","焊工","架子工","钢筋工","抹灰工","砌筑工","混凝土工","油漆工","防水工","管道工","吊顶工","无气喷涂工","钻孔工","拆除工","普工/杂工","项目经理","生产经理","工长","监理","施工员","质量员","安全员","材料员","资料员","预算员","机械员","测量员","劳务员","司索指挥","塔吊司机","吊车司机","起重机司机","升降机司机","挖掘机司机","推土机司机","叉车司机","电梯司机","机械修理工","机械安装/拆除工"};
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity())
+                .setTitle("请选择工种")
+                .setMultiChoiceItems(gongzhong,state, new DialogInterface.OnMultiChoiceClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which, boolean isChecked) {
+                        //if (fabuFragment.state[which])
+                        //DataFragment dataFragment=DataFragment.getInstance();
+                        //dataFragment.gongzhongstring = dataFragment.gongzhongstring +" "+gongzhong[which];
+                        //dataFragment.gongzhongstring.replace()
+                    }
+                })
+                .setPositiveButton("确认", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        DataFragment dataFragment=DataFragment.getInstance();
+                        for (int i=0;i<state.length;i++){
+                            if (state[i]==true){
+                                dataFragment.gongzhongstring=dataFragment.gongzhongstring+" "+gongzhong[i];
+                                state[i]=false;
+                            }
+                        }
+                        jiebao_gongzhongtext.setText(dataFragment.gongzhongstring);
+                    }
+                });
+        builder.create().show();
+    }
+
+    public void StartDateDialog(){
+        Calendar c=Calendar.getInstance();
+        DatePickerDialog datePickerDialog=new DatePickerDialog(getActivity(), new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                jiebao_shigong.setText(Integer.toString(year)+"-"+Integer.toString(monthOfYear)+"-"+Integer.toString(dayOfMonth));
+            }
+        },c.get(Calendar.YEAR),c.get(Calendar.MONTH),c.get(Calendar.DAY_OF_MONTH));
+        datePickerDialog.show();
+    }
+
+    public void EndDateDialog(){
+        Calendar c=Calendar.getInstance();
+        DatePickerDialog datePickerDialog=new DatePickerDialog(getActivity(), new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                jiebao_wangong.setText(Integer.toString(year)+"-"+Integer.toString(monthOfYear)+"-"+Integer.toString(dayOfMonth));
+            }
+        },c.get(Calendar.YEAR),c.get(Calendar.MONTH),c.get(Calendar.DAY_OF_MONTH));
+        datePickerDialog.show();
     }
 
     /**

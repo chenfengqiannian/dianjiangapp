@@ -16,6 +16,7 @@ import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -25,8 +26,10 @@ import android.widget.TextView;
 
 import com.dianjiang.hyjipotou2.dianjiangapp.pullrefreshlistview.SimpleFragmentPagerAdapter;
 import com.facebook.drawee.view.SimpleDraweeView;
+import com.google.gson.internal.LinkedTreeMap;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -60,6 +63,14 @@ public class gongjianglstFragment extends android.support.v4.app.Fragment implem
     private RelativeLayout dianjiangketang;
     private RelativeLayout lianxikefu;
     private RelativeLayout yijianfankui;
+    private TextView fr1_province;
+    private TextView fr1_city;
+    private RelativeLayout wodeyeji;
+    private TextView diqutext;
+    private String dianhua1;
+
+    private Button button1;
+    private Button button2;
 
     private EditText text;
 
@@ -144,7 +155,7 @@ public class gongjianglstFragment extends android.support.v4.app.Fragment implem
         if(v==shezhi)
         {onButtonPressed("shezhi");}
         if(v==lianxikefu)
-        {final String[] phonenum={"18842635112"};
+        {final String[] phonenum={dianhua1};
             AlertDialog.Builder builder = new AlertDialog.Builder(getActivity())
                     .setTitle("点击拨打客服电话")
                     .setItems(phonenum, new DialogInterface.OnClickListener() {
@@ -197,7 +208,7 @@ public class gongjianglstFragment extends android.support.v4.app.Fragment implem
         if(v==wodezhanghu)
         {
             Intent intent=new Intent();
-            intent.setClass(getActivity().getApplicationContext(),wodezhanghuActivity.class);
+            intent.setClass(getActivity().getApplicationContext(), wodezhanghuActivity.class);
             startActivity(intent);
 
 
@@ -216,16 +227,29 @@ onButtonPressed("dianjiangketang");
         {}
 
         if(v==wodebanzu)
-        {}
+        {onButtonPressed("wodebanzu");}
         if(v==banggongyou)
-        {   onButtonPressed("banggongyou");
+        {   onButtonPressed("banggongyou");}
 
-
-
-
+        if (v==wodeyeji){
+            onButtonPressed("wodeyeji");
+        }
+        if (v==button1){
+            setDiqudialog2();
         }
 
     }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        DataFragment da=DataFragment.getInstance();
+        if (!mParam1.equalsIgnoreCase("tab3")){
+        fr1_province.setText(da.province);
+        fr1_city.setText(da.city);}
+    }
+
+
 
     /**
      * This interface must be implemented by activities that contain this
@@ -247,6 +271,13 @@ onButtonPressed("dianjiangketang");
         if (index == 0) {view=inflater.inflate(R.layout.gongjiang_fragment1,container,false);
         viewPager=(ViewPager)view.findViewById(R.id.xinrenwu_pager);
         mytab=(TabLayout)view.findViewById(R.id.xinrenwu_tabs);
+            fr1_province=(TextView)view.findViewById(R.id.gongjiang_sheng);
+            fr1_city= (TextView) view.findViewById(R.id.gongjiang_shi);
+            button1= (Button) view.findViewById(R.id.gongjiang_qiehuan);
+            button1.setOnClickListener(this);
+            DataFragment dataFragment=DataFragment.getInstance();
+            fr1_city.setText(dataFragment.city);
+            fr1_province.setText(dataFragment.province);
 
             ArrayList<myfactoryFragment> fragments=new ArrayList<>();
             fragments.add(myfactoryFragment.newInstance("招标工程"));
@@ -261,6 +292,15 @@ onButtonPressed("dianjiangketang");
         if (index == 1) {view=inflater.inflate(R.layout.gongjiang_fragment2,container,false);
             viewPager=(ViewPager)view.findViewById(R.id.lishirenwu_pager);
             mytab=(TabLayout)view.findViewById(R.id.lishirenwu_tabs);
+
+            fr1_province=(TextView)view.findViewById(R.id.gongjiang_sheng);
+            fr1_city= (TextView) view.findViewById(R.id.gongjiang_shi);
+
+            button1= (Button) view.findViewById(R.id.gongjiang_qiehuan_);
+            button1.setOnClickListener(this);
+            DataFragment dataFragment=DataFragment.getInstance();
+            fr1_city.setText(dataFragment.city);
+            fr1_province.setText(dataFragment.province);
 
             ArrayList<myfactoryFragment> fragments=new ArrayList<>();
             fragments.add(myfactoryFragment.newInstance("招标成功"));
@@ -291,6 +331,8 @@ onButtonPressed("dianjiangketang");
             yijianfankui=(RelativeLayout)view.findViewById(R.id.gongjiang_yijian);
             textDialog=(LinearLayout)getActivity().getLayoutInflater().inflate(R.layout.textdialog, null);
 
+            wodeyeji= (RelativeLayout) view.findViewById(R.id.gongjiang_yeji);
+            getkefudianhua();
             shezhi.setOnClickListener(this);
             gerenxinxi.setOnClickListener(this);
             wodebanzu.setOnClickListener(this);
@@ -300,7 +342,12 @@ onButtonPressed("dianjiangketang");
             dianjiangketang.setOnClickListener(this);
             lianxikefu.setOnClickListener(this);
             yijianfankui.setOnClickListener(this);
+            if (!((ArrayList<String>)DataFragment.getInstance().user_datamap.get("touxiang")).isEmpty()) {
+                touxiang.setImageURI(mytool.UriFromSenge(((ArrayList<String>) DataFragment.getInstance().user_datamap.get("touxiang")).get(((ArrayList<String>) DataFragment.getInstance().user_datamap.get("touxiang")).size() - 1)));
+            }
 
+            xingming.setText(DataFragment.getInstance().user_datamap.get("xingming").toString());
+            dianhua.setText(dengluActivity.phone);
 
 
         }
@@ -323,5 +370,55 @@ class myPagePager extends SimpleFragmentPagerAdapter
         this.PAGE_COUNT=oj.length;
     }
 }
+    public void getkefudianhua(){
+        ArrayList<String> arrayList=new ArrayList<>();
+        DataFragment dataFragment=DataFragment.getInstance();
+        arrayList= (ArrayList<String>) dataFragment.linkedTreeMap.get("lianxikefu");
+        dianhua1=arrayList.get(0);
+
+    }
+    public void setDiqudialog2(){
+        final ArrayList<Map<String,Object>> arrayList;
+        final DataFragment dataFragment=DataFragment.getInstance();
+        arrayList=dataFragment.getGson();
+
+
+        ArrayList<ArrayList> citylist=new ArrayList<>();
+        final String[] sheng1=new String[arrayList.size()];
+        for (int i=0;i<arrayList.size();i++){
+            sheng1[i]=(String) arrayList.get(i).get("name");
+            //citylist.add((ArrayList) arrayList.get(i).get("city"));
+        }
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity())
+                .setTitle("请选择区域")
+                .setItems(sheng1, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dataFragment.sheng_ = sheng1[which];
+                        ArrayList<LinkedTreeMap<String, Object>> arrayList1;
+                        arrayList1 = (ArrayList<LinkedTreeMap<String, Object>>) arrayList.get(which).get("city");
+                        final String[] shi1 = new String[arrayList1.size()];
+                        for (int i = 0; i < arrayList1.size(); i++) {
+                            shi1[i] = (String) arrayList1.get(i).get("name");
+                        }
+                        AlertDialog.Builder builder1 = new AlertDialog.Builder(getActivity())
+                                .setTitle("请选择区域")
+                                .setItems(shi1, new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        dataFragment.shi_ = shi1[which];
+                                        dataFragment.province=sheng1[which];
+                                        dataFragment.city=shi1[which];
+                                        fr1_city.setText(dataFragment.shi_);
+                                        fr1_province.setText(dataFragment.sheng_);
+                                        //diqutext.setText(dataFragment.sheng_ + "," + dataFragment.shi_);
+                                    }
+                                });
+                        builder1.create().show();
+                    }
+                });
+        builder.create().show();
+    }
+
 
 }

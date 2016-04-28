@@ -34,9 +34,9 @@ import java.util.HashMap;
  */
 public class mytool {
 
-    public static final String URL="http://192.168.191.1:8000";
-    public static final String USERAPI="/userapi/";
-    public static final String GONGCHENGAPI="/gongchengapi/";
+    //public static final String URL="http://192.168.191.1:8000";
+    //public static final String USERAPI="/userapi/";
+    //public static final String GONGCHENGAPI="/gongchengapi/";
 
     //字符串转换为MD5
     public  static String getMD5Str(String str) {
@@ -70,7 +70,7 @@ public class mytool {
     }
 
     public static Uri UriFromSenge(String string){
-        Uri uri=Uri.parse(URL+"/media/"+string);
+        Uri uri=Uri.parse(MainActivity.URL+"/media/"+string);
         return uri;
     }
 

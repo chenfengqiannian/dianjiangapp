@@ -144,8 +144,8 @@ public class GongjiangzhuceActivity extends Activity {
                 }
                         buider
                         .url(MainActivity.URL + MainActivity.IMAGEAPI)
-                        .addParams("id",zhuceActivity.phonenow)
-                        .addParams("shangchuan","user,zhengshu")
+                        .addParams("id", zhuceActivity.phonenow)
+                        .addParams("shangchuan", "user,zhengshu")
                         .build()
                         .execute(new StringCallback() {
                             @Override
@@ -155,75 +155,80 @@ public class GongjiangzhuceActivity extends Activity {
 
                             @Override
                             public void onResponse(String response) {
-                                Log.i("LOL","zige");
+
+                                PostFormBuilder buider2 =OkHttpUtils.post();
+                                for(int i=0;i<shenfen_files.size();i++){
+                                    buider2.addFile(i+"aaaa",shenfen_files.get(i).getName(),shenfen_files.get(i));
+                                }
+                                buider2
+                                        .url(MainActivity.URL + MainActivity.IMAGEAPI)
+                                        .addParams("id",zhuceActivity.phonenow)
+                                        .addParams("shangchuan","user,shenfengzheng")
+                                        .build()
+                                        .execute(new StringCallback() {
+                                            @Override
+                                            public void onError(Request request, Exception e) {
+                                                Log.d("LOL", "wori_shenfen");
+                                            }
+
+                                            @Override
+                                            public void onResponse(String response) {
+                                                Log.i("LOL", "shenfen");
+
+                                                PostFormBuilder buider3 = OkHttpUtils.post();
+                                                buider3.addFile("ffff", touxiang_file.getName(), touxiang_file)
+                                                        .url(MainActivity.URL + MainActivity.IMAGEAPI)
+                                                        .addParams("id", zhuceActivity.phonenow)
+                                                        .addParams("shangchuan", "user,touxiang")
+                                                        .build()
+                                                        .execute(new StringCallback() {
+                                                            @Override
+                                                            public void onError(Request request, Exception e) {
+                                                                Log.d("LOL", "wori_touxiang");
+                                                            }
+
+                                                            @Override
+                                                            public void onResponse(String response) {
+                                                                Log.d("LOL", "touxiang");
+                                                                OkHttpClient client = new OkHttpClient();
+                                                                Gson gson1 = new Gson();
+                                                                HashMap<String, Object> data1 = new HashMap<>();
+                                                                data1.put("shenfengzhengid", idcard);
+                                                                data1.put("xingming", name);
+                                                                data1.put("phone", zhuceActivity.phonenow);
+                                                                OkHttpUtils
+                                                                        .postString()
+                                                                        .url(MainActivity.URL + MainActivity.USERAPI)
+                                                                        .content(gson1.toJson(data1))
+                                                                        .build()
+                                                                        .execute(new StringCallback() {
+                                                                            @Override
+                                                                            public void onError(Request request, Exception e) {
+                                                                                Log.i("LOL", "Dwq");
+                                                                                Toast.makeText(GongjiangzhuceActivity.this, "发生未知错误", Toast.LENGTH_LONG).show();
+                                                                            }
+
+                                                                            @Override
+                                                                            public void onResponse(String response) {
+                                                                                Toast.makeText(GongjiangzhuceActivity.this, "注册成功!", Toast.LENGTH_LONG).show();
+                                                                                Intent intent = new Intent(GongjiangzhuceActivity.this, dengluActivity.class);
+                                                                                startActivity(intent);
+                                                                                finish();
+                                                                            }
+                                                                        });
+
+                                                            }
+                                                        });
+
+                                            }
+                                        });
+
+
                             }
                         });
 
-                PostFormBuilder buider2 =OkHttpUtils.post();
-                for(int i=0;i<shenfen_files.size();i++){
-                    buider2.addFile(i+"aaaa",shenfen_files.get(i).getName(),shenfen_files.get(i));
-                }
-                buider2
-                        .url(MainActivity.URL + MainActivity.IMAGEAPI)
-                        .addParams("id",zhuceActivity.phonenow)
-                        .addParams("shangchuan","user,shenfengzheng")
-                        .build()
-                        .execute(new StringCallback() {
-                            @Override
-                            public void onError(Request request, Exception e) {
-                                Log.d("LOL", "wori_shenfen");
-                            }
 
-                            @Override
-                            public void onResponse(String response) {
-                                Log.i("LOL","shenfen");
-                            }
-                        });
 
-                PostFormBuilder buider3 =OkHttpUtils.post();
-                    buider3.addFile("ffff", touxiang_file.getName(), touxiang_file)
-                        .url(MainActivity.URL + MainActivity.IMAGEAPI)
-                        .addParams("id",zhuceActivity.phonenow)
-                        .addParams("shangchuan","user,touxiang")
-                        .build()
-                        .execute(new StringCallback() {
-                            @Override
-                            public void onError(Request request, Exception e) {
-                                Log.d("LOL", "wori_touxiang");
-                            }
-
-                            @Override
-                            public void onResponse(String response) {
-                                Log.d("LOL","touxiang");
-                            }
-                        });
-
-                OkHttpClient client = new OkHttpClient();
-                Gson gson1=new Gson();
-                HashMap<String,Object> data1 =new HashMap<>();
-                data1.put("shenfengzhengid",idcard);
-                data1.put("xingming",name);
-                data1.put("phone",zhuceActivity.phonenow);
-                OkHttpUtils
-                        .postString()
-                        .url(MainActivity.URL + MainActivity.USERAPI)
-                        .content(gson1.toJson(data1))
-                        .build()
-                        .execute(new StringCallback() {
-                            @Override
-                            public void onError(Request request, Exception e) {
-                                Log.i("LOL", "Dwq");
-                                Toast.makeText(GongjiangzhuceActivity.this,"发生未知错误",Toast.LENGTH_LONG).show();
-                            }
-
-                            @Override
-                            public void onResponse(String response) {
-                                Toast.makeText(GongjiangzhuceActivity.this, "注册成功!", Toast.LENGTH_LONG).show();
-                                Intent intent = new Intent(GongjiangzhuceActivity.this, dengluActivity.class);
-                                startActivity(intent);
-                                finish();
-                            }
-                        });
 
 
             }
@@ -505,10 +510,17 @@ public class GongjiangzhuceActivity extends Activity {
         // 开启一个带有返回值的Activity，请求码为PHOTO_REQUEST_CUT
         if (crop_state==TOUXIANG_CROP) {
             touxiang_file = mytool.getFileByUri(uri, this);
+            mytool.compressImage(touxiang_file);
         }else if (crop_state==ZIGE_CROP){
-            zige_files.add(mytool.getFileByUri(uri,this));
+            zige_files.add(mytool.getFileByUri(uri, this));
+            for (int i=0;i<zige_files.size();i++){
+                mytool.compressImage(zige_files.get(i));
+            }
         }else if(crop_state==SHENFEN_CROP){
             shenfen_files.add(mytool.getFileByUri(uri,this));
+            for (int i=0;i<shenfen_files.size();i++){
+                mytool.compressImage(shenfen_files.get(i));
+            }
         }
         startActivityForResult(intent,f);
     }

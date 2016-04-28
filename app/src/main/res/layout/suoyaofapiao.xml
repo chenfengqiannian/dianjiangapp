@@ -250,6 +250,35 @@
     </RelativeLayout>
 
     <RelativeLayout
+        android:id="@+id/suoyaofapiao_gongchenghao"
+        android:layout_below="@+id/suoyaofapiao_shijian"
+        android:layout_width="match_parent"
+        android:layout_height="37dp">
+        <TextView
+            android:layout_centerVertical="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black_color"
+            android:textSize="13sp"
+            android:hint="工程号"
+            android:layout_marginLeft="17dp"
+            android:id="@+id/gongchenghaotext" />
+        <ImageView
+            android:layout_width="7dp"
+            android:layout_height="14dp"
+            android:src="@drawable/jianjin"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="9dp"/>
+        <View
+            android:layout_alignParentBottom="true"
+            android:layout_width="match_parent"
+            android:layout_height="2px"
+            android:background="@color/divider"></View>
+    </RelativeLayout>
+
+
+    <RelativeLayout
         android:layout_alignParentBottom="true"
         android:id="@+id/suoyaofapiao_tijiao"
         android:background="@color/main_color"

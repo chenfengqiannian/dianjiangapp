@@ -78,6 +78,8 @@ public class processItemAdapter extends BaseAdapter {
         else if (bean.shenhe_state==-1){
             viewHolder.shenhe_text.setText("审核失败");
             viewHolder.shenhe_img.setImageResource(R.drawable.shenheshibai);
+        }else if (bean.shenhe_state==-3){
+            viewHolder.shenhe_text.setText("");
         }
 
         return convertView;

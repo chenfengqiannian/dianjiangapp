@@ -1,6 +1,7 @@
 package com.dianjiang.hyjipotou2.dianjiangapp;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -9,6 +10,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 
 import com.dianjiang.hyjipotou2.dianjiangapp.pullrefreshlistview.XListView;
@@ -24,6 +26,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -55,6 +58,7 @@ public class myfactoryFragment extends Fragment implements XListView.IXListViewL
     private List<processItemBean> itemBeans;
     private processItemBean itemBean;
     private LinkedTreeMap linkedTreeMap;
+    private ArrayList<LinkedTreeMap> linkedTreeMapArrayList=new ArrayList<>();
 
     private OnFragmentInteractionListener mListener;
 
@@ -144,26 +148,43 @@ public class myfactoryFragment extends Fragment implements XListView.IXListViewL
 
     @Override
     public void onRefresh() {
-       /* mHandler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                start = ++refreshCnt;
-                items.clear();
-                geneItems();
+        if (mParam1.equalsIgnoreCase("招标工程") || mParam1.equalsIgnoreCase("指定工程")){
+            OkHttpUtils
+                    .get()
+                    .url(MainActivity.URL + MainActivity.PROCESSAPI)
+                    .build()
+                    .execute(new mCallBack<Object>(this) {
+                        @Override
+                        public Object parseNetworkResponse(Response response) throws IOException {
 
-                //数据
-                String[] arr1={"ali","prprpr"};
-                ArrayAdapter<String> adapter=new ArrayAdapter<String>(getActivity(),R.layout.testitem,R.id.testText,arr1);
-                xListView.setAdapter(adapter);
+                            Log.i("LOL", "response");
+                            String string = response.body().string();
 
-                onLoad();
-            }
-        }, 2000);*/
+                            Object ps = new Gson().fromJson(string, new TypeToken<Object>() {
+                            }.getType());
+                            return ps;
+                        }
+
+                        @Override
+                        public void onError(Request request, Exception e) {
+
+                        }
+
+                        @Override
+                        public void onResponse(Object response) {
+                            DataFragment dataFragment=DataFragment.getInstance();
+                            dataFragment.process_datamap=(ArrayList<LinkedTreeMap<String,Object>>) response;
+                            setdata();
+                            onLoad();
+                        }
+                    });
+        }else {
         OkHttpUtils
                 .get()
-                .url(URL + USERAPI)
+                .url(MainActivity.URL + MainActivity.USERAPI)
+                .addParams("phone", dengluActivity.phone)
                 .build()
-                .execute(new mCallBack<Object>(this){
+                .execute(new mCallBack<Object>(this) {
                     @Override
                     public Object parseNetworkResponse(Response response) throws IOException {
 
@@ -182,10 +203,13 @@ public class myfactoryFragment extends Fragment implements XListView.IXListViewL
 
                     @Override
                     public void onResponse(Object response) {
-
+                        linkedTreeMap = (LinkedTreeMap) response;
+                        DataFragment dataFragment=DataFragment.getInstance();
+                        dataFragment.user_datamap=linkedTreeMap;
+                        setdata();
+                        onLoad();
                     }
-                });
-
+                });}
 
     }
 
@@ -209,22 +233,62 @@ public class myfactoryFragment extends Fragment implements XListView.IXListViewL
             this.mfragment=mfragment;
         }
     }
-    public void setdata()
 
-    {   int zhuangtai[]=new int[2];
+    public void setdata(){
+        int zhuangtai[]=new int[2];
         DataFragment data=DataFragment.getInstance();
         ArrayList<LinkedTreeMap<String,Object>> gongcheng_set=(ArrayList<LinkedTreeMap<String,Object>>)data.user_datamap.get("gongcheng_set");
         itemBeans=new ArrayList<processItemBean>();
-if(mParam1.equalsIgnoreCase("招标工程") || mParam1.equalsIgnoreCase("指定工程"))
+        if(mParam1.equalsIgnoreCase("招标工程") || mParam1.equalsIgnoreCase("指定工程"))
+        {
+            if (mParam1.equalsIgnoreCase("招标工程")){
+                for (LinkedTreeMap<String,Object> map:data.process_datamap){
+                    if (((String)map.get("suozaidi")).split(",").length>=2)
+                    if (((String)map.get("suozaidi")).split(",")[1].equals(data.city)){
+                        ArrayList<String> tupianlist=(ArrayList<String>)map.get("tupian");
 
-{
+                        Uri uri;
+                        String string;
+                        if (tupianlist.isEmpty()){
+                            uri=null;
+                        }else {
+                            string=tupianlist.get(tupianlist.size()-1);
+                            uri=mytool.UriFromSenge(string);
+                        }
 
+                        itemBeans.add(0,new processItemBean(uri,(String)map.get("biaoti"),map.get("id").toString(),(String)map.get("miaoshu"),(int)(double)map.get("zhuangtai"),(String)map.get("autotime"),(String)map.get("gongchengjindu")));
 
+                    }
+                }
 
-}  else {
-    if (mParam1.equalsIgnoreCase("已发布工程")) {
+            }
+            else {
+                for (LinkedTreeMap<String,Object> map:data.process_datamap){
+                    for (String phone:(ArrayList<String>)map.get("yaoqing")){
+                    if (phone.equals(dengluActivity.phone)){
+                        ArrayList<String> tupianlist=(ArrayList<String>)map.get("tupian");
+
+                        Uri uri;
+                        String string;
+                        if (tupianlist.isEmpty()){
+                            uri=null;
+                        }else {
+                            string=tupianlist.get(tupianlist.size()-1);
+                            uri=mytool.UriFromSenge(string);
+                        }
+
+                        itemBeans.add(0,new processItemBean(uri,(String)map.get("biaoti"),map.get("id").toString(),(String)map.get("miaoshu"),(int)(double)map.get("zhuangtai"),(String)map.get("autotime"),(String)map.get("gongchengjindu")));
+
+                    }
+                    }
+                }
+            }
+
+        }  else {
+        if (mParam1.equalsIgnoreCase("已发布工程")) {
         zhuangtai[0] = 0;
         zhuangtai[1] = 6;
+
 
 
         //itemBeans=new ArrayList<processItemBean>();
@@ -235,7 +299,8 @@ if(mParam1.equalsIgnoreCase("招标工程") || mParam1.equalsIgnoreCase("指定�
     }
 
     if (mParam1.equalsIgnoreCase("未发布工程")) {
-
+        zhuangtai[0]=-3;
+        zhuangtai[1]=-3;
     }
 
     if (mParam1.equalsIgnoreCase("招标中工程")) {
@@ -276,12 +341,25 @@ if(mParam1.equalsIgnoreCase("招标工程") || mParam1.equalsIgnoreCase("指定�
 
    for(LinkedTreeMap<String,Object> object:gongcheng_set)
     {
-        if((int)(double)object.get("zhuangtai")>=zhuangtai[0]||(int)(double)object.get("zhuangtai")<=zhuangtai[0])
+        if((int)(double)object.get("zhuangtai")>=zhuangtai[0]&&(int)(double)object.get("zhuangtai")<=zhuangtai[0])
         {
 
-            //ArrayList<String> touxinglist=(ArrayList<String>)object.get("tupian");
-           // itemBeans.add(0,new processItemBean(mytool.UriFromSenge(touxinglist.get(0)),(String)object.get("biaoti"),(String)object.get("id"),(String)object.get("miaoshu"),(int)(double)object.get("zhuangtai"),(String)object.get("autotime"),"这是一个工程进度哟"));
+            //ArrayList<Map<String,Object>> gongchenglist;
+           // DataFragment dataFragment=DataFragment.getInstance();
+           // ArrayList<String> gongchengid=new ArrayList<>();
+            //gongchenglist= (ArrayList<Map<String, Object>>) dataFragment.user_datamap.get("gongcheng_set");
+            ArrayList<String> tupianlist=(ArrayList<String>)object.get("tupian");
 
+            Uri uri;
+            String string=new String();
+            if (tupianlist.isEmpty()){
+                uri=null;
+            }else {
+                string=tupianlist.get(tupianlist.size()-1);
+                uri=mytool.UriFromSenge(string);
+            }
+
+            itemBeans.add(0,new processItemBean(uri,(String)object.get("biaoti"),object.get("id").toString(),(String)object.get("miaoshu"),(int)(double)object.get("zhuangtai"),(String)object.get("autotime"),(String)object.get("gongchengjindu")));
 
         }
     }
@@ -296,6 +374,20 @@ if(mParam1.equalsIgnoreCase("招标工程") || mParam1.equalsIgnoreCase("指定�
 
         mAdapter=new processItemAdapter(getActivity(),itemBeans);
         xListView.setAdapter(mAdapter);
+        xListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                DataFragment dataFragment=DataFragment.getInstance();
+                dataFragment.mprocessItemBean=itemBeans.get(position-1);
+                /*if (mParam1.equals("未发布工程")){
+                    Intent intent=new Intent(getActivity(),fabuActivity.class);
+                    intent.putExtra("id",dataFragment.mprocessItemBean.processnumber);
+                    startActivity(intent);
+                }else {*/
+                Intent intent=new Intent(getActivity(),gongchengxiangxiActivity.class);
+                startActivity(intent);
+            }
+        });
 
     }
 
