@@ -59,7 +59,7 @@ public class dengluActivity extends Activity implements View.OnClickListener {
     SharedPreferences.Editor editor;
 
     public static String phone;
-    private boolean state;
+    public static boolean state;
 
 
     private String password;

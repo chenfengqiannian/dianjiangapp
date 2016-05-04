@@ -385,7 +385,76 @@
         android:background="@color/divider"
         ></View>
 
+        <RelativeLayout
+            android:layout_marginTop="20dp"
+            android:background="#ffffff"
+            android:id="@+id/fabu2_tupian_"
+            android:layout_below="@+id/fabu1_str3"
+            android:layout_width="match_parent"
+            android:layout_height="87dp">
+            <View
+                android:layout_alignParentTop="true"
+                android:background="@color/divider"
+                android:layout_width="match_parent"
+                android:layout_height="2px"></View>
+            <ImageView
+                android:id="@+id/xinxi_tupian1"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="12dp"/>
+            <ImageView
+                android:id="@+id/xinxi_tupian2"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_centerVertical="true"
+                android:layout_toRightOf="@id/xinxi_tupian1"
+                android:layout_marginLeft="12dp"/>
+            <TextView
+                android:id="@+id/fabu1_tupian"
+                android:editable="false"
+                android:text="请选择图片上传"
+                android:textColor="@color/texthui_color"
+                android:textSize="12sp"
+                android:paddingLeft="12dp"
+                android:paddingTop="8dp"
+                android:gravity="top"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+            <ImageView
+                android:id="@+id/img_option"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="12dp"
+                android:layout_centerVertical="true"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:src="@drawable/tianjiatupian"/>
+            <View
+                android:layout_alignParentBottom="true"
+                android:background="@color/divider"
+                android:layout_width="match_parent"
+                android:layout_height="2px"></View>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_marginTop="30dp"
+            android:layout_alignParentBottom="true"
+            android:id="@+id/fabu2_queren"
+            android:background="@color/main_color"
+            android:layout_width="match_parent"
+            android:layout_height="41dp">
+            <TextView
+                android:id="@+id/button_text"
+                android:textColor="#ffffff"
+                android:textSize="16sp"
+                android:layout_centerInParent="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="确认"/>
+        </RelativeLayout>
+
     </LinearLayout>
+
 
 
 </ScrollView>

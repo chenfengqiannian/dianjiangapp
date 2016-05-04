@@ -341,6 +341,9 @@ public class fabuFragment extends Fragment {
         intent.putExtra("noFaceDetection", true);// 取消人脸识别
         intent.putExtra("return-data", true);
         files.add(mytool.getFileByUri(uri,getActivity()));
+        for (int i=0;i<files.size();i++){
+            mytool.compressImage(files.get(i));
+        }
         // 开启一个带有返回值的Activity，请求码为PHOTO_REQUEST_CUT
         startActivityForResult(intent,f);
     }
