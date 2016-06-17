@@ -112,6 +112,8 @@ public class MyFragment1 extends Fragment implements XListView.IXListViewListene
         GetHttp();
     }
 
+
+    //刷新完毕后调用
     private void onLoad() {
         xListView.stopRefresh();
         xListView.stopLoadMore();

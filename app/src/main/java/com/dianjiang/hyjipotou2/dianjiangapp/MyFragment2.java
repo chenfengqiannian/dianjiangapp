@@ -1,6 +1,8 @@
 package com.dianjiang.hyjipotou2.dianjiangapp;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.content.res.Resources;
@@ -82,15 +84,17 @@ public class MyFragment2 extends Fragment implements XListView.IXListViewListene
     private RelativeLayout option;
     private TextView level_text;
     private TextView price_text;
-    private TextView pingjia_text;
+    //private TextView pingjia_text;
     private ImageView level_img;
     private ImageView price_img;
-    private ImageView pingjia_img;
+    //private ImageView pingjia_img;
+
+    private TextView gongzhongtext;
 
 
     private int level_state=JIANGXU;
     private int price_state=SHENGXU;
-    private int pingjia_state=SHENGXU;
+    //private int pingjia_state=SHENGXU;
 
     private Handler mhandler=new Handler();
 
@@ -155,9 +159,10 @@ public class MyFragment2 extends Fragment implements XListView.IXListViewListene
         price_text=(TextView)viewFragment.findViewById(R.id.salarytext);
         price_img=(ImageView)viewFragment.findViewById(R.id.salaryimg);
         pingjia= (RelativeLayout) viewFragment.findViewById(R.id.dianjiang_pingjia);
-        pingjia_text=(TextView)viewFragment.findViewById(R.id.pingjiatext);
-        pingjia_img=(ImageView)viewFragment.findViewById(R.id.pingjiaimg);
+        //pingjia_text=(TextView)viewFragment.findViewById(R.id.pingjiatext);
+        //pingjia_img=(ImageView)viewFragment.findViewById(R.id.pingjiaimg);
         option=(RelativeLayout)viewFragment.findViewById(R.id.dianjiang_shaixuan);
+        gongzhongtext= (TextView) viewFragment.findViewById(R.id.gongzhongoption);
 
         //初始化LISTVIEW adapter
         mAdapter=new dianjiangItemAdapter(this.getActivity(),dataFragment.dianjiangItemBeans);
@@ -235,10 +240,10 @@ public class MyFragment2 extends Fragment implements XListView.IXListViewListene
                 //改变颜色
                 level_text.setTextColor(main_color);
                 price_text.setTextColor(non_color);
-                pingjia_text.setTextColor(non_color);
+                //pingjia_text.setTextColor(non_color);
                 price_img.setImageResource(R.drawable.paixu);
-                pingjia_img.setImageResource(R.drawable.paixu);
-                pingjia_state = SHENGXU;
+                //pingjia_img.setImageResource(R.drawable.paixu);
+                //pingjia_state = SHENGXU;
                 price_state = SHENGXU;
             }
         });
@@ -266,10 +271,10 @@ public class MyFragment2 extends Fragment implements XListView.IXListViewListene
                 //改变颜色
                 level_text.setTextColor(non_color);
                 price_text.setTextColor(main_color);
-                pingjia_text.setTextColor(non_color);
+                //pingjia_text.setTextColor(non_color);
                 level_img.setImageResource(R.drawable.paixu);
-                pingjia_img.setImageResource(R.drawable.paixu);
-                pingjia_state = SHENGXU;
+                //pingjia_img.setImageResource(R.drawable.paixu);
+                //pingjia_state = SHENGXU;
                 level_state = SHENGXU;
             }
         });
@@ -278,7 +283,9 @@ public class MyFragment2 extends Fragment implements XListView.IXListViewListene
             @Override
             public void onClick(View v) {
 
-                option_state = PINGJIA;
+                gongzhongdialog();
+
+                /*option_state = PINGJIA;
 
                 if (pingjia_state == JIANGXU) {
                     pingjia_state = SHENGXU;
@@ -301,7 +308,7 @@ public class MyFragment2 extends Fragment implements XListView.IXListViewListene
                 level_img.setImageResource(R.drawable.paixu);
                 price_img.setImageResource(R.drawable.paixu);
                 price_state = SHENGXU;
-                level_state = SHENGXU;
+                level_state = SHENGXU;*/
             }
         });
 
@@ -334,18 +341,18 @@ public class MyFragment2 extends Fragment implements XListView.IXListViewListene
                     //在这里执行具体筛选
 
                     //工种遍历
-                    if (!dataFragment.gongzhong.equals("点击选择工种")){
+                    /*if (!dataFragment.gongzhong.equals("点击选择工种")){
                         for (int i=0;i<dataFragment.dianjiangItemBeans.size();i++){
                             if (dataFragment.dianjiangItemBeans.get(i).gongzhong!=dataFragment.gongzhong){
                                 dataFragment.dianjiangItemBeans.remove(i);
                                 i--;
                             }
                         }
-                    }
+                    }*/
                     //标签遍历
                     if (!dataFragment.biaoqian.equals("")){
                         for (int i=0;i<dataFragment.dianjiangItemBeans.size();i++){
-                            if (dataFragment.dianjiangItemBeans.get(i).biaoqian!=dataFragment.biaoqian){
+                            if (!dataFragment.dianjiangItemBeans.get(i).biaoqian.equalsIgnoreCase(dataFragment.biaoqian)){
                                 dataFragment.dianjiangItemBeans.remove(i);
                                 i--;
                             }
@@ -468,7 +475,7 @@ public class MyFragment2 extends Fragment implements XListView.IXListViewListene
                                 }
                                 break;
 
-                            case PINGJIA:
+                            /*case PINGJIA:
                                 if (pingjia_state==JIANGXU){
                                     myComparator comparator=new myComparator(myComparator.PINGJIA_JIANGXU);
                                     Collections.sort(dataFragment.dianjiangItemBeans,comparator);
@@ -476,10 +483,12 @@ public class MyFragment2 extends Fragment implements XListView.IXListViewListene
                                     myComparator comparator=new myComparator(myComparator.PINGJIA_SHENGXU);
                                     Collections.sort(dataFragment.dianjiangItemBeans,comparator);
                                 }
-                                break;
+                                break;*/
                         }
 
                         mfragment.mAdapter.notifyDataSetChanged();
+                        gongzhongtext.setText("工种");
+                        dataFragment.gongzhong=gongzhongtext.getText().toString();
                         onLoad();
                     }
                 });
@@ -536,6 +545,8 @@ public class MyFragment2 extends Fragment implements XListView.IXListViewListene
                             bean.pingjia= (Double) treemap.get("pingjiaxingji");
                             bean.diqu=(String)treemap.get("didianchar");
                             dataFragment.dianjiangItemBeans.add(0, bean);
+                            dataFragment.xiangguanItemBeans.add(0,bean);
+                            dataFragment.zhaobiaoItembeans.add(0,bean);
                         }
 
                         //dianjiangItemBean bean=new dianjiangItemBean(linkedTreeMap.get("tupian"))
@@ -561,7 +572,7 @@ public class MyFragment2 extends Fragment implements XListView.IXListViewListene
                                 }
                                 break;
 
-                            case PINGJIA:
+                            /*case PINGJIA:
                                 if (pingjia_state==JIANGXU){
                                     myComparator comparator=new myComparator(myComparator.PINGJIA_JIANGXU);
                                     Collections.sort(dataFragment.dianjiangItemBeans,comparator);
@@ -569,12 +580,37 @@ public class MyFragment2 extends Fragment implements XListView.IXListViewListene
                                     myComparator comparator=new myComparator(myComparator.PINGJIA_SHENGXU);
                                     Collections.sort(dataFragment.dianjiangItemBeans,comparator);
                                 }
-                                break;
+                                break;*/
                         }
 
                         mfragment.mAdapter.notifyDataSetChanged();
                     }
                 });
+    }
+
+    public void gongzhongdialog() {
+        final String[] gongzhong = {"木模工","钢模工","砌墙工","粉刷工","钢筋工","混凝土工","油漆工","玻璃工","","起重工","吊车司机","指挥","电焊工","机修工","维修电工","","测量工","防水工","架子工","普工","建筑设备安装工","","水工","电工","白铁工","管工"};
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity())
+                .setTitle("请选择工种")
+                .setItems(gongzhong, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        if (which!=8 && which!=15 && which!=21){
+                        gongzhongtext.setText(gongzhong[which]);
+                        dataFragment.gongzhong=gongzhongtext.getText().toString();
+                        if (!dataFragment.gongzhong.equals("工种")){
+                            for (int i=0;i<dataFragment.dianjiangItemBeans.size();i++){
+                                if (!dataFragment.dianjiangItemBeans.get(i).gongzhong.equalsIgnoreCase(dataFragment.gongzhong)){
+                                    dataFragment.dianjiangItemBeans.remove(i);
+                                    i--;
+                                }
+                            }
+                        }
+                        mAdapter.notifyDataSetChanged();
+                    }else return;
+                    }
+                });
+        builder.create().show();
     }
 
     abstract class mCallBack<T> extends Callback<T>{

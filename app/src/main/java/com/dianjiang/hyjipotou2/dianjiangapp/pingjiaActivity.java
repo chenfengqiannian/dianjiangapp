@@ -13,9 +13,12 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.RatingBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.zhy.http.okhttp.OkHttpUtils;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -34,6 +37,7 @@ public class pingjiaActivity extends Activity {
     private String pingjia;
     private ImageView img1;
     private ImageView img2;
+    private RatingBar pingfen;
 
 
     //图片文件
@@ -46,7 +50,9 @@ public class pingjiaActivity extends Activity {
     private int shenfen_hold=1;
     private int shenfen_count1=0;
     private int shenfen_count2=0;
+    private Double number;         //    ///  / / / / / / / // / // / / // / // / / /
     private File tempFile;
+    private DataFragment dataFragment;
 
     public static final int SHENFEN_CAMERA=800;
     public static final int SHENFEN_PHOTO=801;
@@ -102,6 +108,7 @@ public class pingjiaActivity extends Activity {
     }
 
     public void init(){
+        dataFragment=DataFragment.getInstance();
         fanhui= (ImageButton) findViewById(R.id.fanhui);
         pingjiatext=(EditText)findViewById(R.id.pingjia_text);
         textView=(TextView)findViewById(R.id.text);
@@ -109,12 +116,26 @@ public class pingjiaActivity extends Activity {
         tijiao=(RelativeLayout)findViewById(R.id.fabu_xiayibu);
         img1= (ImageView) findViewById(R.id.xinxi_tupian1);
         img2= (ImageView) findViewById(R.id.xinxi_tupian2);
+        pingfen= (RatingBar) findViewById(R.id.pingjia_xingji);
+
+        tijiao.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //
+                //Okhttp
+                //
+                Intent mintent=getIntent();
+                Intent intent=new Intent(pingjiaActivity.this,dingdanActivity.class);
+                intent.putExtra("jiage",mintent.getDoubleExtra("jiage",0.0));
+                startActivity(intent);
+            }
+        });
     }
 
     public void getData(){
         pingjia=pingjiatext.getText().toString();
+        number=Double.valueOf(pingfen.getRating());
     }
-
 
     public void simpleListOption(String[] str1, final int camera, final int photo){
         AlertDialog.Builder builder=new AlertDialog.Builder(this)
@@ -187,6 +208,10 @@ public class pingjiaActivity extends Activity {
         files.add(mytool.getFileByUri(uri,this));
         // 开启一个带有返回值的Activity，请求码为PHOTO_REQUEST_CUT
         startActivityForResult(intent,f);
+    }
+
+    public void tijiaopingjia(){
+
     }
 
     @Override

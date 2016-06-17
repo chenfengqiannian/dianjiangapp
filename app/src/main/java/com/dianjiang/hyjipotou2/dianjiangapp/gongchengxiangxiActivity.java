@@ -11,7 +11,9 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -19,6 +21,7 @@ import android.widget.Toast;
 import com.google.gson.Gson;
 import com.google.gson.internal.LinkedTreeMap;
 import com.google.gson.reflect.TypeToken;
+import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
 import com.squareup.okhttp.Response;
 import com.zhy.http.okhttp.OkHttpUtils;
@@ -29,6 +32,7 @@ import com.zhy.http.okhttp.callback.StringCallback;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -47,6 +51,7 @@ public class gongchengxiangxiActivity extends Activity {
     private TextView choulao;
     private TextView beizhu;
     private RelativeLayout queren;
+    private LinearLayout textDialog;
 
     private RelativeLayout tupian;
     private TextView xinxi_tupiantext;
@@ -67,11 +72,23 @@ public class gongchengxiangxiActivity extends Activity {
     public static final int SHENFEN_CAMERA=800;
     public static final int SHENFEN_PHOTO=801;
     public static final int SHENFEN_PHOTO_REQUEST_CUT=311;
+    private AlertDialog.Builder builder;
+    private EditText text;
+    private String jinduMessage;
+    private int zhuangtai;
+    private double price;
+    private String[] gongjiang;
+    private boolean[] state;
+    private String[] gongjiangphone;
 
     public static final int FIRSTIMG=1;
     public static final int SECONDIMG=2;
 
+    ArrayList<String> strings;
+
     private String id;
+    private TextView buttontext;
+    private RelativeLayout canyuzhaobiao;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,9 +98,22 @@ public class gongchengxiangxiActivity extends Activity {
         init();
 
         setData();
+
     }
 
     public void init(){
+        DataFragment dataFragment=DataFragment.getInstance();
+        ///
+        ArrayList<LinkedTreeMap<String,Object>> gongcheng_set=(ArrayList<LinkedTreeMap<String,Object>>)dataFragment.user_datamap.get("gongcheng_set");
+        for (int i=0;i<gongcheng_set.size();i++){
+            LinkedTreeMap<String,Object> map;
+            map=gongcheng_set.get(i);
+            if (map.get("id").toString().equals(dataFragment.mprocessItemBean.processnumber)){
+                zhuangtai=(int)((double)map.get("zhuangtai"));
+            }
+        }
+
+        ///
         number= (TextView) findViewById(R.id.fabu3_gongchenghao);
         name=(TextView)findViewById(R.id.fabu3_gongchengming);
         miaoshu= (TextView) findViewById(R.id.fabu3_miaoshu);
@@ -99,13 +129,61 @@ public class gongchengxiangxiActivity extends Activity {
         xinxi_tupianOption= (ImageView)findViewById(R.id.img_option);
         xinxi_tupiantext=(TextView)findViewById(R.id.fabu1_tupian);
         tupian= (RelativeLayout) findViewById(R.id.fabu2_tupian_);
+        buttontext= (TextView) findViewById(R.id.button_text);
+        textDialog=(LinearLayout)getLayoutInflater().inflate(R.layout.textdialog, null);
+        text= (EditText) textDialog.findViewById(R.id.text123);
+        //canyuzhaobiao= (RelativeLayout) findViewById(R.id.fabu2_canyu);
 
-        if (dengluActivity.state==true){
-            queren.setVisibility(View.GONE);
+        /*if (dengluActivity.state==true){
             tupian.setVisibility(View.GONE);
+            buttontext.setText("参与招标");
+            if (DataFragment.dianjigongcheng=false){
+                //canyuzhaobiao.setVisibility(View.GONE);
+                queren.setVisibility(View.GONE);
+                DataFragment.dianjigongcheng=true;
+            }
+        }else {
+            buttontext.setText("查看招标工匠");  //这里需定义各种状态
+        }*/
+        switch (DataFragment.gongchengbiaoji){
+            case 1:tupian.setVisibility(View.GONE);
+                buttontext.setText("参与招标");
+                break;
+
+            case 2:tupian.setVisibility(View.GONE);
+                buttontext.setText("同意加入该工程");
+                break;
+
+            case 3:tupian.setVisibility(View.GONE);
+                buttontext.setText("提交工程进度");
+                break;
+
+            case 4:buttontext.setText("提交修改");
+                //判断审核
+                if (zhuangtai>=1){
+                    buttontext.setText("支付30%工程款");
+                    tupian.setVisibility(View.GONE);
+                }
+
+                break;
+
+            case 5:tupian.setVisibility(View.GONE);
+                buttontext.setText("查看招标工匠");
+                break;
+
+            case 6:tupian.setVisibility(View.GONE);
+                buttontext.setText("确认结款");
+                break;
+
+            default:tupian.setVisibility(View.GONE);
+                queren.setVisibility(View.GONE);
+                break;
         }
 
+
+
         //监听器
+
         xinxi_tupianOption.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -135,9 +213,40 @@ public class gongchengxiangxiActivity extends Activity {
         });
 
         queren.setOnClickListener(new View.OnClickListener() {
+            DataFragment dataFragment=DataFragment.getInstance();
             @Override
             public void onClick(View v) {
-                chuantu();
+                switch (DataFragment.gongchengbiaoji){
+                    case 1:canyuzhaobiao(); //参与招标//
+                        break;
+
+                    case 2:tongyicanyu();  //同意参与该工程//
+                        break;
+
+                    case 3:setTextDialog();  //提交工程进度
+                        break;
+
+                    case 4:
+                        if (zhuangtai>=1){
+                            //订单确认页面
+                            Intent intent=new Intent(gongchengxiangxiActivity.this,dingdanActivity.class);
+                            intent.putExtra("jiage",price*0.3);
+                            startActivity(intent);
+                        }else {
+                            chuantu();
+                        }
+                        break;
+
+                    case 5://Intent intent2=new Intent(gongchengxiangxiActivity.this,zhaobiaoActivity.class); //招标中  查看工匠
+                        //startActivity(intent2);
+                        zhaobiaodialog();
+                        break;
+
+                    case 6:Intent intent=new Intent(gongchengxiangxiActivity.this,pingjiaActivity.class);  //结款
+                        intent.putExtra("jiage",price*0.7);
+                        startActivity(intent);
+                        break;
+                }
             }
         });
     }
@@ -145,7 +254,7 @@ public class gongchengxiangxiActivity extends Activity {
     public void setData(){
         DataFragment dataFragment=DataFragment.getInstance();
         name.setText(dataFragment.mprocessItemBean.processname);
-        number.setText(dataFragment.mprocessItemBean.processnumber);
+        number.setText((int) Double.parseDouble(dataFragment.mprocessItemBean.processnumber) + "");
         miaoshu.setText(dataFragment.mprocessItemBean.miaoshu);
 
         ArrayList<LinkedTreeMap<String,Object>> gongcheng_set=(ArrayList<LinkedTreeMap<String,Object>>)dataFragment.user_datamap.get("gongcheng_set");
@@ -159,6 +268,7 @@ public class gongchengxiangxiActivity extends Activity {
                 shichang.setText(map.get("kaishitime").toString()+"至"+map.get("jieshutime").toString());
                 choulao.setText(map.get("xinchou").toString());
                 beizhu.setText(map.get("beizhu").toString());
+                price= (double) map.get("xinchou");
             }
         }
     }
@@ -242,9 +352,14 @@ public class gongchengxiangxiActivity extends Activity {
         startActivityForResult(intent,f);
     }
 
+    public void zhaobiaopost(){
+
+    }
+
     public void chuantu(){
         DataFragment dataFragment=DataFragment.getInstance();
         id=dataFragment.mprocessItemBean.processnumber;
+        String id_str=String.valueOf((int)((double)Double.valueOf(id)));
         PostFormBuilder buider2 =OkHttpUtils.post();
         //ArrayList<File> files;
         //files= (ArrayList<File>)dataFragment.fabu_datamap.get("tupian");
@@ -254,7 +369,7 @@ public class gongchengxiangxiActivity extends Activity {
             }
             buider2
                     .url(MainActivity.URL + MainActivity.IMAGEAPI)
-                    .addParams("id", id)
+                    .addParams("id", id_str)
                     .addParams("shangchuan", "gongcheng,tupian")
                     .build()
                     .execute(new StringCallback() {
@@ -262,7 +377,8 @@ public class gongchengxiangxiActivity extends Activity {
                         public void onError(Request request, Exception e) {
                             String string=request.toString();
                             Log.i("LOL",string);
-                            Toast.makeText(gongchengxiangxiActivity.this,"发生未知错误",Toast.LENGTH_LONG).show();
+                            Toast.makeText(gongchengxiangxiActivity.this,"图片上传成功",Toast.LENGTH_LONG).show(); ///////等人
+                            finish();
                         }
 
                         @Override
@@ -272,6 +388,124 @@ public class gongchengxiangxiActivity extends Activity {
                         }
                     });
         }else finish();
+    }
+
+    public void tijiaojindu(){
+        DataFragment dataFragment=DataFragment.getInstance();
+        Double a=Double.valueOf(dataFragment.mprocessItemBean.processnumber);
+        int b=(int)((double)a);
+        OkHttpClient client = new OkHttpClient();
+        Gson gson1=new Gson();
+        HashMap<String,Object> data1 =new HashMap<>();
+        data1.put("id",b);
+        data1.put("jindu",jinduMessage);
+        OkHttpUtils
+                .postString()
+                .url(MainActivity.URL + MainActivity.PROCESSAPI)
+                .content(gson1.toJson(data1))
+                .build()
+                .execute(new StringCallback() {
+                    @Override
+                    public void onError(Request request, Exception e) {
+                        Log.i("LOL", "Dwq");
+                    }
+
+                    @Override
+                    public void onResponse(String response) {
+                        Toast.makeText(gongchengxiangxiActivity.this, "进度提交成功", Toast.LENGTH_LONG).show();
+                    }
+                });
+    }
+
+
+    public void tongyicanyu(){
+        ArrayList<String> strings = null;
+        ArrayList<String> strings2=null;
+        int value;
+        DataFragment dataFragment=DataFragment.getInstance();
+        value=(int)Double.parseDouble(dataFragment.mprocessItemBean.processnumber);
+        for (LinkedTreeMap<String,Object> nidaye:dataFragment.process_datamap) {
+            if ((int) (double) nidaye.get("id") == value) {
+                strings = (ArrayList<String>) nidaye.get("zhiding");
+                strings2=(ArrayList<String>)nidaye.get("yaoqing");
+
+                for (int i=0;i<strings2.size();i++){
+                    if (dengluActivity.phone.equalsIgnoreCase(strings2.get(i))){
+                        strings2.remove(i);
+                    }
+                }
+
+                strings.add(dengluActivity.phone);
+            }
+        }
+
+                OkHttpClient client = new OkHttpClient();
+                Gson gson1 = new Gson();
+                HashMap<String, Object> data1 = new HashMap<>();
+                data1.put("zhiding", strings);
+                data1.put("yaoqing",strings2);
+                data1.put("id",value);
+                OkHttpUtils
+                        .postString()
+                        .url(MainActivity.URL + MainActivity.PROCESSAPI)
+                        .content(gson1.toJson(data1))
+                        .build()
+                        .execute(new StringCallback() {
+                            @Override
+                            public void onError(Request request, Exception e) {
+                                Log.i("LOL", "Dwq");
+                                Toast.makeText(gongchengxiangxiActivity.this, "未能成功加入", Toast.LENGTH_LONG).show();
+                            }
+
+                            @Override
+                            public void onResponse(String response) {
+                                Toast.makeText(gongchengxiangxiActivity.this, "成功加入工程", Toast.LENGTH_LONG).show();
+                                finish();
+                                Log.i("LOL2",response);
+                            }
+                        });
+            }
+
+
+    public void canyuzhaobiao(){
+        ArrayList<String> strings = null;
+        int value;
+        DataFragment dataFragment=DataFragment.getInstance();
+        value=(int)Double.parseDouble(dataFragment.mprocessItemBean.processnumber);
+        for (LinkedTreeMap<String,Object> nidaye:dataFragment.process_datamap) {
+            if ((int) (double) nidaye.get("id") == value) {
+                strings = (ArrayList<String>) nidaye.get("zhaobiao");
+                strings.add(dengluActivity.phone);
+            }
+        }
+
+                OkHttpClient client = new OkHttpClient();
+                Gson gson1 = new Gson();
+                HashMap<String, Object> data1 = new HashMap<>();
+                data1.put("zhaobiao", strings);
+                data1.put("id",value);
+                OkHttpUtils
+                        .postString()
+                        .url(MainActivity.URL + MainActivity.PROCESSAPI)
+                        .content(gson1.toJson(data1))
+                        .build()
+                        .execute(new StringCallback() {
+                            @Override
+                            public void onError(Request request, Exception e) {
+                                Log.i("LOL", "Dwq");
+                                Toast.makeText(gongchengxiangxiActivity.this, "参与招标失败", Toast.LENGTH_LONG).show();
+                            }
+
+                            @Override
+                            public void onResponse(String response) {
+                                Toast.makeText(gongchengxiangxiActivity.this, "参与招标中", Toast.LENGTH_LONG).show();
+                                finish();
+                            }
+                        });
+        //Intent intent=new Intent(gongchengxiangxiActivity.this,dingdanActivity.class);
+        //由平台指定
+       // intent.putExtra("jiage", price);
+       // startActivity(intent);
     }
     /*public void getProcess(){
         DataFragment dataFragment=DataFragment.getInstance();
@@ -301,6 +535,130 @@ public class gongchengxiangxiActivity extends Activity {
                     }
                 });
     }*/
+
+    public void setTextDialog(){
+        builder=new AlertDialog.Builder(this)
+                .setTitle("请输入工程进度")
+                .setView(null)
+                .setView(textDialog)
+                .setPositiveButton("提交", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        //提取消息
+                        jinduMessage=text.getText().toString();
+                        tijiaojindu();
+                        textDialog=null;
+                        if (textDialog==null){
+                            textDialog=(LinearLayout)getLayoutInflater().inflate(R.layout.textdialog, null);
+                            text= (EditText) textDialog.findViewById(R.id.text123);
+                        }
+                    }
+                })
+                .setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        textDialog=null;
+                        if (textDialog==null){
+                            textDialog=(LinearLayout)getLayoutInflater().inflate(R.layout.textdialog, null);
+                            text= (EditText) textDialog.findViewById(R.id.text123);
+                        }
+                    }
+                });
+        builder.setOnCancelListener(new DialogInterface.OnCancelListener() {
+            @Override
+            public void onCancel(DialogInterface dialog) {
+                textDialog=null;
+                if (textDialog==null){
+                    textDialog=(LinearLayout)getLayoutInflater().inflate(R.layout.textdialog, null);
+                    text= (EditText) textDialog.findViewById(R.id.text123);
+                }
+            }
+        });
+        builder.create().show();
+    }
+
+    public void zhaobiaodialog(){
+
+        //ArrayList<String> strings;
+        final int value;
+        DataFragment dataFragment=DataFragment.getInstance();
+        value=(int)Double.parseDouble(dataFragment.mprocessItemBean.processnumber);
+        for (LinkedTreeMap<String,Object> nidaye:dataFragment.process_datamap) {
+            if ((int) (double) nidaye.get("id") == value) {
+                strings = (ArrayList<String>) nidaye.get("zhaobiao");
+                //strings.add(dataFragment.dianjiangItemBean.phone);
+                if (strings.size()>0) {
+                    gongjiang = new String[strings.size()];
+                    gongjiangphone = new String[strings.size()];
+                }else {
+                    Toast.makeText(gongchengxiangxiActivity.this,"暂无工匠参与招标",Toast.LENGTH_LONG);
+                    finish();
+                }
+            }
+        }
+        int i;
+        int a=0;
+        for (LinkedTreeMap map:dataFragment.gongjiang_data) {
+            for (i=0;i<strings.size();i++) {
+                if (strings.get(i).equalsIgnoreCase(map.get("phone").toString())) {
+                    gongjiang[a] = map.get("xingming").toString();
+                    gongjiangphone[a]=strings.get(i);
+                    a++;
+                }
+            }
+        }
+        state=new boolean[gongjiang.length];
+
+        //final String[] gongzhong = {"木模工","钢模工","砌墙工","粉刷工","钢筋工","混凝土工","油漆工","玻璃工","","起重工","吊车司机","指挥","电焊工","机修工","维修电工","","测量工","防水工","架子工","普工","建筑设备安装工","","水工","电工","白铁工","管工"};
+        AlertDialog.Builder builder = new AlertDialog.Builder(this)
+                .setTitle("请选择工匠加入工程")
+                .setMultiChoiceItems(gongjiang,state, new DialogInterface.OnMultiChoiceClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which, boolean isChecked) {
+                        //if (fabuFragment.state[which])
+                        //DataFragment dataFragment=DataFragment.getInstance();
+                        //dataFragment.gongzhongstring = dataFragment.gongzhongstring +" "+gongzhong[which];
+                        //dataFragment.gongzhongstring.replace()
+                    }
+                })
+                .setPositiveButton("确认", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        DataFragment dataFragment=DataFragment.getInstance();
+                        for (int i=0;i<state.length;i++){
+                            if (state[i]==true){
+                                strings.add(gongjiangphone[i]);
+                                state[i]=false;
+                            }
+                        }
+                        //
+                        OkHttpClient client = new OkHttpClient();
+                        Gson gson1 = new Gson();
+                        HashMap<String, Object> data1 = new HashMap<>();
+                        data1.put("zhiding", strings);
+                        data1.put("id",value);
+                        OkHttpUtils
+                                .postString()
+                                .url(MainActivity.URL + MainActivity.PROCESSAPI)
+                                .content(gson1.toJson(data1))
+                                .build()
+                                .execute(new StringCallback() {
+                                    @Override
+                                    public void onError(Request request, Exception e) {
+                                        Log.i("LOL", "Dwq");
+                                        Toast.makeText(gongchengxiangxiActivity.this, "发生错误", Toast.LENGTH_LONG).show();
+                                    }
+
+                                    @Override
+                                    public void onResponse(String response) {
+                                        Toast.makeText(gongchengxiangxiActivity.this, "已同意招标", Toast.LENGTH_LONG).show();
+                                    }
+                                });
+                    }
+                });
+        builder.create().show();
+    }
+
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         int a=RESULT_OK;

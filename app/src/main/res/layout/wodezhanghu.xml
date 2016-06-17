@@ -115,7 +115,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="待收款"
+            android:text="充值"
             android:textSize="12sp"
             android:textColor="@color/black_color"
             android:layout_centerVertical="true"

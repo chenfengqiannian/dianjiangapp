@@ -82,8 +82,7 @@
             android:layout_height="wrap_content"
             android:textSize="12sp"
             android:textColor="@color/black_color"
-
-            android:text="XXXXXXXXXXXXXX"/>
+            />
     </RelativeLayout>
 
     <View
@@ -114,8 +113,7 @@
             android:layout_height="wrap_content"
             android:textSize="12sp"
             android:textColor="@color/black_color"
-
-            android:text="XXXXXXXXXXXXXX"/>
+            />
     </RelativeLayout>
 
     <View
@@ -146,8 +144,7 @@
             android:layout_height="58dp"
             android:textSize="12sp"
             android:textColor="@color/black_color"
-
-            android:text="XXXXXXXXXXXXXX"/>
+            />
     </RelativeLayout>
 
     <View
@@ -177,9 +174,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="12sp"
-            android:textColor="@color/black_color"
-
-            android:text="XXXXXXXXXXXXXX"/>
+            android:textColor="@color/black_color" />
     </RelativeLayout>
 
     <View
@@ -270,8 +265,7 @@
             android:layout_height="58dp"
             android:textSize="12sp"
             android:textColor="@color/black_color"
-
-            android:text="XXXXXXXXXXXXXX"/>
+            />
     </RelativeLayout>
 
     <View
@@ -302,8 +296,7 @@
             android:layout_height="wrap_content"
             android:textSize="12sp"
             android:textColor="@color/black_color"
-
-            android:text="XXXXXXXXXXXXXX"/>
+            />
     </RelativeLayout>
 
     <View
@@ -334,8 +327,7 @@
             android:layout_height="wrap_content"
             android:textSize="12sp"
             android:textColor="@color/black_color"
-
-            android:text="XXXXXXXXXXXXXX"/>
+            />
         <TextView
             android:layout_width="wrap_content"
             android:layout_alignBottom="@+id/fabu3_choulao_"
@@ -375,8 +367,7 @@
             android:layout_height="58dp"
             android:textSize="12sp"
             android:textColor="@color/black_color"
-
-            android:text="XXXXXXXXXXXXXX"/>
+            />
     </RelativeLayout>
 
     <View
@@ -437,7 +428,7 @@
         </RelativeLayout>
 
         <RelativeLayout
-            android:layout_marginTop="30dp"
+            android:layout_marginTop="35dp"
             android:layout_alignParentBottom="true"
             android:id="@+id/fabu2_queren"
             android:background="@color/main_color"
@@ -452,6 +443,7 @@
                 android:layout_height="wrap_content"
                 android:text="确认"/>
         </RelativeLayout>
+
 
     </LinearLayout>
 

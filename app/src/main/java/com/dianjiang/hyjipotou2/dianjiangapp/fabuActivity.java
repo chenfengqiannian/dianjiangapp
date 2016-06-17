@@ -83,6 +83,7 @@ public class fabuActivity extends FragmentActivity implements fabuFragment.OnFra
     }
 
     public void init(){
+        final DataFragment dataFragment=DataFragment.getInstance();
         baocun= (Button) findViewById(R.id.gongchengbaocun);
         xiayibu= (RelativeLayout) findViewById(R.id.fabu_xiayibu);
         top_bar=(TextView)findViewById(R.id.fabu2_top_text);
@@ -93,15 +94,19 @@ public class fabuActivity extends FragmentActivity implements fabuFragment.OnFra
         jiebaoyaoqiu=fabuFragment.newInstance(PAGE2);
         yulanfabu=fabuFragment.newInstance(PAGE3);
 
-        preferences=this.getSharedPreferences("fabuMessage", MODE_PRIVATE);
-        editor=preferences.edit();
+        //preferences=this.getSharedPreferences("fabuMessage", MODE_PRIVATE);
+        //editor=preferences.edit();
 
         baocun.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                postSaveHttp();
+
+                dataFragment.mhandler4.sendEmptyMessage(0x1234);
+                //postSaveHttp();
             }
         });
+
+
     }
     public void fragmentinit(){
 
@@ -133,7 +138,7 @@ public class fabuActivity extends FragmentActivity implements fabuFragment.OnFra
         });
     }
 
-    public void postSaveHttp(){
+   /* public void postSaveHttp(){
         final DataFragment dataFragment=DataFragment.getInstance();
         OkHttpClient client = new OkHttpClient();
         Gson gson1=new Gson();
@@ -204,7 +209,7 @@ public class fabuActivity extends FragmentActivity implements fabuFragment.OnFra
                         }
                     }
                 });
-    }
+    }*/
 
     public void postHttp(){
         final DataFragment dataFragment=DataFragment.getInstance();
@@ -263,6 +268,7 @@ public class fabuActivity extends FragmentActivity implements fabuFragment.OnFra
                     }
                 });
     }
+
 
     @Override
     public void onFragmentInteraction(Map<String,Object> map) {

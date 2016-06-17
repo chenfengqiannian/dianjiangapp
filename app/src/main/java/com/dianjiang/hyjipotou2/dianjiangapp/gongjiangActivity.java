@@ -14,6 +14,7 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -21,6 +22,15 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.facebook.drawee.backends.pipeline.Fresco;
+import com.google.gson.Gson;
+import com.google.gson.internal.LinkedTreeMap;
+import com.google.gson.reflect.TypeToken;
+import com.squareup.okhttp.Request;
+import com.squareup.okhttp.Response;
+import com.zhy.http.okhttp.OkHttpUtils;
+import com.zhy.http.okhttp.callback.Callback;
+
+import java.io.IOException;
 
 public class gongjiangActivity extends AppCompatActivity implements gongjianglstFragment.OnFragmentInteractionListener,View.OnClickListener{
 NoSlideViewPager page;
@@ -211,7 +221,42 @@ private void chushihua()
 
 }
 
+    public void getNewData(){
+        OkHttpUtils
+                .get()
+                .url(MainActivity.URL + MainActivity.USERAPI)
+                .addParams("phone", dengluActivity.phone)
+                .build()
+                .execute(new Callback() {
+                    @Override
+                    public Object parseNetworkResponse(Response response) throws IOException {
 
+                        Log.i("LOL", "response");
+                        String string = response.body().string();
+
+                        Object ps = new Gson().fromJson(string, new TypeToken<Object>() {
+                        }.getType());
+                        return ps;
+                    }
+
+                    @Override
+                    public void onError(Request request, Exception e) {
+
+                    }
+
+                    @Override
+                    public void onResponse(Object response) {
+                        DataFragment fragment = DataFragment.getInstance();
+                        fragment.user_datamap = (LinkedTreeMap<String, Object>) response;
+                    }
+                });
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        getNewData();
+    }
 }
 class  gongchengadapter extends FragmentPagerAdapter
 {private final int PAGER_COUNT=3;

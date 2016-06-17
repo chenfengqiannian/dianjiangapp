@@ -62,6 +62,7 @@ public class dianjiangItemActivity extends Activity {
     private EditText text;
     private String string;
     private Double pingjia;
+    private TextView button_text;
 
 
     String gongsi_;
@@ -121,7 +122,15 @@ public class dianjiangItemActivity extends Activity {
         yaoqing.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                setTextDialog();
+
+                if (DataFragment.zhaobiaostate==1){
+                    //发出同意招标
+
+
+
+                }else {
+                    setTextDialog();
+                }
             }
 
         });
@@ -145,6 +154,12 @@ public class dianjiangItemActivity extends Activity {
         yaoqing=(RelativeLayout)findViewById(R.id.yaoqing);
         textDialog=(LinearLayout)getLayoutInflater().inflate(R.layout.textdialog, null);
         text= (EditText) textDialog.findViewById(R.id.text123);
+        button_text= (TextView) findViewById(R.id.yaoqing_text);
+
+        if (DataFragment.zhaobiaostate==1){
+            button_text.setText("同意招标");
+        }
+
         imageMap.put(0, zhengshu1);
         imageMap.put(1, zhengshu2);
 
@@ -199,7 +214,7 @@ public class dianjiangItemActivity extends Activity {
     public void setTextDialog(){
         AlertDialog.Builder builder;
         builder=new AlertDialog.Builder(this)
-                .setTitle("请输入反馈信息")
+                .setTitle("请输入需要加入的工程号")
                 .setView(null)
                 .setView(textDialog)
                 .setPositiveButton("提交", new DialogInterface.OnClickListener() {
@@ -240,7 +255,7 @@ public class dianjiangItemActivity extends Activity {
     }
 
     public void httpwori(Integer id){
-        ArrayList<String> strings=new ArrayList<String>();
+        ArrayList<String> strings;
         DataFragment dataFragment=DataFragment.getInstance();
         for (LinkedTreeMap<String,Object> nidaye:(ArrayList<LinkedTreeMap<String,Object>>)dataFragment.user_datamap.get("gongcheng_set")){
             if ((int)(double)nidaye.get("id")==id) {
@@ -261,7 +276,7 @@ public class dianjiangItemActivity extends Activity {
                             @Override
                             public void onError(Request request, Exception e) {
                                 Log.i("LOL", "Dwq");
-                                Toast.makeText(dianjiangItemActivity.this, "邀请发送失败", Toast.LENGTH_LONG).show();
+                                Toast.makeText(dianjiangItemActivity.this, "请检查工程号是否存在", Toast.LENGTH_LONG).show();
                             }
 
                             @Override
@@ -269,6 +284,13 @@ public class dianjiangItemActivity extends Activity {
                                 Toast.makeText(dianjiangItemActivity.this, "邀请发送成功", Toast.LENGTH_LONG).show();
                             }
                         });
-            }}}
+            }
+        }
+    }
 
+    @Override
+    protected void onStop() {
+        super.onStop();
+        DataFragment.zhaobiaostate=0;
+    }
 }

@@ -56,8 +56,6 @@
             android:textSize="15sp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-
-            android:text="18888888888"
             android:id="@+id/zhanghu" />
 
         <View
@@ -103,8 +101,6 @@
             android:layout_height="wrap_content"
             android:textSize="15sp"
             android:textColor="@color/black_color"
-
-            android:text="23333"
             />
 
         <View
@@ -146,7 +142,7 @@
 
             android:text="元"/>
 
-        <EditText
+        <TextView
             android:gravity="right"
             android:id="@+id/tixianshenqing_price"
             android:layout_toLeftOf="@+id/tixianshenqing_danwei2"
@@ -157,7 +153,6 @@
             android:textSize="15sp"
             android:textColor="@color/black_color"
             android:background="#ffffff"
-            android:hint="在此输入提现金额"
             />
 
         <View

@@ -24,7 +24,7 @@ public class SearchActivity extends Activity {
 
     private SearchView sv;
     private ListView lv;
-    private final String[] mStrings={"aaaaa","bbbbb","ccccc"};
+    //private final String[] mStrings={};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,7 +32,7 @@ public class SearchActivity extends Activity {
         setContentView(R.layout.searchview);
 
         lv=(ListView)findViewById(R.id.search_list);
-        lv.setAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, mStrings));
+        lv.setAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1));
 
         //设置LISTVIEW启动过滤
         lv.setTextFilterEnabled(true);
@@ -42,7 +42,7 @@ public class SearchActivity extends Activity {
         //设置该图标是否自动缩小 显示搜索按钮  设置提示文本
         sv.setIconifiedByDefault(false);
         sv.setSubmitButtonEnabled(true);
-        sv.setQueryHint("请输入搜索内容");
+        sv.setQueryHint("请输入搜索工匠姓名");
         //设置搜索监听
         sv.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
 

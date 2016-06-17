@@ -10,6 +10,8 @@ import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.app.Fragment;
+import android.os.Handler;
+import android.os.Message;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
@@ -68,6 +70,7 @@ public class gongjianglstFragment extends android.support.v4.app.Fragment implem
     private RelativeLayout wodeyeji;
     private TextView diqutext;
     private String dianhua1;
+    DataFragment da;
 
     private Button button1;
     private Button button2;
@@ -76,6 +79,8 @@ public class gongjianglstFragment extends android.support.v4.app.Fragment implem
 
     private TabLayout mytab;
     private ViewPager viewPager;
+
+    Handler xhandler;
 
 
     /**
@@ -275,9 +280,10 @@ onButtonPressed("dianjiangketang");
             fr1_city= (TextView) view.findViewById(R.id.gongjiang_shi);
             button1= (Button) view.findViewById(R.id.gongjiang_qiehuan);
             button1.setOnClickListener(this);
-            DataFragment dataFragment=DataFragment.getInstance();
+            final DataFragment dataFragment=DataFragment.getInstance();
             fr1_city.setText(dataFragment.city);
             fr1_province.setText(dataFragment.province);
+
 
             ArrayList<myfactoryFragment> fragments=new ArrayList<>();
             fragments.add(myfactoryFragment.newInstance("招标工程"));
@@ -298,9 +304,10 @@ onButtonPressed("dianjiangketang");
 
             button1= (Button) view.findViewById(R.id.gongjiang_qiehuan_);
             button1.setOnClickListener(this);
-            DataFragment dataFragment=DataFragment.getInstance();
+            final DataFragment dataFragment=DataFragment.getInstance();
             fr1_city.setText(dataFragment.city);
             fr1_province.setText(dataFragment.province);
+
 
             ArrayList<myfactoryFragment> fragments=new ArrayList<>();
             fragments.add(myfactoryFragment.newInstance("招标成功"));

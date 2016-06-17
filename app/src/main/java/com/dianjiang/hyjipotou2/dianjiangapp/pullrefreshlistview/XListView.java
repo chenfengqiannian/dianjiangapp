@@ -87,6 +87,7 @@ public class XListView extends ListView implements OnScrollListener {
 		addHeaderView(mHeaderView);
 
 		// init header height
+		//监听某些View的改变,例如EditText输入字体,SCOROLL屏幕滚动等
 		mHeaderView.getViewTreeObserver().addOnGlobalLayoutListener(
 				new OnGlobalLayoutListener() {
 					@Override

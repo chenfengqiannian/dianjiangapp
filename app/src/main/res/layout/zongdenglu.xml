@@ -139,63 +139,6 @@
     </RelativeLayout>
 
     <RelativeLayout
-        android:id="@+id/denglu_disanfangtext"
-        android:layout_below="@+id/denglu_tiaozhuan"
-        android:layout_marginTop="21dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <TextView
-            android:id="@+id/denglu_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="13sp"
-            android:textColor="@color/texthui_color"
-            android:text="第三方登录"
-            android:layout_centerHorizontal="true"/>
-        <View
-            android:layout_centerVertical="true"
-            android:layout_toLeftOf="@+id/denglu_text"
-            android:layout_marginRight="10dp"
-            android:layout_width="match_parent"
-            android:layout_height="2px"
-            android:background="@color/divider"></View>
-        <View
-            android:layout_centerVertical="true"
-            android:layout_toRightOf="@+id/denglu_text"
-            android:layout_marginLeft="10dp"
-            android:layout_width="match_parent"
-            android:layout_height="2px"
-            android:background="@color/divider"></View>
-    </RelativeLayout>
-
-    <RelativeLayout
-        android:layout_below="@+id/denglu_disanfangtext"
-        android:layout_marginTop="12dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <ImageView
-            android:layout_toLeftOf="@+id/denglu_weixin"
-            android:layout_marginRight="18dp"
-            android:id="@+id/denglu_qq"
-            android:layout_width="36dp"
-            android:layout_height="36dp"
-            android:src="@drawable/denglu_qq"/>
-        <ImageView
-            android:layout_centerHorizontal="true"
-            android:id="@+id/denglu_weixin"
-            android:layout_width="36dp"
-            android:layout_height="36dp"
-            android:src="@drawable/denglu_weixin"/>
-        <ImageView
-            android:layout_toRightOf="@+id/denglu_weixin"
-            android:layout_marginLeft="18dp"
-            android:id="@+id/denglu_sina"
-            android:layout_width="36dp"
-            android:layout_height="36dp"
-            android:src="@drawable/denglu_sina"/>
-    </RelativeLayout>
-
-    <RelativeLayout
         android:layout_alignParentBottom="true"
         android:id="@+id/zhanghao_button"
         android:background="@color/main_color"

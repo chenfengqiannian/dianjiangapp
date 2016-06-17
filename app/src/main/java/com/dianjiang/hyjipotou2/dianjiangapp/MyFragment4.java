@@ -16,13 +16,17 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.dianjiang.hyjipotou2.dianjiangapp.wx.WXfenxiang;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.zhy.http.okhttp.OkHttpUtils;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by hyjipotou2 on 16/3/12.
@@ -43,12 +47,15 @@ public class MyFragment4 extends Fragment{
     private LinearLayout textDialog;
     private RelativeLayout fankui;
     private SimpleDraweeView touxiang;
+    private RelativeLayout fenxiang;
     private Uri uri;
     String fankuiMessage;
     private String dianhua;
     private TextView nicheng;
     private String si;
     private TextView sii;
+    private TextView dengji;
+    private ProgressBar jingyanzhi;
 
     @Nullable
     @Override
@@ -70,6 +77,7 @@ public class MyFragment4 extends Fragment{
         gerenxinxi=(RelativeLayout)fview.findViewById(R.id.xinxi);
         wodezhanghu=(RelativeLayout)fview.findViewById(R.id.zhanghu);
         suoyaofapiao=(RelativeLayout)fview.findViewById(R.id.fapiao);
+        fenxiang=(RelativeLayout)fview.findViewById(R.id.fenxiang);
         bianjiechongzhi=(RelativeLayout)fview.findViewById(R.id.chongzhi);
         lianxikefu= (RelativeLayout) fview.findViewById(R.id.kefu);
         textDialog=(LinearLayout)getActivity().getLayoutInflater().inflate(R.layout.textdialog, null);
@@ -77,6 +85,8 @@ public class MyFragment4 extends Fragment{
         touxiang=(SimpleDraweeView)fview.findViewById(R.id.touxiang);
         gongjiangxinxi= (RelativeLayout) fview.findViewById(R.id.gongjiang);
         nicheng=(TextView)fview.findViewById(R.id.nicheng);
+        dengji= (TextView) fview.findViewById(R.id.wode_dengji);
+        jingyanzhi= (ProgressBar) fview.findViewById(R.id.jingyanzhi);
 
         //加载数据
         getUserData();
@@ -84,6 +94,12 @@ public class MyFragment4 extends Fragment{
     }
     private void setIntentListener(){
         //各种页面跳转
+        fenxiang.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new WXfenxiang().init(getActivity());
+            }
+        });
         gerenxinxi.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -122,7 +138,8 @@ public class MyFragment4 extends Fragment{
         gongjiangxinxi.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                Intent intent=new Intent(getActivity(),xiangguangongjiangActivity.class);
+                startActivity(intent);
             }
         });
 
@@ -198,8 +215,27 @@ public class MyFragment4 extends Fragment{
         touxiang.setImageURI(uri);
 
         //
+        Map<Double,String> map=new HashMap<>();
+        map.put(0.0,"点匠新人");
+        map.put(1.0,"点匠一级");
+        map.put(2.0,"点匠二级");
+        map.put(3.0, "点匠三级");
+        map.put(4.0, "点匠四级");
+        map.put(5.0, "点匠五级");
+        map.put(6.0, "点匠达人");
         sii.setText(dengluActivity.phone);
+        dengji.setText(map.get(dataFragment.user_datamap.get("dengji")));
         nicheng.setText(dataFragment.user_datamap.get("nichang").toString());
+
+        /////////////////////经验
+        Double jingyan;
+        int jingyannow;
+        Double jingyanper = Double.valueOf(10);
+        jingyan= (Double) dataFragment.user_datamap.get("jingyanzhi");
+        jingyannow = (int)((double) (jingyan - ((Double)dataFragment.user_datamap.get("dengji") * jingyanper)));
+        jingyanzhi.setProgress(jingyannow);
+
+
     }
 
     public void fankui(){

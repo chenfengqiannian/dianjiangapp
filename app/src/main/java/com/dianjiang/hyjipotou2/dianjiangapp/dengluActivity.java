@@ -23,6 +23,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.dianjiang.hyjipotou2.dianjiangapp.demo.myzhifubao;
+import com.dianjiang.hyjipotou2.dianjiangapp.wx.wxPay;
 import com.google.gson.Gson;
 import com.google.gson.internal.LinkedHashTreeMap;
 import com.google.gson.internal.LinkedTreeMap;
@@ -94,6 +96,12 @@ public class dengluActivity extends Activity implements View.OnClickListener {
     }
 
     public void init() {
+
+
+        //new myzhifubao(this,"18842683063","18842683063","0.01").zhifustart();
+
+        //new wxPay(this,"123","1").init();
+
         shoujihao = (EditText) findViewById(R.id.denglu_shoujihao);
         mima = (EditText) findViewById(R.id.denglu_mima);
         denglu = (RelativeLayout) findViewById(R.id.zhanghao_button);

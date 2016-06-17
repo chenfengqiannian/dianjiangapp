@@ -63,7 +63,7 @@ public class processItemAdapter extends BaseAdapter {
         viewHolder.simpleDraweeView.setImageURI(bean.imageuri);
         viewHolder.name1.setText(bean.processname);
         viewHolder.miaoshu.setText(bean.miaoshu);
-        viewHolder.process_number.setText(bean.processnumber);
+        viewHolder.process_number.setText((int)Double.parseDouble(bean.processnumber)+"");
         viewHolder.process_date.setText(bean.date);
 
         //判断审核状态

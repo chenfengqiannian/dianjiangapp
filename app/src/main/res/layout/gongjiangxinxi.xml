@@ -95,7 +95,6 @@
             android:layout_toRightOf="@+id/dianjiang_rixin_yuan"
             android:textSize="20sp"
             android:textColor="@color/main_color"
-            android:hint="请输入日薪"
             />
         <TextView
             android:layout_width="wrap_content"

@@ -15,10 +15,14 @@ import android.widget.Toast;
 import com.google.gson.Gson;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
+import com.squareup.okhttp.Response;
 import com.zhy.http.okhttp.OkHttpUtils;
+import com.zhy.http.okhttp.callback.Callback;
 import com.zhy.http.okhttp.callback.StringCallback;
 
+import java.io.IOException;
 import java.util.HashMap;
+import java.util.Random;
 
 /**
  * Created by hyjipotou2 on 16/4/15.
@@ -61,7 +65,8 @@ public class zhuceActivity extends Activity {
         huoqu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                setTest();
+                phonenow=shoujihao.getText().toString();
+                getTest=getMessage();
             }
         });
         gongjiang.setOnClickListener(new View.OnClickListener() {
@@ -87,7 +92,8 @@ public class zhuceActivity extends Activity {
                 if (password.equals(password_ok)){
 
                     //判断验证码是否正确
-                    if (true){
+                    if (test.equalsIgnoreCase(getTest)){
+
                         setZhuce();
                     }
                     else {
@@ -162,32 +168,39 @@ public class zhuceActivity extends Activity {
                 });
     }
 
-    public void setTest(){
+    public String getMessage(){
 
-        OkHttpClient client = new OkHttpClient();
-        Gson gson1=new Gson();
-        HashMap<String,String> data1 =new HashMap<>();
-        data1.put("phone",phonenow);
-        OkHttpUtils
-                .postString()
-                .url(MainActivity.URL + MainActivity.USERAPI)
-                .content(gson1.toJson(data1))
+        Random random=new Random();
+        int number=random.nextInt(8999)+1000;
+
+        Log.i("LOL",number+"");
+        Toast.makeText(zhuceActivity.this,"请等待并查收短信验证码",Toast.LENGTH_LONG).show();
+        OkHttpUtils.get()
+                .url("http://222.73.117.156/msg/HttpBatchSendSM")
+                .addParams("account","BX1ffjs")
+                .addParams("pswd", "Schl010ffjs")
+                .addParams("mobile", phonenow)
+                .addParams("msg","您的验证码是:"+number+",请谨慎保管")
+                .addParams("needstatus","true")
                 .build()
                 .execute(new StringCallback() {
                     @Override
                     public void onError(Request request, Exception e) {
-                        Log.d("LOL", "Dwq");
+                        Log.i("LOL","daye");
                     }
 
                     @Override
                     public void onResponse(String response) {
-                        Log.d("LOL", response);
+                        Log.i("LOL","666");
+                        Log.i("LOL",response);
                     }
                 });
+
+        return number+"";
+
     }
 
     public void setdata(){
-        phonenow=shoujihao.getText().toString();
         password=mytool.getMD5Str(mima.getText().toString());
         password_ok=mytool.getMD5Str(querenmima.getText().toString());
         test=yanzhengma.getText().toString();

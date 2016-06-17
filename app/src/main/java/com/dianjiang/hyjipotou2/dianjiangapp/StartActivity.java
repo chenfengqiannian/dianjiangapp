@@ -16,6 +16,7 @@ import android.support.v4.app.ActivityCompat;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.dianjiang.hyjipotou2.dianjiangapp.wx.wxPay;
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.google.gson.Gson;
@@ -57,7 +58,7 @@ public class StartActivity extends Activity {
         if (sharedPreferences.getBoolean("gps",true)){
             didian();
         }
-
+        wxPay.GetNetIp();
 
         getprocess();
         imgget();
@@ -74,7 +75,7 @@ public class StartActivity extends Activity {
                     @Override
                     public Object parseNetworkResponse(Response response) throws IOException {
 
-                        Log.i("LOL", "response");
+                        Log.i("LOL", "response1");
                         String string = response.body().string();
 
                         Object ps = new Gson().fromJson(string, new TypeToken<Object>() {
@@ -90,6 +91,7 @@ public class StartActivity extends Activity {
                     @Override
                     public void onResponse(Object response) {
                         DataFragment dataFragment = DataFragment.getInstance();
+                        Log.i("LOL","response2");
                         dataFragment.gongjiang_data = (ArrayList<LinkedTreeMap<String, Object>>) response;
                     }
                 });
@@ -119,7 +121,6 @@ public class StartActivity extends Activity {
                         Location mylo = getLocation();
                         if (mylo == null) {
                             Toast.makeText(getApplication(), "定位权限被禁止", Toast.LENGTH_LONG).show();
-                            ;
                             return;
                         }
                         OkHttpUtils
@@ -132,7 +133,7 @@ public class StartActivity extends Activity {
                                 .execute(new Callback() {
                                     @Override
                                     public Object parseNetworkResponse(Response response) throws IOException {
-                                        Log.i("LOL", "response");
+                                        Log.i("LOL", "response3");
                                         String string = response.body().string();
 
                                         Object ps = new Gson().fromJson(string, new TypeToken<Object>() {
@@ -148,6 +149,7 @@ public class StartActivity extends Activity {
                                     @Override
                                     public void onResponse(Object response) {
                                         DataFragment dataFragment = DataFragment.getInstance();
+                                        Log.i("LOL","response4");
                                         LinkedTreeMap<String, Object> o1 = (LinkedTreeMap<String, Object>) response;
                                         LinkedTreeMap<String, Object> o2 = (LinkedTreeMap<String, Object>) o1.get("result");
                                         LinkedTreeMap<String, Object> o3 = (LinkedTreeMap<String, Object>) o2.get("addressComponent");
@@ -210,6 +212,7 @@ public class StartActivity extends Activity {
 
                                     @Override
                                     public void onResponse(Object response) {
+                                        Log.i("LOL","response5");
                                         DataFragment dataFragment = DataFragment.getInstance();
                                         dataFragment.process_datamap = (ArrayList<LinkedTreeMap<String, Object>>) response;
 
@@ -264,6 +267,7 @@ public class StartActivity extends Activity {
                             uri=mytool.UriFromSenge(string);
                         }
                         simpleDraweeView.setImageURI(uri);
+                        Log.i("LOL","response6");
 
 
 

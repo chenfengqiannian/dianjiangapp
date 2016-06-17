@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+     android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:id="@+id/wodeyeji_topbar"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:background="@color/main_color">
+    <TextView
+        android:id="@+id/wodeyeji_top_text"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_centerInParent="true"
+        android:gravity="center"
+        android:text="参与招标工匠"
+        android:textColor="#ffffff"
+        android:textSize="18sp" />
+
+    </RelativeLayout>
+
+    <ListView
+        android:layout_below="@+id/wodeyeji_topbar"
+        android:id="@+id/zhaobiaolist"
+        android:divider="@color/divider"
+        android:dividerHeight="2px"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/fabu2_queren"></ListView>
+
+    <RelativeLayout
+        android:layout_alignParentBottom="true"
+        android:id="@+id/fabu2_queren"
+        android:background="@color/main_color"
+        android:layout_width="match_parent"
+        android:layout_height="41dp">
+        <TextView
+            android:id="@+id/button_text"
+            android:textColor="#ffffff"
+            android:textSize="16sp"
+            android:layout_centerInParent="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="完成招标"/>
+    </RelativeLayout>
+
+</RelativeLayout>

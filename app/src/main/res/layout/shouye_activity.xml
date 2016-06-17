@@ -202,7 +202,7 @@
                         android:layout_marginBottom="3dp"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="个人中心"
+                        android:text="我的"
                         android:textSize="8.4sp"
                         android:textColor="@color/non_color"
                         android:layout_alignParentBottom="true"
@@ -282,34 +282,6 @@
         </RelativeLayout>
         <RelativeLayout
             android:layout_below="@+id/option_top_bar"
-            android:id="@+id/gongzhong"
-            android:layout_width="match_parent"
-            android:layout_height="30dp">
-            <TextView
-                android:id="@+id/gongzhong_text"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="11sp"
-                android:textColor="@color/black_color"
-                android:text="点击选择工种"
-                android:layout_centerInParent="true"/>
-            <ImageView
-                android:layout_centerVertical="true"
-                android:layout_alignParentRight="true"
-                android:layout_marginRight="10dp"
-                android:layout_width="5dp"
-                android:layout_height="10dp"
-                android:src="@drawable/jianjin"
-                >
-            </ImageView>
-            <View
-                android:layout_alignParentBottom="true"
-                android:background="@color/divider"
-                android:layout_width="match_parent"
-                android:layout_height="2px"></View>
-        </RelativeLayout>
-        <RelativeLayout
-            android:layout_below="@+id/gongzhong"
             android:id="@+id/diqu"
             android:layout_width="match_parent"
             android:layout_height="30dp">

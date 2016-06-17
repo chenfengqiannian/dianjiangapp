@@ -19,6 +19,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.RatingBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -41,6 +42,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 
 public class gongjiangmoreActivity extends AppCompatActivity implements View.OnClickListener {
     SimpleDraweeView touxiang;
@@ -58,6 +60,16 @@ public class gongjiangmoreActivity extends AppCompatActivity implements View.OnC
     DataFragment dataFragment;
     TextView dengji;
     EditText rixin;
+
+
+    TextView yeji_dengji;
+    ProgressBar jingyanzhi;
+    RelativeLayout guize;
+    RatingBar pingfen;
+    RelativeLayout canyurenwu;
+
+
+
 
     Uri zige_uri;
     Uri tou_uri;
@@ -143,6 +155,19 @@ public class gongjiangmoreActivity extends AppCompatActivity implements View.OnC
             gongzuodi.setText((String) dataFragment.user_datamap.get("gongzuodi"));
             biaoqian.setText((String) dataFragment.user_datamap.get("biaoqian"));
             ziwojieshao.setText((String) dataFragment.user_datamap.get("ziwojieshao"));
+            gongzhong1.setText((String) dataFragment.user_datamap.get("gongzhong"));
+            rixin.setText(dataFragment.user_datamap.get("rixin").toString());
+            Map<Double,String> map=new HashMap<>();
+            map.put(0.0, "新人工匠");
+            map.put(1.0, "工匠一级");
+            map.put(2.0, "工匠二级");
+            map.put(3.0, "工匠三级");
+            map.put(4.0, "工匠四级");
+            map.put(5.0, "工匠五级");
+            map.put(6.0, "工匠达人");
+            dengji.setText(map.get(dataFragment.user_datamap.get("dengji")));
+
+
 
             ArrayList<String> zhsngshudata = (ArrayList<String>) dataFragment.user_datamap.get("zhengshu");
             if (zhsngshudata.size() >= 2) {
@@ -174,8 +199,44 @@ public class gongjiangmoreActivity extends AppCompatActivity implements View.OnC
         }
 
         if (index==2){
+            DataFragment dataFragment=DataFragment.getInstance();
+            Map<Double,String> map=new HashMap<>();
+            map.put(0.0,"新人工匠");
+            map.put(1.0,"工匠一级");
+            map.put(2.0,"工匠二级");
+            map.put(3.0,"工匠三级");
+            map.put(4.0,"工匠四级");
+            map.put(5.0, "工匠五级");
+            map.put(6.0, "工匠达人");
             setContentView(R.layout.wodeyeji);
+            fanhui= (ImageButton) findViewById(R.id.fanhui);
+            yeji_dengji= (TextView) findViewById(R.id.wodeyeji_dengji);
+            jingyanzhi= (ProgressBar) findViewById(R.id.jingyanzhi);
+            guize= (RelativeLayout) findViewById(R.id.wodeyeji_guize);
+            pingfen= (RatingBar) findViewById(R.id.wodeyeji_xingji);
+            canyurenwu= (RelativeLayout) findViewById(R.id.wodeyeji_canyurenwu);
 
+            fanhui.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    finish();
+                }
+            });
+
+            yeji_dengji.setText(map.get(dataFragment.user_datamap.get("dengji")));
+            Double jingyan;
+            int jingyannow;
+            Double jingyanper = Double.valueOf(10);
+            jingyan= (Double) dataFragment.user_datamap.get("jingyanzhi");
+            jingyannow = (int)((double) (jingyan - ((Double)dataFragment.user_datamap.get("dengji") * jingyanper)));
+            jingyanzhi.setProgress(jingyannow);
+
+            Double pingjia;
+            pingjia= (Double) dataFragment.user_datamap.get("pingjiaxingji");
+            pingfen.setRating((float)((double)pingjia));
+
+            guize.setOnClickListener(this);
+            canyurenwu.setOnClickListener(this);
         }
     }
 
@@ -333,6 +394,14 @@ public class gongjiangmoreActivity extends AppCompatActivity implements View.OnC
             gongzhong1.setText("请设置工种");
             gongzhongdialog();
         }
+        if (v==guize){
+            Intent intent=new Intent(gongjiangmoreActivity.this,shengjiguizeActivity.class);
+            startActivity(intent);
+        }
+        if (v==canyurenwu){
+            Intent intent=new Intent(gongjiangmoreActivity.this,canyurenwuActivity.class);
+            startActivity(intent);
+        }
 
     }
 
@@ -420,8 +489,26 @@ public class gongjiangmoreActivity extends AppCompatActivity implements View.OnC
         }
         startActivityForResult(intent, f);
     }
-
     public void gongzhongdialog() {
+        //final String[] gongzhong = {"电工","木工","瓦工","焊工","架子工","钢筋工","抹灰工","砌筑工","混凝土工","油漆工","防水工","管道工","吊顶工","无气喷涂工","钻孔工","拆除工","普工/杂工","项目经理","生产经理","工长","监理","施工员","质量员","安全员","材料员","资料员","预算员","机械员","测量员","劳务员","司索指挥","塔吊司机","吊车司机","起重机司机","升降机司机","挖掘机司机","推土机司机","叉车司机","电梯司机","机械修理工","机械安装/拆除工"};
+        final String[] gongzhong = {"木模工","钢模工","砌墙工","粉刷工","钢筋工","混凝土工","油漆工","玻璃工","","起重工","吊车司机","指挥","电焊工","机修工","维修电工","","测量工","防水工","架子工","普工","建筑设备安装工","","水工","电工","白铁工","管工"};
+        String[] gongzhongfenlei={"室内装修类","室外建筑类",};
+        String[] shinei1={"电工","瓦工","木工","油漆工","防水工","管道工"};
+        String[] jianzhu2={"焊工","架子工","钢筋工","抹灰工","砌筑工","混凝土工"};
+        AlertDialog.Builder builder = new AlertDialog.Builder(this)
+                .setTitle("请选择工种分类")
+                .setItems(gongzhong, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        if (which!=8 && which!=15 && which!=21){
+                            gongzhong1.setText(gongzhong[which]);
+                            dataFragment.gongzhong=gongzhong1.getText().toString();
+                        }
+                    }
+                });
+        builder.create().show();
+    }
+    public void gongzhongdialog2() {
         // boolean[] state={false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false};
         final String[] gongzhong = {"电工","木工","瓦工","焊工","架子工","钢筋工","抹灰工","砌筑工","混凝土工","油漆工","防水工","管道工","吊顶工","无气喷涂工","钻孔工","拆除工","普工/杂工","项目经理","生产经理","工长","监理","施工员","质量员","安全员","材料员","资料员","预算员","机械员","测量员","劳务员","司索指挥","塔吊司机","吊车司机","起重机司机","升降机司机","挖掘机司机","推土机司机","叉车司机","电梯司机","机械修理工","机械安装/拆除工"};
         AlertDialog.Builder builder = new AlertDialog.Builder(this)

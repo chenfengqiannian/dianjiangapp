@@ -69,22 +69,20 @@
                     android:layout_height="match_parent"
                     android:layout_weight="1">
                     <TextView
-                        android:id="@+id/pingjiatext"
+                        android:id="@+id/gongzhongoption"
+                        android:layout_centerInParent="true"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textSize="15sp"
-                        android:text="评价"
                         android:textColor="@color/black_color"
-                        android:layout_centerHorizontal="true"
-                        android:layout_centerVertical="true"/>
+                        android:text="工种"/>
                     <ImageView
+                        android:layout_marginLeft="2dp"
                         android:layout_centerVertical="true"
-                        android:layout_toRightOf="@+id/pingjiatext"
-                        android:layout_marginLeft="3dp"
-                        android:src="@drawable/paixu"
-                        android:id="@+id/pingjiaimg"
-                        android:layout_width="5dp"
-                        android:layout_height="8dp" />
+                        android:layout_toRightOf="@+id/gongzhongoption"
+                        android:src="@drawable/xiala"
+                        android:layout_width="8dp"
+                        android:layout_height="5dp" />
                 </RelativeLayout>
                 <RelativeLayout
                     android:id="@+id/dianjiang_shaixuan"

@@ -41,9 +41,10 @@ public class myfactoryFragment extends Fragment implements XListView.IXListViewL
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
-    public static final String URL="http://192.168.191.1:8000";
-    public static final String USERAPI="/userapi/";
-    public static final String GONGCHENGAPI="/gongchengapi/";
+    //public static final String URL="http://192.168.191.1:8000";
+    //public static final String USERAPI="/userapi/";
+    //public static final String GONGCHENGAPI="/gongchengapi/";
+    public static int SAVE;
     // TODO: Rename and change types of parameters
     private String mParam1;
 
@@ -235,29 +236,32 @@ public class myfactoryFragment extends Fragment implements XListView.IXListViewL
     }
 
     public void setdata(){
-        int zhuangtai[]=new int[2];
+        final int zhuangtai[]=new int[2];
         DataFragment data=DataFragment.getInstance();
         ArrayList<LinkedTreeMap<String,Object>> gongcheng_set=(ArrayList<LinkedTreeMap<String,Object>>)data.user_datamap.get("gongcheng_set");
         itemBeans=new ArrayList<processItemBean>();
         if(mParam1.equalsIgnoreCase("招标工程") || mParam1.equalsIgnoreCase("指定工程"))
         {
             if (mParam1.equalsIgnoreCase("招标工程")){
-                for (LinkedTreeMap<String,Object> map:data.process_datamap){
-                    if (((String)map.get("suozaidi")).split(",").length>=2)
-                    if (((String)map.get("suozaidi")).split(",")[1].equals(data.city)){
-                        ArrayList<String> tupianlist=(ArrayList<String>)map.get("tupian");
+                for (LinkedTreeMap<String,Object> map:data.process_datamap) {
 
-                        Uri uri;
-                        String string;
-                        if (tupianlist.isEmpty()){
-                            uri=null;
-                        }else {
-                            string=tupianlist.get(tupianlist.size()-1);
-                            uri=mytool.UriFromSenge(string);
-                        }
+                    if ((int) ((double) map.get("zhuangtai")) >= 2 && (int) ((double) map.get("zhuangtai")) <= 3) {
+                        if (((String) map.get("suozaidi")).split(",").length >= 2)
+                            if (((String) map.get("suozaidi")).split(",")[1].equals(data.city)) {
+                                ArrayList<String> tupianlist = (ArrayList<String>) map.get("tupian");
 
-                        itemBeans.add(0,new processItemBean(uri,(String)map.get("biaoti"),map.get("id").toString(),(String)map.get("miaoshu"),(int)(double)map.get("zhuangtai"),(String)map.get("autotime"),(String)map.get("gongchengjindu")));
+                                Uri uri;
+                                String string;
+                                if (tupianlist.isEmpty()) {
+                                    uri = null;
+                                } else {
+                                    string = tupianlist.get(tupianlist.size() - 1);
+                                    uri = mytool.UriFromSenge(string);
+                                }
 
+                                itemBeans.add(0, new processItemBean(uri, (String) map.get("biaoti"), map.get("id").toString(), (String) map.get("miaoshu"), (int) (double) map.get("zhuangtai"), (String) map.get("autotime"), (String) map.get("gongchengjindu")));
+
+                            }
                     }
                 }
 
@@ -341,27 +345,26 @@ public class myfactoryFragment extends Fragment implements XListView.IXListViewL
 
    for(LinkedTreeMap<String,Object> object:gongcheng_set)
     {
-        if((int)(double)object.get("zhuangtai")>=zhuangtai[0]&&(int)(double)object.get("zhuangtai")<=zhuangtai[0])
+        if((int)(double)object.get("zhuangtai")>=zhuangtai[0]&&(int)(double)object.get("zhuangtai")<=zhuangtai[1])
         {
+                //ArrayList<Map<String,Object>> gongchenglist;
+                // DataFragment dataFragment=DataFragment.getInstance();
+                // ArrayList<String> gongchengid=new ArrayList<>();
+                //gongchenglist= (ArrayList<Map<String, Object>>) dataFragment.user_datamap.get("gongcheng_set");
+                ArrayList<String> tupianlist = (ArrayList<String>) object.get("tupian");
 
-            //ArrayList<Map<String,Object>> gongchenglist;
-           // DataFragment dataFragment=DataFragment.getInstance();
-           // ArrayList<String> gongchengid=new ArrayList<>();
-            //gongchenglist= (ArrayList<Map<String, Object>>) dataFragment.user_datamap.get("gongcheng_set");
-            ArrayList<String> tupianlist=(ArrayList<String>)object.get("tupian");
+                Uri uri;
+                String string = new String();
+                if (tupianlist.isEmpty()) {
+                    uri = null;
+                } else {
+                    string = tupianlist.get(tupianlist.size() - 1);
+                    uri = mytool.UriFromSenge(string);
+                }
 
-            Uri uri;
-            String string=new String();
-            if (tupianlist.isEmpty()){
-                uri=null;
-            }else {
-                string=tupianlist.get(tupianlist.size()-1);
-                uri=mytool.UriFromSenge(string);
+                itemBeans.add(0, new processItemBean(uri, (String) object.get("biaoti"), object.get("id").toString(), (String) object.get("miaoshu"), (int) (double) object.get("zhuangtai"), (String) object.get("autotime"), (String) object.get("gongchengjindu")));
             }
 
-            itemBeans.add(0,new processItemBean(uri,(String)object.get("biaoti"),object.get("id").toString(),(String)object.get("miaoshu"),(int)(double)object.get("zhuangtai"),(String)object.get("autotime"),(String)object.get("gongchengjindu")));
-
-        }
     }
 
     //itemBeans.add(0,new processItemBean(uri,"我的工程"+i,"1234566"+i,"这是一个工程哟"+i,1,"2014-1-12 23:42:3"+i,"这是一个工程进度哟"+i));
@@ -377,15 +380,42 @@ public class myfactoryFragment extends Fragment implements XListView.IXListViewL
         xListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                DataFragment dataFragment=DataFragment.getInstance();
-                dataFragment.mprocessItemBean=itemBeans.get(position-1);
-                /*if (mParam1.equals("未发布工程")){
+
+                    DataFragment dataFragment = DataFragment.getInstance();
+                    dataFragment.mprocessItemBean = itemBeans.get(position - 1);
+                if (mParam1.equals("未发布工程")){
                     Intent intent=new Intent(getActivity(),fabuActivity.class);
+                    DataFragment.save=true;
                     intent.putExtra("id",dataFragment.mprocessItemBean.processnumber);
                     startActivity(intent);
-                }else {*/
-                Intent intent=new Intent(getActivity(),gongchengxiangxiActivity.class);
-                startActivity(intent);
+                }else if (mParam1.equalsIgnoreCase("招标工程")){
+                    DataFragment.gongchengbiaoji=1;
+                    Intent intent = new Intent(getActivity(), gongchengxiangxiActivity.class);
+                    startActivity(intent);
+                }else if (mParam1.equalsIgnoreCase("指定工程")){
+                    DataFragment.gongchengbiaoji=2;
+                    Intent intent = new Intent(getActivity(), gongchengxiangxiActivity.class);
+                    startActivity(intent);
+                }else if (mParam1.equalsIgnoreCase("进行中")){
+                    DataFragment.gongchengbiaoji=3;
+                    Intent intent=new Intent(getActivity(),gongchengxiangxiActivity.class);
+                    startActivity(intent);
+                }else if (mParam1.equalsIgnoreCase("已发布工程")){
+                    DataFragment.gongchengbiaoji=4;
+                    Intent intent=new Intent(getActivity(),gongchengxiangxiActivity.class);
+                    startActivity(intent);
+                }else if (mParam1.equalsIgnoreCase("招标中工程")){
+                    DataFragment.gongchengbiaoji=5;
+                    Intent intent=new Intent(getActivity(),gongchengxiangxiActivity.class);
+                    startActivity(intent);
+                }else if (mParam1.equalsIgnoreCase("已完工工程")){
+                    DataFragment.gongchengbiaoji=6;
+                    Intent intent=new Intent(getActivity(),gongchengxiangxiActivity.class);
+                    startActivity(intent);
+                }else {
+                    Intent intent=new Intent(getActivity(),gongchengxiangxiActivity.class);
+                    startActivity(intent);
+                }
             }
         });
 

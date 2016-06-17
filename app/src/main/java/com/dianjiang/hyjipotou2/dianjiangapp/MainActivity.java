@@ -25,9 +25,16 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import com.facebook.drawee.backends.pipeline.Fresco;
+import com.google.gson.Gson;
 import com.google.gson.internal.LinkedTreeMap;
+import com.google.gson.reflect.TypeToken;
 import com.squareup.okhttp.MediaType;
+import com.squareup.okhttp.Request;
+import com.squareup.okhttp.Response;
+import com.zhy.http.okhttp.OkHttpUtils;
+import com.zhy.http.okhttp.callback.Callback;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.Objects;
@@ -70,20 +77,23 @@ public class MainActivity extends FragmentActivity implements MyFragment3.OnFrag
     private String shi_;
 
     //Right Menu
-    private RelativeLayout gongzhong;
+    //private RelativeLayout gongzhong;
     private RelativeLayout diqu;
     private String shaixuantext;
     private EditText biaoqian;
-    private TextView gongzhongtext;
+    //private TextView gongzhongtext;
     private TextView diqutext;
     private Button qiehuan;
 
     public static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
     public static final String URL="http://120.27.30.221:8000";
+    //public static final String URL="http://192.168.191.1:8000";
     public static final String USERAPI="/userapi/";
     public static final String IMAGEAPI="/imageupapi/";
     public static final String PROCESSAPI="/gongchengapi/";
     public static final String SHEZHIAPI="/shezhiapi/";
+    public static final String ZHIFUBAOSIGNAPI="/zhifubaosignapi/";
+    public static final String WEIXINSIGNAPI="/weixinsignapi/";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -229,6 +239,7 @@ public class MainActivity extends FragmentActivity implements MyFragment3.OnFrag
                 textView2.setTextColor(main_color);
                 textView3.setTextColor(non_color);
                 textView4.setTextColor(non_color);
+                top_bar_text.setText("点匠台");
 
                 //图像颜色更换
                 imageView1.setImageResource(R.drawable.tab_1_0);
@@ -252,6 +263,7 @@ public class MainActivity extends FragmentActivity implements MyFragment3.OnFrag
                 textView2.setTextColor(non_color);
                 textView3.setTextColor(main_color);
                 textView4.setTextColor(non_color);
+                top_bar_text.setText("我的工程");
 
                 //图像颜色更换
                 imageView1.setImageResource(R.drawable.tab_1_0);
@@ -275,6 +287,7 @@ public class MainActivity extends FragmentActivity implements MyFragment3.OnFrag
                 textView2.setTextColor(non_color);
                 textView3.setTextColor(non_color);
                 textView4.setTextColor(non_color);
+                top_bar_text.setText("首页");
 
                 //图像颜色更换
                 imageView1.setImageResource(R.drawable.tab_1_1);
@@ -296,26 +309,26 @@ public class MainActivity extends FragmentActivity implements MyFragment3.OnFrag
 
     public void RightMenu_init(){
         biaoqian=(EditText)findViewById(R.id.biaoqiantext);
-        gongzhong=(RelativeLayout)findViewById(R.id.gongzhong);
+        //gongzhong=(RelativeLayout)findViewById(R.id.gongzhong);
         diqu=(RelativeLayout)findViewById(R.id.diqu);
-        gongzhongtext=(TextView)findViewById(R.id.gongzhong_text);
+        //gongzhongtext=(TextView)findViewById(R.id.gongzhong_text);
         diqutext=(TextView)findViewById(R.id.diqutext);
     }
 
     public void setRightMenuListener(){
-        gongzhong.setOnClickListener(new View.OnClickListener() {
+        /*gongzhong.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 gongzhongdialog();
             }
-        });
+        });*/
 
         //取出筛选要求数据
         option_queren.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 DataFragment dataFragment=DataFragment.getInstance();
-                dataFragment.gongzhong=gongzhongtext.getText().toString();
+                //dataFragment.gongzhong=gongzhongtext.getText().toString();
                 dataFragment.biaoqian=biaoqian.getText().toString();
                 dataFragment.mhandler2.sendEmptyMessage(0x1111);
                 right_menu.closeDrawer(right_content);
@@ -331,13 +344,16 @@ public class MainActivity extends FragmentActivity implements MyFragment3.OnFrag
     }
 
     public void gongzhongdialog() {
-        final String[] gongzhong = {"电工","木工","瓦工","焊工","架子工","钢筋工","抹灰工","砌筑工","混凝土工","油漆工","防水工","管道工","吊顶工","无气喷涂工","钻孔工","拆除工","普工/杂工","项目经理","生产经理","工长","监理","施工员","质量员","安全员","材料员","资料员","预算员","机械员","测量员","劳务员","司索指挥","塔吊司机","吊车司机","起重机司机","升降机司机","挖掘机司机","推土机司机","叉车司机","电梯司机","机械修理工","机械安装/拆除工"};
+        final String[] gongzhong = {"1电工","1木工","1瓦工","1焊工","1架子工","1钢筋工","1抹灰工","1砌筑工","1混凝土工","1油漆工","1防水工","1管道工","吊顶工","2无气喷涂工","钻孔工","拆除工","普工/杂工","项目经理","生产经理","工长","监理","施工员","质量员","安全员","材料员","资料员","预算员","机械员","测量员","劳务员","司索指挥","塔吊司机","吊车司机","起重机司机","升降机司机","挖掘机司机","推土机司机","叉车司机","电梯司机","机械修理工","机械安装/拆除工"};
+        String[] gongzhongfenlei={"室内装修类","室外建筑类",};
+        String[] shinei1={"电工","瓦工","木工","油漆工","防水工","管道工"};
+        String[] jianzhu2={"焊工","架子工","钢筋工","抹灰工","砌筑工","混凝土工"};
         AlertDialog.Builder builder = new AlertDialog.Builder(this)
-                .setTitle("请选择工种")
+                .setTitle("请选择工种分类")
                 .setItems(gongzhong, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        gongzhongtext.setText(gongzhong[which]);
+                        //gongzhongtext.setText(gongzhong[which]);
                     }
                 });
         builder.create().show();
@@ -423,6 +439,42 @@ public class MainActivity extends FragmentActivity implements MyFragment3.OnFrag
         builder.create().show();
     }
 
+    public void getNewData(){
+        OkHttpUtils
+                .get()
+                .url(MainActivity.URL + MainActivity.USERAPI)
+                .addParams("phone", dengluActivity.phone)
+                .build()
+                .execute(new Callback() {
+                    @Override
+                    public Object parseNetworkResponse(Response response) throws IOException {
+
+                        Log.i("LOL", "response");
+                        String string = response.body().string();
+
+                        Object ps = new Gson().fromJson(string, new TypeToken<Object>() {
+                        }.getType());
+                        return ps;
+                    }
+
+                    @Override
+                    public void onError(Request request, Exception e) {
+
+                    }
+
+                    @Override
+                    public void onResponse(Object response) {
+                        DataFragment fragment = DataFragment.getInstance();
+                        fragment.user_datamap = (LinkedTreeMap<String, Object>) response;
+                    }
+                });
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        getNewData();
+    }
 
     ////////////////////////////////////////////////////////////////////////////////////////
     @Override

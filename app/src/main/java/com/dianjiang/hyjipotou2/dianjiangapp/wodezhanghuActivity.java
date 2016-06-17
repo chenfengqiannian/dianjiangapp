@@ -54,7 +54,7 @@ public class wodezhanghuActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.wodezhanghu);
         init();
-        test();
+        //test();
         setListener();
 
 
@@ -91,30 +91,38 @@ public class wodezhanghuActivity extends Activity {
     }
 
     public void test() {
-        String[] reason=new String[]{"abc","dcd","sdf"};
-        String[] date=new String[]{"2013-13-14 20;30","2015-12-22 12:00","2014-11-22 22:22"};
+        DataFragment dataFragment=DataFragment.getInstance();
+        dataFragment.user_datamap.get("shouzhijilu");
+        ArrayList<String> arrayList;
+        arrayList= (ArrayList<String>) dataFragment.user_datamap.get("shouzhijilu");
+        int size=arrayList.size();
+        if (arrayList!=null) {
+            String[] date = new String[]{"2013-13-14 20:30", "2015-12-22 12:00", "2014-11-22 22:22"};
+            String[] jilu=arrayList.toArray(new String[size]);
+            List<Map<String, Object>> listItems = new ArrayList<>();
 
-        List<Map<String, Object>> listItems=new ArrayList<>();
+            for (int i = 0; i < jilu.length; i++) {
+                Map<String, Object> listItem = new HashMap<>();
+                listItem.put("reason", jilu[i]);
+                listItem.put("date", date[i]);
+                listItems.add(listItem);
+            }
 
-        for (int i=0;i<reason.length;i++){
-            Map<String,Object> listItem=new HashMap<>();
-            listItem.put("reason",reason[i]);
-            listItem.put("date",date[i]);
-            listItems.add(listItem);
+            SimpleAdapter simpleAdapter = new SimpleAdapter(this, listItems, R.layout.shouzhijilu_item, new String[]{"reason", "date"}, new int[]{R.id.shouzhileixing, R.id.shouzhishijian});
+            jilulist.setAdapter(simpleAdapter);
         }
-
-        SimpleAdapter simpleAdapter = new SimpleAdapter(this,listItems,R.layout.shouzhijilu_item,new String[]{"reason","date"},new int[]{R.id.shouzhileixing,R.id.shouzhishijian});
-        jilulist.setAdapter(simpleAdapter);
     }
 
     public void init() {
+
         fanhui=(ImageButton)findViewById(R.id.zhanghu_fanhui);
         yue = (TextView) findViewById(R.id.wodezhanghu_yue);
         tixian = (RelativeLayout) findViewById(R.id.wodezhanghu_tixian);
         daishoukuan = (RelativeLayout) findViewById(R.id.wodezhanghu_daishoukuan);
         jilu = (RelativeLayout) findViewById(R.id.wodezhanghu_shouzhijilu);
         jilulist = (ListView) findViewById(R.id.jilulist);
-
+        daishoukuan.setVisibility(View.GONE);
+        jilu.setVisibility(View.GONE);
         DataFragment dataFragment=DataFragment.getInstance();
 
         yue.setText(dataFragment.user_datamap.get("zhanghuyue").toString());

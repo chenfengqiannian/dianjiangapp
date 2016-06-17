@@ -5,6 +5,7 @@ import android.net.Uri;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
+import android.widget.TextView;
 
 import com.google.gson.Gson;
 import com.google.gson.internal.LinkedTreeMap;
@@ -26,13 +27,24 @@ import java.util.Map;
  */
 public class DataFragment extends Fragment{
 
+        public static boolean save=false;
         public processItemBean mprocessItemBean;
     public LinkedTreeMap<String,Object> user_datamap;
     public ArrayList<LinkedTreeMap<String,Object>> process_datamap;
     public List<dianjiangItemBean> dianjiangItemBeans=new ArrayList<dianjiangItemBean>();
+        public List<dianjiangItemBean> xiangguanItemBeans=new ArrayList<>();
+        public List<dianjiangItemBean> zhaobiaoItembeans=new ArrayList<>();
     public Map<String,Object> fabu_datamap=new HashMap<>();
     public dianjiangItemBean dianjiangItemBean;
     public String gongzhongstring=new String();
+        public static int gongchengbiaoji;
+        public static int zhaobiaostate=0;
+
+        public static String getIp;
+
+
+
+        public Handler mhandler4=new Handler();
         public ArrayList<LinkedTreeMap<String,Object>> gongjiang_data;
 
         public Uri starturi;
@@ -47,6 +59,8 @@ public class DataFragment extends Fragment{
         public Handler mhandler3=new Handler();
         public String city="未设置省";
         public String province="未设置区";
+
+
 
 
     public static final String URL="http://192.168.191.1:8000";

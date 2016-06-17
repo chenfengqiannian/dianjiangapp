@@ -9,6 +9,8 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Handler;
+import android.os.Message;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
@@ -22,6 +24,14 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.google.gson.Gson;
+import com.google.gson.internal.LinkedTreeMap;
+import com.squareup.okhttp.OkHttpClient;
+import com.squareup.okhttp.Request;
+import com.zhy.http.okhttp.OkHttpUtils;
+import com.zhy.http.okhttp.builder.PostFormBuilder;
+import com.zhy.http.okhttp.callback.StringCallback;
 
 import java.io.BufferedOutputStream;
 import java.io.File;
@@ -90,13 +100,12 @@ public class fabuFragment extends Fragment {
     private RelativeLayout jiebao_wangongtime;
     private TextView jiebao_price;
     private TextView jiebao_choulao;
-    private RelativeLayout jiebao_fukuanfangshi;
     private EditText jiebao_beizhu;
     private TextView jiebao_gongzhongtext;
     private TextView jiebao_shigong;
     private TextView jiebao_wangong;
     private TextView jiebao_fukuantext;
-    private static boolean[] state={false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false};
+    private static boolean[] state={false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false};
 
     //预览发布
     private TextView yulan_gongchenghao;
@@ -107,6 +116,7 @@ public class fabuFragment extends Fragment {
     private TextView yulan_yaoqiu;
     private TextView yulan_shichang;
     private TextView yulan_price;
+    public String id;
     private TextView yulan_beizhu;
 
 
@@ -153,15 +163,38 @@ public class fabuFragment extends Fragment {
 
         //工程信息
         if (mParam1.equalsIgnoreCase("工程信息")){
+            final DataFragment dataFragment=DataFragment.getInstance();
             view=inflater.inflate(R.layout.fabu_fragment1,null);
             xinxiInit();
+            /*dataFragment.mhandler4=new Handler(){
+                @Override
+                public void handleMessage(Message msg) {
+                    if (msg.what==0x8888){
+                        dataFragment.fabu_datamap.put("biaoti",xinxi_biaoti.getText().toString());
+                        dataFragment.fabu_datamap.put("miaoshu",xinxi_miaoshu.getText().toString());
+                        dataFragment.fabu_datamap.put("xiangxidizhi",xinxi_xiangxidizhi.getText().toString());
+                    }
+                }
+            };*/
 
             return view;
         }
           //接包要求
         else if (mParam1.equalsIgnoreCase("接包要求")){
+            final DataFragment dataFragment=DataFragment.getInstance();
             view=inflater.inflate(R.layout.fabu_fragment2,null);
             jiebaoInit();
+            /*dataFragment.mhandler4=new Handler(){
+                @Override
+                public void handleMessage(Message msg) {
+                    if (msg.what==0x3334){
+                        dataFragment.fabu_datamap.put("gongzhong",jiebao_gongzhongtext.getText().toString());
+                        dataFragment.fabu_datamap.put("yaoqiu",jiebao_yaoqiu.getText().toString());
+                        dataFragment.fabu_datamap.put("choulao",jiebao_price.getText().toString());
+                        dataFragment.fabu_datamap.put("beizhu",jiebao_beizhu.getText().toString());
+                    }
+                }
+            };*/
 
             return view;
         }
@@ -176,6 +209,7 @@ public class fabuFragment extends Fragment {
 
     //工程信息初始化
     public void xinxiInit(){
+        final DataFragment dataFragment=DataFragment.getInstance();
         xinxi_biaoti= (EditText) view.findViewById(R.id.fabu1_biaoti);
         xinxi_miaoshu= (EditText) view.findViewById(R.id.fabu1_miaoshu);
         xinxi_tupian1= (ImageView) view.findViewById(R.id.xinxi_tupian1);
@@ -183,6 +217,36 @@ public class fabuFragment extends Fragment {
         xinxi_tupianOption= (ImageView) view.findViewById(R.id.img_option);
         xinxi_tupiantext=(TextView)view.findViewById(R.id.fabu1_tupian);
         xinxi_xiangxidizhi=(EditText)view.findViewById(R.id.fabu1_dizhi);
+        dataFragment.mhandler4=new Handler(){
+                @Override
+                public void handleMessage(Message msg) {
+                    if (msg.what==0x1234){
+                        dataFragment.fabu_datamap.put("biaoti",xinxi_biaoti.getText().toString());
+                        dataFragment.fabu_datamap.put("miaoshu",xinxi_miaoshu.getText().toString());
+                        dataFragment.fabu_datamap.put("xiangxidizhi",xinxi_xiangxidizhi.getText().toString());
+                        postSaveHttp();
+                    }
+                }
+            };
+
+        if (DataFragment.save==true){
+            //////////////////////////////////////////////////////////////////////////////////////////
+            xinxi_biaoti.setText(dataFragment.mprocessItemBean.processname);
+            xinxi_miaoshu.setText(dataFragment.mprocessItemBean.miaoshu);
+            ArrayList<LinkedTreeMap<String,Object>> gongcheng_set=(ArrayList<LinkedTreeMap<String,Object>>)dataFragment.user_datamap.get("gongcheng_set");
+            for (int i=0;i<gongcheng_set.size();i++){
+                LinkedTreeMap<String,Object> map;
+                map=gongcheng_set.get(i);
+                if (map.get("id").toString().equals(dataFragment.mprocessItemBean.processnumber)){
+                    xinxi_xiangxidizhi.setText(map.get("xiangxidizhi").toString());
+                    //gongzhong.setText(map.get("gongzhong").toString());
+                    //yaoqiu.setText(map.get("yaoqiu").toString());
+                    //shichang.setText(map.get("kaishitime").toString()+"至"+map.get("jieshutime").toString());
+                    //choulao.setText(map.get("xinchou").toString());
+                    //beizhu.setText(map.get("beizhu").toString());
+                }
+            }
+        }
 
         //监听器
         xinxi_tupianOption.setOnClickListener(new View.OnClickListener() {
@@ -216,17 +280,46 @@ public class fabuFragment extends Fragment {
 
     //接包要求初始化
     public void jiebaoInit(){
+        final DataFragment dataFragment=DataFragment.getInstance();
         jiebao_gongzhong= (RelativeLayout) view.findViewById(R.id.fabu2_gongzhong);
         jiebao_gongzhongtext=(TextView)view.findViewById(R.id.fabu2_gongzhongtext);
         jiebao_yaoqiu= (EditText) view.findViewById(R.id.fabu2_miaoshu);
         jiebao_shigongtime= (RelativeLayout) view.findViewById(R.id.fabu2_shigongshijian);
         jiebao_wangongtime=(RelativeLayout)view.findViewById(R.id.fabu2_wangong);
         jiebao_price=(EditText)view.findViewById(R.id.fabu2_price);
-        jiebao_fukuanfangshi=(RelativeLayout)view.findViewById(R.id.fabu2_fukuanfangshi);
         jiebao_beizhu=(EditText)view.findViewById(R.id.fabu2_shurubeizhu);
-        jiebao_fukuantext=(TextView)view.findViewById(R.id.fabu2_fukuantext);
+        //jiebao_fukuantext=(TextView)view.findViewById(R.id.fabu2_fukuantext);
         jiebao_shigong=(TextView)view.findViewById(R.id.shigongtime);
         jiebao_wangong=(TextView)view.findViewById(R.id.wangongtime);
+
+        dataFragment.mhandler4=new Handler(){
+            @Override
+            public void handleMessage(Message msg) {
+                if (msg.what==0x1234){
+                    dataFragment.fabu_datamap.put("gongzhong",jiebao_gongzhongtext.getText().toString());
+                    dataFragment.fabu_datamap.put("yaoqiu",jiebao_yaoqiu.getText().toString());
+                    dataFragment.fabu_datamap.put("choulao",jiebao_choulao.getText().toString());
+                    dataFragment.fabu_datamap.put("beizhu",jiebao_beizhu.getText().toString());
+                    postSaveHttp();
+                }
+            }
+        };
+
+        if (DataFragment.save==true){
+            //////////////////////////////////////////////////////////////////////////////////////////
+            ArrayList<LinkedTreeMap<String,Object>> gongcheng_set=(ArrayList<LinkedTreeMap<String,Object>>)dataFragment.user_datamap.get("gongcheng_set");
+            for (int i=0;i<gongcheng_set.size();i++){
+                LinkedTreeMap<String,Object> map;
+                map=gongcheng_set.get(i);
+                if (map.get("id").toString().equals(dataFragment.mprocessItemBean.processnumber)){
+                    xinxi_biaoti.setText(map.get("biaoti").toString());
+                    jiebao_gongzhongtext.setText(map.get("gongzhong").toString());
+                    jiebao_yaoqiu.setText(map.get("yaoqiu").toString());
+                    jiebao_choulao.setText(map.get("choulao").toString());
+                    jiebao_beizhu.setText(map.get("beizhu").toString());
+                }
+            }
+        }
 
         jiebao_gongzhong.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -373,9 +466,39 @@ public class fabuFragment extends Fragment {
     }
 
     @Override
+    public void onPause() {
+        super.onPause();
+        DataFragment dataFragment=DataFragment.getInstance();
+        Log.i("LOL","fragmentStop");
+        if (mParam1.equalsIgnoreCase("工程信息")){
+            //此处提取回传给Activity的工程信息
+            dataFragment.fabu_datamap.put("biaoti", xinxi_biaoti.getText().toString());
+            dataFragment.fabu_datamap.put("miaoshu",xinxi_miaoshu.getText().toString());
+            dataFragment.fabu_datamap.put("xiangxidizhi",xinxi_xiangxidizhi.getText().toString());
+            dataFragment.fabu_datamap.put("tupian", files);
+
+        }
+        else if (mParam1.equalsIgnoreCase("接包要求")){
+            //此处提取回传给Activity的接包信息
+            dataFragment.fabu_datamap.put("gongzhong",jiebao_gongzhongtext.getText().toString());
+            dataFragment.fabu_datamap.put("yaoqiu",jiebao_yaoqiu.getText().toString());
+            dataFragment.fabu_datamap.put("choulao",jiebao_price.getText().toString());
+            //dataFragment.fabu_datamap.put("fukuan",jiebao_fukuantext.getText().toString());
+            dataFragment.fabu_datamap.put("beizhu",jiebao_beizhu.getText().toString());
+            dataFragment.fabu_datamap.put("shichang",jiebao_shigong.getText().toString()+"至"+jiebao_wangong.getText().toString());
+            dataFragment.fabu_datamap.put("kaishitime",jiebao_shigong.getText().toString());
+            dataFragment.fabu_datamap.put("jieshutime",jiebao_wangong.getText().toString());
+
+        }
+        else if (mParam1.equalsIgnoreCase("预览发布")){
+
+        }
+    }
+
+    @Override
     public void onStop() {
         super.onStop();
-        DataFragment dataFragment=DataFragment.getInstance();
+       /* DataFragment dataFragment=DataFragment.getInstance();
         Log.i("LOL","fragmentStop");
         if (mParam1.equalsIgnoreCase("工程信息")){
             //此处提取回传给Activity的工程信息
@@ -399,7 +522,7 @@ public class fabuFragment extends Fragment {
         }
         else if (mParam1.equalsIgnoreCase("预览发布")){
 
-        }
+        }*/
     }
 
     @Override
@@ -466,7 +589,8 @@ public class fabuFragment extends Fragment {
 
     public void gongzhongdialog() {
        // boolean[] state={false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false};
-        final String[] gongzhong = {"电工","木工","瓦工","焊工","架子工","钢筋工","抹灰工","砌筑工","混凝土工","油漆工","防水工","管道工","吊顶工","无气喷涂工","钻孔工","拆除工","普工/杂工","项目经理","生产经理","工长","监理","施工员","质量员","安全员","材料员","资料员","预算员","机械员","测量员","劳务员","司索指挥","塔吊司机","吊车司机","起重机司机","升降机司机","挖掘机司机","推土机司机","叉车司机","电梯司机","机械修理工","机械安装/拆除工"};
+        //final String[] gongzhong = {"电工","木工","瓦工","焊工","架子工","钢筋工","抹灰工","砌筑工","混凝土工","油漆工","防水工","管道工","吊顶工","无气喷涂工","钻孔工","拆除工","普工/杂工","项目经理","生产经理","工长","监理","施工员","质量员","安全员","材料员","资料员","预算员","机械员","测量员","劳务员","司索指挥","塔吊司机","吊车司机","起重机司机","升降机司机","挖掘机司机","推土机司机","叉车司机","电梯司机","机械修理工","机械安装/拆除工"};
+        final String[] gongzhong = {"木模工","钢模工","砌墙工","粉刷工","钢筋工","混凝土工","油漆工","玻璃工","","起重工","吊车司机","指挥","电焊工","机修工","维修电工","","测量工","防水工","架子工","普工","建筑设备安装工","","水工","电工","白铁工","管工"};
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity())
                 .setTitle("请选择工种")
                 .setMultiChoiceItems(gongzhong,state, new DialogInterface.OnMultiChoiceClickListener() {
@@ -484,8 +608,10 @@ public class fabuFragment extends Fragment {
                         DataFragment dataFragment=DataFragment.getInstance();
                         for (int i=0;i<state.length;i++){
                             if (state[i]==true){
-                                dataFragment.gongzhongstring=dataFragment.gongzhongstring+" "+gongzhong[i];
-                                state[i]=false;
+                                if (gongzhong[i].equalsIgnoreCase("")){}else {
+                                    dataFragment.gongzhongstring=dataFragment.gongzhongstring+" "+gongzhong[i];
+                                    state[i]=false;
+                                }
                             }
                         }
                         jiebao_gongzhongtext.setText(dataFragment.gongzhongstring);
@@ -514,6 +640,80 @@ public class fabuFragment extends Fragment {
             }
         },c.get(Calendar.YEAR),c.get(Calendar.MONTH),c.get(Calendar.DAY_OF_MONTH));
         datePickerDialog.show();
+    }
+
+    public void postSaveHttp(){
+        final DataFragment dataFragment=DataFragment.getInstance();
+        OkHttpClient client = new OkHttpClient();
+        Gson gson1=new Gson();
+        HashMap<String,Object> data1 =new HashMap<>();
+        data1.put("biaoti",dataFragment.fabu_datamap.get("biaoti"));
+        data1.put("miaoshu",dataFragment.fabu_datamap.get("miaoshu"));
+        data1.put("xiangxidizhi",dataFragment.fabu_datamap.get("xiangxidizhi"));
+        data1.put("gongzhong",dataFragment.fabu_datamap.get("gongzhong"));
+        data1.put("yaoqiu",dataFragment.fabu_datamap.get("yaoqiu"));
+        data1.put("xinchou",dataFragment.fabu_datamap.get("choulao"));
+        data1.put("beizhu",dataFragment.fabu_datamap.get("beizhu"));
+
+        if (dataFragment.fabu_datamap.get("kaishitime")==null){}else if (dataFragment.fabu_datamap.get("kaishitime").equals("选择施工日期")){}else {
+            data1.put("kaishitime",dataFragment.fabu_datamap.get("kaishitime"));
+        }
+
+        if (dataFragment.fabu_datamap.get("jieshutime")==null){}else if (dataFragment.fabu_datamap.get("jieshutime").equals("选择完工日期")){}else {
+            data1.put("jieshutime",dataFragment.fabu_datamap.get("jieshutime"));
+        }
+
+
+        //data1.put("kaishitime",dataFragment.fabu_datamap.get("kaishitime"));
+        //data1.put("jieshutime",dataFragment.fabu_datamap.get("jieshutime"));
+        data1.put("leixing","0");
+        data1.put("zhuangtai",-3);
+        data1.put("phone",dengluActivity.phone);
+        OkHttpUtils
+                .postString()
+                .url(MainActivity.URL + MainActivity.PROCESSAPI)
+                .content(gson1.toJson(data1))
+                .build()
+                .execute(new StringCallback() {
+                    @Override
+                    public void onError(Request request, Exception e) {
+                        Log.i("LOL", "Dwq");
+                        Toast.makeText(getActivity(), "发生未知错误", Toast.LENGTH_LONG).show();
+                    }
+
+                    @Override
+                    public void onResponse(String response) {
+                        id=response;
+                        PostFormBuilder buider2 =OkHttpUtils.post();
+                        ArrayList<File> files;
+                        files= (ArrayList<File>)dataFragment.fabu_datamap.get("tupian");
+                        if (files!=null){
+                            for(int i=0;i<files.size();i++){
+                                buider2.addFile(i+"aaaa",files.get(i).getName(),files.get(i));
+                            }
+                            buider2
+                                    .url(MainActivity.URL + MainActivity.IMAGEAPI)
+                                    .addParams("id",id)
+                                    .addParams("shangchuan","gongcheng,tupian")
+                                    .build()
+                                    .execute(new StringCallback() {
+                                        @Override
+                                        public void onError(Request request, Exception e) {
+                                        }
+
+                                        @Override
+                                        public void onResponse(String response) {
+                                            Toast.makeText(getActivity(),"工程保存成功",Toast.LENGTH_LONG).show();
+                                        }
+                                    });
+                        }else {
+                            Toast.makeText(getActivity(),"工程保存成功",Toast.LENGTH_LONG).show();
+                            DataFragment.save=false;
+                            Intent intent=new Intent(getActivity(),MainActivity.class);
+                            startActivity(intent);
+                        }
+                    }
+                });
     }
 
     /**
