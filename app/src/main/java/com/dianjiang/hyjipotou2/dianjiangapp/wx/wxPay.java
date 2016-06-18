@@ -207,7 +207,7 @@ public class wxPay {
 
 
     public static void GetNetIp() {
-        final DataFragment dataFragment=DataFragment.getInstance();
+        DataFragment dataFragment=DataFragment.getInstance();
         /*OkHttpUtils.get()
                 .url("http://test.ip138.com/query/")
                 .build()
