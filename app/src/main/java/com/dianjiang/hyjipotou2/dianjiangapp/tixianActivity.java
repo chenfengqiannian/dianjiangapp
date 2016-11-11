@@ -1,12 +1,15 @@
 package com.dianjiang.hyjipotou2.dianjiangapp;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -29,8 +32,11 @@ public class tixianActivity extends Activity {
     private TextView yue;
     private TextView shenqingjine;
     private RelativeLayout button;
-
+    AlertDialog.Builder builder;
     private String price;
+    EditText text;
+    String zhifubao;
+    private LinearLayout textDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,35 +44,78 @@ public class tixianActivity extends Activity {
         setContentView(R.layout.tixianshenqing);
         init();
 
+        fanhui.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+
 
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //getData0();
-                OkHttpClient client = new OkHttpClient();
-                Gson gson1=new Gson();
-                HashMap<String,Object> data1 =new HashMap<>();
-                data1.put("tixianshenqing",true);
-                data1.put("phone",dengluActivity.phone);
-                OkHttpUtils
-                        .postString()
-                        .url(MainActivity.URL + MainActivity.USERAPI)
-                        .content(gson1.toJson(data1))
-                        .build()
-                        .execute(new StringCallback() {
-                            @Override
-                            public void onError(Request request, Exception e) {
-                                Log.i("LOL", "Dwq");
-                                Toast.makeText(tixianActivity.this, "提现失败", Toast.LENGTH_LONG).show();
-                            }
-
-                            @Override
-                            public void onResponse(String response) {
-                                Toast.makeText(tixianActivity.this,"提现申请发送成功,请耐心等待",Toast.LENGTH_LONG).show();
-                            }
-                        });
+                setTextDialog();
             }
         });
+    }
+
+    public void setTextDialog() {
+        builder = new AlertDialog.Builder(this)
+                .setTitle("请输入支付宝账号")
+                .setView(null)
+                .setView(textDialog)
+                .setPositiveButton("提交", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        //提取消息
+                        zhifubao = text.getText().toString();
+                        textDialog = null;
+                        if (textDialog == null) {
+                            textDialog = (LinearLayout)getLayoutInflater().inflate(R.layout.textdialog, null);
+                            text = (EditText) textDialog.findViewById(R.id.text123);
+                        }
+                        setTakemoney();
+                    }
+                })
+                .setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        textDialog = null;
+                        if (textDialog == null) {
+                            textDialog = (LinearLayout)getLayoutInflater().inflate(R.layout.textdialog, null);
+                            text = (EditText) textDialog.findViewById(R.id.text123);
+                        }
+                    }
+                });
+        builder.create().show();
+    }
+
+    public void setTakemoney(){
+        OkHttpClient client = new OkHttpClient();
+        Gson gson1=new Gson();
+        HashMap<String,Object> data1 =new HashMap<>();
+        data1.put("tixianshenqing",true);
+        data1.put("phone",dengluActivity.phone);
+        data1.put("zhifubaozhanghao",zhifubao);
+        OkHttpUtils
+                .postString()
+                .url(MainActivity.URL + MainActivity.USERAPI)
+                .content(gson1.toJson(data1))
+                .build()
+                .execute(new StringCallback() {
+                    @Override
+                    public void onError(Request request, Exception e) {
+                        Log.i("LOL", "Dwq");
+                        Toast.makeText(tixianActivity.this, "提现失败", Toast.LENGTH_LONG).show();
+                    }
+
+                    @Override
+                    public void onResponse(String response) {
+                        Toast.makeText(tixianActivity.this,"提现申请发送成功,请耐心等待",Toast.LENGTH_LONG).show();
+                    }
+                });
     }
 
     public void init(){
@@ -75,6 +124,9 @@ public class tixianActivity extends Activity {
         yue=(TextView)findViewById(R.id.tixianshenqing_num);
         shenqingjine=(TextView)findViewById(R.id.tixianshenqing_price);
         button= (RelativeLayout) findViewById(R.id.tixianshenqing_button);
+
+        textDialog=(LinearLayout)getLayoutInflater().inflate(R.layout.textdialog, null);
+        text= (EditText) textDialog.findViewById(R.id.text123);
 
         zhanghu.setText(dengluActivity.phone);
         DataFragment dataFragment=DataFragment.getInstance();

@@ -208,4 +208,21 @@ public class mytool {
     }
 
     }
+
+    public static ArrayList<String> RemoveSame(ArrayList<String> list)
+    {
+        //上面写的那句是多余的，这个是最终的
+        for (int i = 0; i < list.size() - 1; i++)
+        {
+            for (int j = i + 1; j < list.size(); j++)
+            {
+                if (list.get(i).equalsIgnoreCase(list.get(j)))
+                {
+                    list.remove(j);
+                    j--;
+                }
+            }
+        }
+        return list;
+    }
 }

@@ -60,7 +60,7 @@ public class StartActivity extends Activity {
         }
         wxPay.GetNetIp();
 
-        getprocess();
+        //getprocess();
         imgget();
 
 
@@ -91,13 +91,15 @@ public class StartActivity extends Activity {
                     @Override
                     public void onResponse(Object response) {
                         DataFragment dataFragment = DataFragment.getInstance();
-                        Log.i("LOL","response2");
+                        Log.i("LOL", "response2");
                         dataFragment.gongjiang_data = (ArrayList<LinkedTreeMap<String, Object>>) response;
+
+                        getprocess();
                     }
                 });
 
 
-                        Start();
+
 
                     }
 
@@ -208,6 +210,8 @@ public class StartActivity extends Activity {
                                     @Override
                                     public void onError(Request request, Exception e) {
 
+                                        Log.i("LOL","responseprocess");
+
                                     }
 
                                     @Override
@@ -215,6 +219,7 @@ public class StartActivity extends Activity {
                                         Log.i("LOL","response5");
                                         DataFragment dataFragment = DataFragment.getInstance();
                                         dataFragment.process_datamap = (ArrayList<LinkedTreeMap<String, Object>>) response;
+                                        Start();
 
                                     }
                                 });

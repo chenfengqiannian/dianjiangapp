@@ -68,6 +68,9 @@ public class gongjiangmoreActivity extends AppCompatActivity implements View.OnC
     RatingBar pingfen;
     RelativeLayout canyurenwu;
 
+    TextView ketang;
+    ImageButton reacitivty;
+
 
 
 
@@ -127,9 +130,19 @@ public class gongjiangmoreActivity extends AppCompatActivity implements View.OnC
     void init(int index) {
         dataFragment = DataFragment.getInstance();
         if (index == 0) {
-
             setContentView(R.layout.fragment_blank);
-
+            reacitivty= (ImageButton) findViewById(R.id.fanhui);
+            ketang= (TextView) findViewById(R.id.textView);
+            //fanhui
+            ArrayList<String> arrayList= (ArrayList<String>) dataFragment.linkedTreeMap.get("ketang");
+            String s=arrayList.get(0);
+            ketang.setText(s);
+            reacitivty.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    finish();
+                }
+            });
 
         }
         if (index == 1) {
@@ -156,7 +169,7 @@ public class gongjiangmoreActivity extends AppCompatActivity implements View.OnC
             biaoqian.setText((String) dataFragment.user_datamap.get("biaoqian"));
             ziwojieshao.setText((String) dataFragment.user_datamap.get("ziwojieshao"));
             gongzhong1.setText((String) dataFragment.user_datamap.get("gongzhong"));
-            rixin.setText(dataFragment.user_datamap.get("rixin").toString());
+            rixin.setText(String.valueOf((int) (double) dataFragment.user_datamap.get("rixin")));
             Map<Double,String> map=new HashMap<>();
             map.put(0.0, "新人工匠");
             map.put(1.0, "工匠一级");
@@ -240,6 +253,88 @@ public class gongjiangmoreActivity extends AppCompatActivity implements View.OnC
         }
     }
 
+    public void touxiangHttp(){
+        PostFormBuilder buider3 = OkHttpUtils.post();
+        buider3.addFile("ffff", touxiang_file.getName(), touxiang_file)
+                .url(MainActivity.URL + MainActivity.IMAGEAPI)
+                .addParams("id", dengluActivity.phone)
+                .addParams("shangchuan", "user,touxiang")
+                .build()
+                .execute(new StringCallback() {
+                    @Override
+                    public void onError(Request request, Exception e) {
+                        Log.d("LOL", "wori_touxiang");
+                    }
+
+                    @Override
+                    public void onResponse(String response) {
+                        Log.d("LOL", "touxiang");
+                        if (!zige_files.isEmpty()){
+                            zigeHttp();
+                        }else {
+                            finalGetHttp();
+                        }
+                    }
+                });
+    }
+
+    public void zigeHttp(){
+        PostFormBuilder buider =OkHttpUtils.post();
+        for(int i=0;i<zige_files.size();i++){
+            buider.addFile(i+"ffff",zige_files.get(i).getName(),zige_files.get(i));
+        }
+        buider
+                .url(MainActivity.URL + MainActivity.IMAGEAPI)
+                .addParams("id",dengluActivity.phone)
+                .addParams("shangchuan","user,zhengshu")
+                .build()
+                .execute(new StringCallback() {
+                    @Override
+                    public void onError(Request request, Exception e) {
+                        Log.d("LOL", "wori_zige");
+                    }
+
+                    @Override
+                    public void onResponse(String response) {
+                        finalGetHttp();
+                    }
+                });
+    }
+
+    public void finalGetHttp(){
+        OkHttpUtils
+                .get()
+                .url(MainActivity.URL + MainActivity.USERAPI)
+                .addParams("phone", dengluActivity.phone)
+                .build()
+                .execute(new Callback() {
+                    @Override
+                    public Object parseNetworkResponse(Response response) throws IOException {
+
+                        Log.i("LOL", "response");
+                        String string = response.body().string();
+
+                        Object ps = new Gson().fromJson(string, new TypeToken<Object>() {
+                        }.getType());
+                        return ps;
+                    }
+
+                    @Override
+                    public void onError(Request request, Exception e) {
+
+                    }
+
+                    @Override
+                    public void onResponse(Object response) {
+                        DataFragment dataFragment1 = DataFragment.getInstance();
+                        dataFragment1.user_datamap = (LinkedTreeMap<String, Object>) response;
+                        Toast.makeText(gongjiangmoreActivity.this, "信息修改成功", Toast.LENGTH_LONG).show();
+                        finish();
+
+                    }
+                });
+    }
+
     @Override
     public void onClick(View v) {
         if (v == baocun) {
@@ -252,7 +347,7 @@ public class gongjiangmoreActivity extends AppCompatActivity implements View.OnC
             data.put("biaoqian", biaoqian.getText().toString());
             data.put("ziwojieshao", ziwojieshao.getText().toString());
             data.put("gongzhong",gongzhong1.getText().toString());
-            data.put("rixin",Integer.getInteger((rixin.getText().toString())));
+            data.put("rixin",Integer.valueOf((rixin.getText().toString())));
             data.put("phone",dengluActivity.phone);
             OkHttpUtils.postString().url(MainActivity.URL + MainActivity.USERAPI).content(gson.toJson(data)).build().execute(new StringCallback() {
                 @Override
@@ -263,7 +358,9 @@ public class gongjiangmoreActivity extends AppCompatActivity implements View.OnC
                 @Override
                 public void onResponse(String response) {
                     if (!(touxiang_file==null)) {
-                        PostFormBuilder buider3 = OkHttpUtils.post();
+
+                        touxiangHttp();
+                        /*PostFormBuilder buider3 = OkHttpUtils.post();
                         buider3.addFile("ffff", touxiang_file.getName(), touxiang_file)
                                 .url(MainActivity.URL + MainActivity.IMAGEAPI)
                                 .addParams("id", dengluActivity.phone)
@@ -366,8 +463,10 @@ public class gongjiangmoreActivity extends AppCompatActivity implements View.OnC
                                                 });
                                     }
                                 });
+                    */}else if (zige_files.isEmpty()){
+                        finalGetHttp();
                     }else {
-                        finish();
+                        zigeHttp();
                     }
                 }
             });
@@ -428,6 +527,8 @@ public class gongjiangmoreActivity extends AppCompatActivity implements View.OnC
         });
         builder.create().show();
     }
+
+
 
     //跳转至照相机
     public void camera(int f) {

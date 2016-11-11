@@ -606,6 +606,7 @@ public class fabuFragment extends Fragment {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         DataFragment dataFragment=DataFragment.getInstance();
+                        dataFragment.gongzhongstring="";
                         for (int i=0;i<state.length;i++){
                             if (state[i]==true){
                                 if (gongzhong[i].equalsIgnoreCase("")){}else {
@@ -625,7 +626,7 @@ public class fabuFragment extends Fragment {
         DatePickerDialog datePickerDialog=new DatePickerDialog(getActivity(), new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                jiebao_shigong.setText(Integer.toString(year)+"-"+Integer.toString(monthOfYear)+"-"+Integer.toString(dayOfMonth));
+                jiebao_shigong.setText(Integer.toString(year)+"-"+(Integer.toString(monthOfYear+1))+"-"+Integer.toString(dayOfMonth));
             }
         },c.get(Calendar.YEAR),c.get(Calendar.MONTH),c.get(Calendar.DAY_OF_MONTH));
         datePickerDialog.show();
@@ -636,7 +637,7 @@ public class fabuFragment extends Fragment {
         DatePickerDialog datePickerDialog=new DatePickerDialog(getActivity(), new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                jiebao_wangong.setText(Integer.toString(year)+"-"+Integer.toString(monthOfYear)+"-"+Integer.toString(dayOfMonth));
+                jiebao_wangong.setText(Integer.toString(year)+"-"+(Integer.toString(monthOfYear+1))+"-"+Integer.toString(dayOfMonth));
             }
         },c.get(Calendar.YEAR),c.get(Calendar.MONTH),c.get(Calendar.DAY_OF_MONTH));
         datePickerDialog.show();

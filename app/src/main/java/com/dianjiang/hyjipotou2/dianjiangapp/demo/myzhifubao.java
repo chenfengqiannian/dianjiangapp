@@ -19,21 +19,6 @@ import java.util.Random;
  */
 public class myzhifubao {
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     public static final String PARTNER = "2088221710434420";
 
     public static final String SELLER = "he127654@163.com";

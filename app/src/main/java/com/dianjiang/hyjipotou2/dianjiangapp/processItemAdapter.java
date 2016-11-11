@@ -65,6 +65,7 @@ public class processItemAdapter extends BaseAdapter {
         viewHolder.miaoshu.setText(bean.miaoshu);
         viewHolder.process_number.setText((int)Double.parseDouble(bean.processnumber)+"");
         viewHolder.process_date.setText(bean.date);
+        viewHolder.process_jindu.setText(bean.processjindu);
 
         //判断审核状态
         if (bean.shenhe_state==1){

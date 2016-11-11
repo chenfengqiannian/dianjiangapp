@@ -24,6 +24,7 @@
             android:textSize="18sp" />
 
         <ImageButton
+            android:id="@+id/reactivity"
             android:background="#00000000"
             android:layout_centerVertical="true"
             android:layout_width="40dp"
@@ -232,9 +233,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="12sp"
-            android:textColor="@color/black_color"
-
-            android:text="XXXXXXXXXXXXXX"/>
+            android:textColor="@color/black_color" />
     </RelativeLayout>
 
     <View

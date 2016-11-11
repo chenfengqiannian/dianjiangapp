@@ -1,10 +1,14 @@
 package com.dianjiang.hyjipotou2.dianjiangapp;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
+import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -240,7 +244,7 @@ public class myfactoryFragment extends Fragment implements XListView.IXListViewL
         DataFragment data=DataFragment.getInstance();
         ArrayList<LinkedTreeMap<String,Object>> gongcheng_set=(ArrayList<LinkedTreeMap<String,Object>>)data.user_datamap.get("gongcheng_set");
         itemBeans=new ArrayList<processItemBean>();
-        if(mParam1.equalsIgnoreCase("招标工程") || mParam1.equalsIgnoreCase("指定工程"))
+        if(mParam1.equalsIgnoreCase("招标工程") || mParam1.equalsIgnoreCase("指定工程") || mParam1.equalsIgnoreCase("招标成功") || mParam1.equalsIgnoreCase("进行中") || mParam1.equalsIgnoreCase("已结款") || mParam1.equalsIgnoreCase("未结款"))
         {
             if (mParam1.equalsIgnoreCase("招标工程")){
                 for (LinkedTreeMap<String,Object> map:data.process_datamap) {
@@ -266,7 +270,7 @@ public class myfactoryFragment extends Fragment implements XListView.IXListViewL
                 }
 
             }
-            else {
+            else if (mParam1.equalsIgnoreCase("指定工程")){
                 for (LinkedTreeMap<String,Object> map:data.process_datamap){
                     for (String phone:(ArrayList<String>)map.get("yaoqing")){
                     if (phone.equals(dengluActivity.phone)){
@@ -286,20 +290,100 @@ public class myfactoryFragment extends Fragment implements XListView.IXListViewL
                     }
                     }
                 }
+            }else if (mParam1.equalsIgnoreCase("招标成功")){
+                for (LinkedTreeMap<String,Object> map:data.process_datamap){
+                    if ((int) ((double) map.get("zhuangtai")) >= 3 && (int) ((double) map.get("zhuangtai")) <= 3) {
+                        for (String phone : (ArrayList<String>) map.get("zhiding")) {
+                            if (phone.equals(dengluActivity.phone)) {
+                                ArrayList<String> tupianlist = (ArrayList<String>) map.get("tupian");
+
+                                Uri uri;
+                                String string;
+                                if (tupianlist.isEmpty()) {
+                                    uri = null;
+                                } else {
+                                    string = tupianlist.get(tupianlist.size() - 1);
+                                    uri = mytool.UriFromSenge(string);
+                                }
+
+                                itemBeans.add(0, new processItemBean(uri, (String) map.get("biaoti"), map.get("id").toString(), (String) map.get("miaoshu"), (int) (double) map.get("zhuangtai"), (String) map.get("autotime"), (String) map.get("gongchengjindu")));
+
+                            }
+                        }
+                    }
+                }
+            }else if (mParam1.equalsIgnoreCase("进行中")){
+                for (LinkedTreeMap<String,Object> map:data.process_datamap){
+                    if ((int) ((double) map.get("zhuangtai")) >= 4 && (int) ((double) map.get("zhuangtai")) <= 4) {
+                        for (String phone : (ArrayList<String>) map.get("zhiding")) {
+                            if (phone.equals(dengluActivity.phone)) {
+                                ArrayList<String> tupianlist = (ArrayList<String>) map.get("tupian");
+
+                                Uri uri;
+                                String string;
+                                if (tupianlist.isEmpty()) {
+                                    uri = null;
+                                } else {
+                                    string = tupianlist.get(tupianlist.size() - 1);
+                                    uri = mytool.UriFromSenge(string);
+                                }
+
+                                itemBeans.add(0, new processItemBean(uri, (String) map.get("biaoti"), map.get("id").toString(), (String) map.get("miaoshu"), (int) (double) map.get("zhuangtai"), (String) map.get("autotime"), (String) map.get("gongchengjindu")));
+
+                            }
+                        }
+                    }
+                }
+            }else if (mParam1.equalsIgnoreCase("已结款")){
+                for (LinkedTreeMap<String,Object> map:data.process_datamap){
+                    if ((int) ((double) map.get("zhuangtai")) >= 6 && (int) ((double) map.get("zhuangtai")) <= 6) {
+                        for (String phone : (ArrayList<String>) map.get("zhiding")) {
+                            if (phone.equals(dengluActivity.phone)) {
+                                ArrayList<String> tupianlist = (ArrayList<String>) map.get("tupian");
+
+                                Uri uri;
+                                String string;
+                                if (tupianlist.isEmpty()) {
+                                    uri = null;
+                                } else {
+                                    string = tupianlist.get(tupianlist.size() - 1);
+                                    uri = mytool.UriFromSenge(string);
+                                }
+
+                                itemBeans.add(0, new processItemBean(uri, (String) map.get("biaoti"), map.get("id").toString(), (String) map.get("miaoshu"), (int) (double) map.get("zhuangtai"), (String) map.get("autotime"), (String) map.get("gongchengjindu")));
+
+                            }
+                        }
+                    }
+                }
+            }else if (mParam1.equalsIgnoreCase("未结款")){
+                for (LinkedTreeMap<String,Object> map:data.process_datamap){
+                    if ((int) ((double) map.get("zhuangtai")) >= 5 && (int) ((double) map.get("zhuangtai")) <= 5) {
+                        for (String phone : (ArrayList<String>) map.get("zhiding")) {
+                            if (phone.equals(dengluActivity.phone)) {
+                                ArrayList<String> tupianlist = (ArrayList<String>) map.get("tupian");
+
+                                Uri uri;
+                                String string;
+                                if (tupianlist.isEmpty()) {
+                                    uri = null;
+                                } else {
+                                    string = tupianlist.get(tupianlist.size() - 1);
+                                    uri = mytool.UriFromSenge(string);
+                                }
+
+                                itemBeans.add(0, new processItemBean(uri, (String) map.get("biaoti"), map.get("id").toString(), (String) map.get("miaoshu"), (int) (double) map.get("zhuangtai"), (String) map.get("autotime"), (String) map.get("gongchengjindu")));
+
+                            }
+                        }
+                    }
+                }
             }
 
         }  else {
         if (mParam1.equalsIgnoreCase("已发布工程")) {
         zhuangtai[0] = 0;
         zhuangtai[1] = 6;
-
-
-
-        //itemBeans=new ArrayList<processItemBean>();
-        //itemBean=new processItemBean()
-        //String[] arr1={"Fate","Stay","Night"};
-        //ArrayAdapter<String> adapter=new ArrayAdapter<String>(this.getActivity(),R.layout.testitem,R.id.testText,arr1);
-        //xListView.setAdapter(adapter);
     }
 
     if (mParam1.equalsIgnoreCase("未发布工程")) {
@@ -316,7 +400,7 @@ public class myfactoryFragment extends Fragment implements XListView.IXListViewL
         zhuangtai[0] = 6;
         zhuangtai[1] = 6;
     }
-    if (mParam1.equalsIgnoreCase("招标成功"))
+    /*if (mParam1.equalsIgnoreCase("招标成功"))
 
     {
         zhuangtai[0] = 3;
@@ -342,6 +426,7 @@ public class myfactoryFragment extends Fragment implements XListView.IXListViewL
         zhuangtai[0] = 5;
         zhuangtai[1] = 5;
     }
+    */
 
    for(LinkedTreeMap<String,Object> object:gongcheng_set)
     {
@@ -381,44 +466,47 @@ public class myfactoryFragment extends Fragment implements XListView.IXListViewL
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-                    DataFragment dataFragment = DataFragment.getInstance();
-                    dataFragment.mprocessItemBean = itemBeans.get(position - 1);
-                if (mParam1.equals("未发布工程")){
-                    Intent intent=new Intent(getActivity(),fabuActivity.class);
-                    DataFragment.save=true;
-                    intent.putExtra("id",dataFragment.mprocessItemBean.processnumber);
+                DataFragment dataFragment = DataFragment.getInstance();
+                dataFragment.mprocessItemBean = itemBeans.get(position - 1);
+                if (mParam1.equals("未发布工程")) {
+                    Intent intent = new Intent(getActivity(), fabuActivity.class);
+                    DataFragment.save = true;
+                    intent.putExtra("id", dataFragment.mprocessItemBean.processnumber);
                     startActivity(intent);
-                }else if (mParam1.equalsIgnoreCase("招标工程")){
-                    DataFragment.gongchengbiaoji=1;
+                } else if (mParam1.equalsIgnoreCase("招标工程")) {
+                    DataFragment.gongchengbiaoji = 1;
                     Intent intent = new Intent(getActivity(), gongchengxiangxiActivity.class);
                     startActivity(intent);
-                }else if (mParam1.equalsIgnoreCase("指定工程")){
-                    DataFragment.gongchengbiaoji=2;
+                } else if (mParam1.equalsIgnoreCase("指定工程")) {
+                    DataFragment.gongchengbiaoji = 2;
                     Intent intent = new Intent(getActivity(), gongchengxiangxiActivity.class);
                     startActivity(intent);
-                }else if (mParam1.equalsIgnoreCase("进行中")){
-                    DataFragment.gongchengbiaoji=3;
-                    Intent intent=new Intent(getActivity(),gongchengxiangxiActivity.class);
+                } else if (mParam1.equalsIgnoreCase("进行中")) {
+                    DataFragment.gongchengbiaoji = 3;
+                    Intent intent = new Intent(getActivity(), gongchengxiangxiActivity.class);
                     startActivity(intent);
-                }else if (mParam1.equalsIgnoreCase("已发布工程")){
-                    DataFragment.gongchengbiaoji=4;
-                    Intent intent=new Intent(getActivity(),gongchengxiangxiActivity.class);
+                } else if (mParam1.equalsIgnoreCase("已发布工程")) {
+                    DataFragment.gongchengbiaoji = 4;
+                    Intent intent = new Intent(getActivity(), gongchengxiangxiActivity.class);
                     startActivity(intent);
-                }else if (mParam1.equalsIgnoreCase("招标中工程")){
-                    DataFragment.gongchengbiaoji=5;
-                    Intent intent=new Intent(getActivity(),gongchengxiangxiActivity.class);
+                } else if (mParam1.equalsIgnoreCase("招标中工程")) {
+                    DataFragment.gongchengbiaoji = 5;
+                    Intent intent = new Intent(getActivity(), gongchengxiangxiActivity.class);
                     startActivity(intent);
-                }else if (mParam1.equalsIgnoreCase("已完工工程")){
-                    DataFragment.gongchengbiaoji=6;
-                    Intent intent=new Intent(getActivity(),gongchengxiangxiActivity.class);
+                } else if (mParam1.equalsIgnoreCase("已完工工程")) {
+                    DataFragment.gongchengbiaoji = 6;
+                    Intent intent = new Intent(getActivity(), gongchengxiangxiActivity.class);
                     startActivity(intent);
-                }else {
-                    Intent intent=new Intent(getActivity(),gongchengxiangxiActivity.class);
+                } else if (mParam1.equalsIgnoreCase("未结款")) {
+                    DataFragment.gongchengbiaoji=7;
+                    Intent intent = new Intent(getActivity(), gongchengxiangxiActivity.class);
+                    startActivity(intent);
+                } else {
+                    Intent intent = new Intent(getActivity(), gongchengxiangxiActivity.class);
                     startActivity(intent);
                 }
             }
         });
-
     }
 
 }

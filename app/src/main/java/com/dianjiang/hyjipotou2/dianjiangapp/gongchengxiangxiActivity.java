@@ -12,6 +12,7 @@ import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -52,6 +53,7 @@ public class gongchengxiangxiActivity extends Activity {
     private TextView beizhu;
     private RelativeLayout queren;
     private LinearLayout textDialog;
+    private ImageButton reactivity;
 
     private RelativeLayout tupian;
     private TextView xinxi_tupiantext;
@@ -72,6 +74,9 @@ public class gongchengxiangxiActivity extends Activity {
     public static final int SHENFEN_CAMERA=800;
     public static final int SHENFEN_PHOTO=801;
     public static final int SHENFEN_PHOTO_REQUEST_CUT=311;
+    public static final int FINISH_CAMERA=412;
+    public static final int FINISH_PHOTO=413;
+    public static final int FINISH_REQUEST=414;
     private AlertDialog.Builder builder;
     private EditText text;
     private String jinduMessage;
@@ -132,6 +137,14 @@ public class gongchengxiangxiActivity extends Activity {
         buttontext= (TextView) findViewById(R.id.button_text);
         textDialog=(LinearLayout)getLayoutInflater().inflate(R.layout.textdialog, null);
         text= (EditText) textDialog.findViewById(R.id.text123);
+        reactivity= (ImageButton) findViewById(R.id.reactivity);
+
+        reactivity.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
         //canyuzhaobiao= (RelativeLayout) findViewById(R.id.fabu2_canyu);
 
         /*if (dengluActivity.state==true){
@@ -173,6 +186,10 @@ public class gongchengxiangxiActivity extends Activity {
 
             case 6:tupian.setVisibility(View.GONE);
                 buttontext.setText("确认结款");
+                break;
+
+            case 7:tupian.setVisibility(View.GONE);
+                buttontext.setText("提交完工图片");
                 break;
 
             default:tupian.setVisibility(View.GONE);
@@ -246,6 +263,9 @@ public class gongchengxiangxiActivity extends Activity {
                         intent.putExtra("jiage",price*0.7);
                         startActivity(intent);
                         break;
+
+                    case 7:
+                        simpleListOption(str1,FINISH_CAMERA,FINISH_PHOTO);
                 }
             }
         });
@@ -257,7 +277,13 @@ public class gongchengxiangxiActivity extends Activity {
         number.setText((int) Double.parseDouble(dataFragment.mprocessItemBean.processnumber) + "");
         miaoshu.setText(dataFragment.mprocessItemBean.miaoshu);
 
-        ArrayList<LinkedTreeMap<String,Object>> gongcheng_set=(ArrayList<LinkedTreeMap<String,Object>>)dataFragment.user_datamap.get("gongcheng_set");
+
+
+        ArrayList<LinkedTreeMap<String,Object>> gongcheng_set=dataFragment.process_datamap;
+        //(ArrayList<LinkedTreeMap<String,Object>>)dataFragment.user_datamap.get("gongcheng_set");
+
+
+
         for (int i=0;i<gongcheng_set.size();i++){
             LinkedTreeMap<String,Object> map;
             map=gongcheng_set.get(i);
@@ -291,7 +317,10 @@ public class gongchengxiangxiActivity extends Activity {
         builder.setOnCancelListener(new DialogInterface.OnCancelListener() {
             @Override
             public void onCancel(DialogInterface dialog) {
-                shenfen_state = shenfen_hold;
+                if (DataFragment.gongchengbiaoji == 7) {
+                } else {
+                    shenfen_state = shenfen_hold;
+                }
             }
         });
         builder.create().show();
@@ -348,8 +377,37 @@ public class gongchengxiangxiActivity extends Activity {
             mytool.compressImage(files.get(i));
         }
 
-        // 开启一个带有返回值的Activity，请求码为PHOTO_REQUEST_CUT
-        startActivityForResult(intent,f);
+        if (DataFragment.gongchengbiaoji==7){
+            finishimage();
+        }else {
+
+            // 开启一个带有返回值的Activity，请求码为PHOTO_REQUEST_CUT
+            startActivityForResult(intent, f);
+        }
+    }
+
+    public void finishimage(){
+        if (files.size()>0) {
+            OkHttpUtils
+                    .post()
+                    .url(MainActivity.URL + MainActivity.WANCHENGIMAGE)
+                    .addParams("phone", dengluActivity.phone)
+                    .addFile("formimage",files.get(0).getName(),files.get(0))
+                    .build()
+                    .execute(new StringCallback() {
+                        @Override
+                        public void onError(Request request, Exception e) {
+                            Log.i("LOL","finishimage error");
+                        }
+
+                        @Override
+                        public void onResponse(String response) {
+                            Toast.makeText(gongchengxiangxiActivity.this,"上传成功",Toast.LENGTH_SHORT).show();
+                            finish();
+                        }
+                    });
+
+        }
     }
 
     public void zhaobiaopost(){
@@ -398,7 +456,7 @@ public class gongchengxiangxiActivity extends Activity {
         Gson gson1=new Gson();
         HashMap<String,Object> data1 =new HashMap<>();
         data1.put("id",b);
-        data1.put("jindu",jinduMessage);
+        data1.put("gongchengjindu",jinduMessage);
         OkHttpUtils
                 .postString()
                 .url(MainActivity.URL + MainActivity.PROCESSAPI)
@@ -507,34 +565,6 @@ public class gongchengxiangxiActivity extends Activity {
        // intent.putExtra("jiage", price);
        // startActivity(intent);
     }
-    /*public void getProcess(){
-        DataFragment dataFragment=DataFragment.getInstance();
-        OkHttpUtils
-                .get()
-                .url(MainActivity.URL+MainActivity.PROCESSAPI)
-                .addParams("id",dataFragment.mprocessItemBean.processnumber)
-                .build()
-                .execute(new Callback() {
-                    @Override
-                    public Object parseNetworkResponse(Response response) throws IOException {
-                        String string = response.body().string();
-
-                        Object ps = new Gson().fromJson(string, new TypeToken<Object>() {
-                        }.getType());
-                        return ps;
-                    }
-
-                    @Override
-                    public void onError(Request request, Exception e) {
-
-                    }
-
-                    @Override
-                    public void onResponse(Object response) {
-
-                    }
-                });
-    }*/
 
     public void setTextDialog(){
         builder=new AlertDialog.Builder(this)
@@ -577,86 +607,95 @@ public class gongchengxiangxiActivity extends Activity {
         builder.create().show();
     }
 
-    public void zhaobiaodialog(){
+    public void jinduHttp(){
 
+    }
+
+    public void zhaobiaodialog(){
         //ArrayList<String> strings;
         final int value;
         DataFragment dataFragment=DataFragment.getInstance();
         value=(int)Double.parseDouble(dataFragment.mprocessItemBean.processnumber);
         for (LinkedTreeMap<String,Object> nidaye:dataFragment.process_datamap) {
             if ((int) (double) nidaye.get("id") == value) {
-                strings = (ArrayList<String>) nidaye.get("zhaobiao");
+                strings = mytool.RemoveSame((ArrayList < String>) nidaye.get("zhaobiao"));
+
                 //strings.add(dataFragment.dianjiangItemBean.phone);
                 if (strings.size()>0) {
                     gongjiang = new String[strings.size()];
                     gongjiangphone = new String[strings.size()];
-                }else {
-                    Toast.makeText(gongchengxiangxiActivity.this,"暂无工匠参与招标",Toast.LENGTH_LONG);
-                    finish();
-                }
-            }
-        }
-        int i;
-        int a=0;
-        for (LinkedTreeMap map:dataFragment.gongjiang_data) {
-            for (i=0;i<strings.size();i++) {
-                if (strings.get(i).equalsIgnoreCase(map.get("phone").toString())) {
-                    gongjiang[a] = map.get("xingming").toString();
-                    gongjiangphone[a]=strings.get(i);
-                    a++;
-                }
-            }
-        }
-        state=new boolean[gongjiang.length];
-
-        //final String[] gongzhong = {"木模工","钢模工","砌墙工","粉刷工","钢筋工","混凝土工","油漆工","玻璃工","","起重工","吊车司机","指挥","电焊工","机修工","维修电工","","测量工","防水工","架子工","普工","建筑设备安装工","","水工","电工","白铁工","管工"};
-        AlertDialog.Builder builder = new AlertDialog.Builder(this)
-                .setTitle("请选择工匠加入工程")
-                .setMultiChoiceItems(gongjiang,state, new DialogInterface.OnMultiChoiceClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which, boolean isChecked) {
-                        //if (fabuFragment.state[which])
-                        //DataFragment dataFragment=DataFragment.getInstance();
-                        //dataFragment.gongzhongstring = dataFragment.gongzhongstring +" "+gongzhong[which];
-                        //dataFragment.gongzhongstring.replace()
-                    }
-                })
-                .setPositiveButton("确认", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        DataFragment dataFragment=DataFragment.getInstance();
-                        for (int i=0;i<state.length;i++){
-                            if (state[i]==true){
-                                strings.add(gongjiangphone[i]);
-                                state[i]=false;
+                    int i;
+                    int a=0;
+                    for (LinkedTreeMap map:dataFragment.gongjiang_data) {
+                        for (i=0;i<strings.size();i++) {
+                            if (strings.get(i).equalsIgnoreCase(map.get("phone").toString())) {
+                                gongjiang[a] = map.get("xingming").toString();
+                                gongjiangphone[a]=strings.get(i);
+                                a++;
                             }
                         }
-                        //
-                        OkHttpClient client = new OkHttpClient();
-                        Gson gson1 = new Gson();
-                        HashMap<String, Object> data1 = new HashMap<>();
-                        data1.put("zhiding", strings);
-                        data1.put("id",value);
-                        OkHttpUtils
-                                .postString()
-                                .url(MainActivity.URL + MainActivity.PROCESSAPI)
-                                .content(gson1.toJson(data1))
-                                .build()
-                                .execute(new StringCallback() {
-                                    @Override
-                                    public void onError(Request request, Exception e) {
-                                        Log.i("LOL", "Dwq");
-                                        Toast.makeText(gongchengxiangxiActivity.this, "发生错误", Toast.LENGTH_LONG).show();
+                    }
+                    state=new boolean[gongjiang.length];
+
+                    //final String[] gongzhong = {"木模工","钢模工","砌墙工","粉刷工","钢筋工","混凝土工","油漆工","玻璃工","","起重工","吊车司机","指挥","电焊工","机修工","维修电工","","测量工","防水工","架子工","普工","建筑设备安装工","","水工","电工","白铁工","管工"};
+                    AlertDialog.Builder builder = new AlertDialog.Builder(this)
+                            .setTitle("请选择工匠加入工程")
+                            .setMultiChoiceItems(gongjiang,state, new DialogInterface.OnMultiChoiceClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which, boolean isChecked) {
+                                    //if (fabuFragment.state[which])
+                                    //DataFragment dataFragment=DataFragment.getInstance();
+                                    //dataFragment.gongzhongstring = dataFragment.gongzhongstring +" "+gongzhong[which];
+                                    //dataFragment.gongzhongstring.replace()
+                                }
+                            })
+                            .setPositiveButton("确认", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    DataFragment dataFragment=DataFragment.getInstance();
+                                    for (int i=0;i<state.length;i++){
+                                        if (state[i]==true){
+                                            strings.add(gongjiangphone[i]);
+                                            state[i]=false;
+                                        }
                                     }
 
-                                    @Override
-                                    public void onResponse(String response) {
-                                        Toast.makeText(gongchengxiangxiActivity.this, "已同意招标", Toast.LENGTH_LONG).show();
+                                    if (strings.size()>0) {
+                                        //
+                                        OkHttpClient client = new OkHttpClient();
+                                        Gson gson1 = new Gson();
+                                        HashMap<String, Object> data1 = new HashMap<>();
+                                        data1.put("zhiding", strings);
+                                        data1.put("id", value);
+                                        OkHttpUtils
+                                                .postString()
+                                                .url(MainActivity.URL + MainActivity.PROCESSAPI)
+                                                .content(gson1.toJson(data1))
+                                                .build()
+                                                .execute(new StringCallback() {
+                                                    @Override
+                                                    public void onError(Request request, Exception e) {
+                                                        Log.i("LOL", "Dwq");
+                                                        Toast.makeText(gongchengxiangxiActivity.this, "发生错误", Toast.LENGTH_LONG).show();
+                                                    }
+
+                                                    @Override
+                                                    public void onResponse(String response) {
+                                                        Toast.makeText(gongchengxiangxiActivity.this, "已同意招标", Toast.LENGTH_LONG).show();
+                                                    }
+                                                });
+                                    }else {
+                                        Toast.makeText(gongchengxiangxiActivity.this,"未选择招标工匠",Toast.LENGTH_LONG).show();
                                     }
-                                });
-                    }
-                });
-        builder.create().show();
+                                }
+                            });
+                    builder.create().show();
+                }else {
+                    Toast.makeText(gongchengxiangxiActivity.this,"暂无工匠参与招标",Toast.LENGTH_SHORT).show();
+                }
+            }
+        }
+
     }
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -717,6 +756,23 @@ public class gongchengxiangxiActivity extends Activity {
                 }
                 break;
 
+            case FINISH_CAMERA:
+                if (hasSdcard()) {
+                    crop(Uri.fromFile(tempFile),SHENFEN_PHOTO_REQUEST_CUT);
+                    xinxi_tupiantext.setText("");
+                } else {
+                    Toast.makeText(this, "未找到存储卡，无法存储照片！", Toast.LENGTH_SHORT).show();
+                }
+                break;
+
+            case FINISH_PHOTO:
+                if (data != null) {
+                    // 得到图片的全路径
+                    Uri uri = data.getData();
+                    crop(uri, 31333);
+                    //xinxi_tupiantext.setText("");
+                }
+                break;
         }
     }
 }

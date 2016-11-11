@@ -3,6 +3,7 @@ package com.dianjiang.hyjipotou2.dianjiangapp;
 import android.app.Activity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ListView;
 
@@ -47,6 +48,12 @@ public class xiangguangongjiangActivity extends Activity {
         getHttp();
         mAdapter=new dianjiangItemAdapter(this,arrayList);
         listView.setAdapter(mAdapter);
+        fanhui.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
     }
 
     public void getHttp(){

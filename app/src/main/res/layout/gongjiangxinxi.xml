@@ -74,7 +74,7 @@
             android:layout_height="wrap_content"
             android:textSize="14sp"
             android:textColor="@color/divider"
-            android:text="请设置工种"
+            android:hint="请设置工种"
             android:layout_alignStart="@+id/dianjiang_name" />
 
         <TextView

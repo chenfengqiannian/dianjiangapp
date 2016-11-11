@@ -86,14 +86,16 @@ public class MainActivity extends FragmentActivity implements MyFragment3.OnFrag
     private Button qiehuan;
 
     public static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
-    public static final String URL="http://120.27.30.221:8000";
+    //public static final String URL="http://120.27.30.221:8000";
     //public static final String URL="http://192.168.191.1:8000";
+    public static final String URL="http://114.55.112.165:8000";
     public static final String USERAPI="/userapi/";
     public static final String IMAGEAPI="/imageupapi/";
     public static final String PROCESSAPI="/gongchengapi/";
     public static final String SHEZHIAPI="/shezhiapi/";
     public static final String ZHIFUBAOSIGNAPI="/zhifubaosignapi/";
     public static final String WEIXINSIGNAPI="/weixinsignapi/";
+    public static final String WANCHENGIMAGE="/wanchengimage/";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

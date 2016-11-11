@@ -149,9 +149,9 @@ public class wxPay {
 
         orderInfo += "&out_trade_no="+getOutTradeNo();
 
-        //orderInfo += "&spbill_create_ip=223.104.176.188";
+        orderInfo += "&spbill_create_ip=223.104.176.188";
 
-        orderInfo += "&spbill_create_ip="+DataFragment.getIp;
+        //orderInfo += "&spbill_create_ip="+DataFragment.getIp;
 
 
         orderInfo += "&time_expire="+getEndTime();
@@ -171,8 +171,8 @@ public class wxPay {
         map.put("body",body);
         map.put("out_trade_no",getOutTradeNo());
         map.put("total_fee",price);
-        //map.put("spbill_create_ip","223.104.176.188");
-        map.put("spbill_create_ip",DataFragment.getIp);
+        map.put("spbill_create_ip","223.104.176.188");
+        //map.put("spbill_create_ip",DataFragment.getIp);
         map.put("time_start",getOutTradeNo());
         map.put("time_expire",getEndTime());
         map.put("notify_url",MainActivity.URL+MainActivity.WEIXINSIGNAPI);
