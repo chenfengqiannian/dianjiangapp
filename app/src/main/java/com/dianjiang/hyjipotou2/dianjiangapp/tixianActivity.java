@@ -33,10 +33,12 @@ public class tixianActivity extends Activity {
     private TextView shenqingjine;
     private RelativeLayout button;
     AlertDialog.Builder builder;
+    AlertDialog.Builder builder2;
     private String price;
     EditText text;
     String zhifubao;
     private LinearLayout textDialog;
+    String zhufutype;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,14 +58,35 @@ public class tixianActivity extends Activity {
             @Override
             public void onClick(View v) {
                 //getData0();
-                setTextDialog();
+                setSpinnerDialog();
             }
         });
     }
 
+    public void setSpinnerDialog() {
+        final String[] str={"银行卡","支付宝","微信"};
+
+        builder2=new AlertDialog.Builder(this)
+        	.setTitle("列表框")
+
+        	.setNegativeButton("取消", null)
+        	;
+        builder2.setSingleChoiceItems(str,0, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+               zhufutype=str[which];
+                setTextDialog();
+
+            }
+        });
+        builder2.show();
+
+
+    }
+
     public void setTextDialog() {
         builder = new AlertDialog.Builder(this)
-                .setTitle("请输入支付宝账号")
+                .setTitle("请输入账号")
                 .setView(null)
                 .setView(textDialog)
                 .setPositiveButton("提交", new DialogInterface.OnClickListener() {
@@ -98,7 +121,7 @@ public class tixianActivity extends Activity {
         HashMap<String,Object> data1 =new HashMap<>();
         data1.put("tixianshenqing",true);
         data1.put("phone",dengluActivity.phone);
-        data1.put("zhifubaozhanghao",zhifubao);
+        data1.put("zhifubaozhanghao","申请类型:"+zhufutype+"   账号:"+zhifubao);
         OkHttpUtils
                 .postString()
                 .url(MainActivity.URL + MainActivity.USERAPI)
@@ -113,7 +136,7 @@ public class tixianActivity extends Activity {
 
                     @Override
                     public void onResponse(String response) {
-                        Toast.makeText(tixianActivity.this,"提现申请发送成功,请耐心等待",Toast.LENGTH_LONG).show();
+                        Toast.makeText(tixianActivity.this, "提现申请发送成功,请耐心等待", Toast.LENGTH_LONG).show();
                     }
                 });
     }

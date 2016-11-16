@@ -251,7 +251,8 @@ public class myfactoryFragment extends Fragment implements XListView.IXListViewL
 
                     if ((int) ((double) map.get("zhuangtai")) >= 2 && (int) ((double) map.get("zhuangtai")) <= 3) {
                         if (((String) map.get("suozaidi")).split(",").length >= 2)
-                            if (((String) map.get("suozaidi")).split(",")[1].equals(data.city)) {
+                            //if (((String) map.get("suozaidi")).split(",")[1].equals(data.city)) {
+                            if (true) {
                                 ArrayList<String> tupianlist = (ArrayList<String>) map.get("tupian");
 
                                 Uri uri;
