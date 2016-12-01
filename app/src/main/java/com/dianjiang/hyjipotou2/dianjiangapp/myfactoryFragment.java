@@ -251,7 +251,8 @@ public class myfactoryFragment extends Fragment implements XListView.IXListViewL
 
                     if ((int) ((double) map.get("zhuangtai")) >= 2 && (int) ((double) map.get("zhuangtai")) <= 3) {
                         if (((String) map.get("suozaidi")).split(",").length >= 2)
-                            if (((String) map.get("suozaidi")).split(",")[1].equals(data.city)) {
+                            //if (((String) map.get("suozaidi")).split(",")[1].equals(data.city)) {
+                            if (true) {
                                 ArrayList<String> tupianlist = (ArrayList<String>) map.get("tupian");
 
                                 Uri uri;
@@ -291,10 +292,10 @@ public class myfactoryFragment extends Fragment implements XListView.IXListViewL
                     }
                 }
             }else if (mParam1.equalsIgnoreCase("招标成功")){
-                for (LinkedTreeMap<String,Object> map:data.process_datamap){
+                for (LinkedTreeMap<String,Object> map:gongcheng_set){
                     if ((int) ((double) map.get("zhuangtai")) >= 3 && (int) ((double) map.get("zhuangtai")) <= 3) {
-                        for (String phone : (ArrayList<String>) map.get("zhiding")) {
-                            if (phone.equals(dengluActivity.phone)) {
+                        //for (String phone : (ArrayList<String>) map.get("zhiding")) {
+                            //if (phone.equals(dengluActivity.phone)) {
                                 ArrayList<String> tupianlist = (ArrayList<String>) map.get("tupian");
 
                                 Uri uri;
@@ -308,15 +309,15 @@ public class myfactoryFragment extends Fragment implements XListView.IXListViewL
 
                                 itemBeans.add(0, new processItemBean(uri, (String) map.get("biaoti"), map.get("id").toString(), (String) map.get("miaoshu"), (int) (double) map.get("zhuangtai"), (String) map.get("autotime"), (String) map.get("gongchengjindu")));
 
-                            }
-                        }
+                            //}
+                        //}
                     }
                 }
             }else if (mParam1.equalsIgnoreCase("进行中")){
-                for (LinkedTreeMap<String,Object> map:data.process_datamap){
+                for (LinkedTreeMap<String,Object> map:gongcheng_set){
                     if ((int) ((double) map.get("zhuangtai")) >= 4 && (int) ((double) map.get("zhuangtai")) <= 4) {
-                        for (String phone : (ArrayList<String>) map.get("zhiding")) {
-                            if (phone.equals(dengluActivity.phone)) {
+                        //for (String phone : (ArrayList<String>) map.get("zhiding")) {
+                           // if (phone.equals(dengluActivity.phone)) {
                                 ArrayList<String> tupianlist = (ArrayList<String>) map.get("tupian");
 
                                 Uri uri;
@@ -330,15 +331,15 @@ public class myfactoryFragment extends Fragment implements XListView.IXListViewL
 
                                 itemBeans.add(0, new processItemBean(uri, (String) map.get("biaoti"), map.get("id").toString(), (String) map.get("miaoshu"), (int) (double) map.get("zhuangtai"), (String) map.get("autotime"), (String) map.get("gongchengjindu")));
 
-                            }
-                        }
+                            //}
+                       // }
                     }
                 }
             }else if (mParam1.equalsIgnoreCase("已结款")){
-                for (LinkedTreeMap<String,Object> map:data.process_datamap){
+                for (LinkedTreeMap<String,Object> map:gongcheng_set){
                     if ((int) ((double) map.get("zhuangtai")) >= 6 && (int) ((double) map.get("zhuangtai")) <= 6) {
-                        for (String phone : (ArrayList<String>) map.get("zhiding")) {
-                            if (phone.equals(dengluActivity.phone)) {
+                        //for (String phone : (ArrayList<String>) map.get("zhiding")) {
+                            //if (phone.equals(dengluActivity.phone)) {
                                 ArrayList<String> tupianlist = (ArrayList<String>) map.get("tupian");
 
                                 Uri uri;
@@ -352,15 +353,15 @@ public class myfactoryFragment extends Fragment implements XListView.IXListViewL
 
                                 itemBeans.add(0, new processItemBean(uri, (String) map.get("biaoti"), map.get("id").toString(), (String) map.get("miaoshu"), (int) (double) map.get("zhuangtai"), (String) map.get("autotime"), (String) map.get("gongchengjindu")));
 
-                            }
-                        }
+                            //}
+                        //}
                     }
                 }
             }else if (mParam1.equalsIgnoreCase("未结款")){
-                for (LinkedTreeMap<String,Object> map:data.process_datamap){
+                for (LinkedTreeMap<String,Object> map:gongcheng_set){
                     if ((int) ((double) map.get("zhuangtai")) >= 5 && (int) ((double) map.get("zhuangtai")) <= 5) {
-                        for (String phone : (ArrayList<String>) map.get("zhiding")) {
-                            if (phone.equals(dengluActivity.phone)) {
+                       // for (String phone : (ArrayList<String>) map.get("zhiding")) {
+                           // if (phone.equals(dengluActivity.phone)) {
                                 ArrayList<String> tupianlist = (ArrayList<String>) map.get("tupian");
 
                                 Uri uri;
@@ -374,8 +375,8 @@ public class myfactoryFragment extends Fragment implements XListView.IXListViewL
 
                                 itemBeans.add(0, new processItemBean(uri, (String) map.get("biaoti"), map.get("id").toString(), (String) map.get("miaoshu"), (int) (double) map.get("zhuangtai"), (String) map.get("autotime"), (String) map.get("gongchengjindu")));
 
-                            }
-                        }
+                            //}
+                        //}
                     }
                 }
             }

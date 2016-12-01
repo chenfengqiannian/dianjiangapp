@@ -359,7 +359,7 @@ public class MyFragment2 extends Fragment implements XListView.IXListViewListene
                         }
                     }
                     //地区遍历
-                    if (dataFragment.sheng_!=null && dataFragment.shi_!=null){
+                   /* if (dataFragment.sheng_!=null && dataFragment.shi_!=null){
                         for (int i=0;i<dataFragment.dianjiangItemBeans.size();i++){
             if(dataFragment.dianjiangItemBeans.get(i).diqu==null) {
                 continue;
@@ -374,7 +374,7 @@ public class MyFragment2 extends Fragment implements XListView.IXListViewListene
                             i--;}
 
                         }
-                    }
+                    }*/
 
                     //赋值
 
