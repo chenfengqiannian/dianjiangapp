@@ -579,6 +579,7 @@ public class fabuFragment extends Fragment {
                 }
                 try {
                     // 将临时文件删除
+                    //ZZ
                     //tempFile.delete();
                 } catch (Exception e) {
                     e.printStackTrace();
