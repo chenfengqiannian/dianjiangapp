@@ -399,6 +399,7 @@ public class fabuFragment extends Fragment {
             intent.putExtra(MediaStore.EXTRA_OUTPUT, uri);
         }
         // 开启一个带有返回值的Activity，请求码为PHOTO_REQUEST_CAREMA
+        Log.i("LOL",tempFile.isFile()+"");
         startActivityForResult(intent, f);
     }
 
@@ -578,7 +579,7 @@ public class fabuFragment extends Fragment {
                 }
                 try {
                     // 将临时文件删除
-                    tempFile.delete();
+                    //tempFile.delete();
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

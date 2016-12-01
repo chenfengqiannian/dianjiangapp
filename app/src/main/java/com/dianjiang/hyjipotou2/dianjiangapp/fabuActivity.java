@@ -246,6 +246,7 @@ public class fabuActivity extends FragmentActivity implements fabuFragment.OnFra
                         PostFormBuilder buider2 =OkHttpUtils.post();
                         ArrayList<File> files;
                         files= (ArrayList<File>)dataFragment.fabu_datamap.get("tupian");
+                        Log.i("LOL",String.valueOf(files.get(0).isFile()));
                         for(int i=0;i<files.size();i++){
                             buider2.addFile(i+"aaaa",files.get(i).getName(),files.get(i));
                         }
